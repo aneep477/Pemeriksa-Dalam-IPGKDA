@@ -3,19 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Pemeriksa Dalam (PD) - Muat Naik Bahan</title>
+    <title>Portal PD - Muat Naik Berbilang Bahan</title>
     <style>
-        /* Gaya asas CSS untuk menjadikan portal nampak kemas & profesional */
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 20px; }
-        .container { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: #333; }
-        .form-group { margin-bottom: 15px; }
+        .container { max-width: 650px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #333; margin-bottom: 20px; }
+        .form-group { margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .form-group:last-child { border-bottom: none; }
         label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; }
+        .badge { font-size: 0.8em; padding: 3px 6px; border-radius: 4px; margin-left: 5px; }
+        .mandatori { background-color: #dc3545; color: white; }
+        .pilihan { background-color: #6c757d; color: white; }
         input[type="text"], input[type="file"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; transition: background-color 0.3s; }
+        button { width: 100%; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; font-weight: bold; }
         button:hover { background-color: #0056b3; }
         button:disabled { background-color: #a0c4ff; cursor: not-allowed; }
-        #status-message { margin-top: 20px; text-align: center; font-weight: bold; padding: 10px; border-radius: 4px;}
+        #status-message { margin-top: 20px; text-align: center; font-weight: bold; padding: 10px; border-radius: 4px; }
         .success { color: #155724; background-color: #d4edda; border: 1px solid #c3e6cb; display: block; }
         .error { color: #721c24; background-color: #f8d7da; border: 1px solid #f5c6cb; display: block; }
     </style>
@@ -23,116 +26,144 @@
 <body>
 
 <div class="container">
-    <h2>Muat Naik Bahan Pentaksiran (Pensyarah)</h2>
+    <h2>Muat Naik Bahan Pentaksiran (Berpusat)</h2>
     <form id="uploadForm">
-        <!-- Input Nama Pensyarah -->
+        
         <div class="form-group">
             <label for="namaPensyarah">Nama Pensyarah:</label>
             <input type="text" id="namaPensyarah" required placeholder="Cth: Dr. Ahmad">
         </div>
         
-        <!-- Input Kod Kursus (Ini akan menjadi nama sub-folder) -->
         <div class="form-group">
-            <label for="kodKursus">Kod Kursus (Untuk Sub-Folder):</label>
+            <label for="kodKursus">Kod Kursus:</label>
             <input type="text" id="kodKursus" required placeholder="Cth: BMMB3013" style="text-transform: uppercase;">
         </div>
-        
-        <!-- Input Pemilihan Fail -->
+
         <div class="form-group">
-            <label for="failTugasan">Fail Bahan (PDF, DOCX, ZIP):</label>
+            <label>1. Maklumat Kursus (MK) <span class="badge mandatori">Mandatori</span></label>
+            <input type="file" id="failMK" required>
+        </div>
+
+        <div class="form-group">
+            <label>2. Jadual Spesifikasi Tugasan (JST) <span class="badge mandatori">Mandatori</span></label>
+            <input type="file" id="failJST" required>
+        </div>
+
+        <div class="form-group">
+            <label>3. Soalan Tugasan <span class="badge mandatori">Mandatori</span></label>
             <input type="file" id="failTugasan" required>
         </div>
+
+        <div class="form-group">
+            <label>4. Rubrik Pemarkahan <span class="badge mandatori">Mandatori</span></label>
+            <input type="file" id="failRubrik" required>
+        </div>
+
+        <div class="form-group">
+            <label>5. Borang Semakan SME <span class="badge mandatori">Mandatori</span></label>
+            <input type="file" id="failSME" required>
+        </div>
+
+        <div class="form-group">
+            <label>6. Jadual Spesifikasi Ujian (JSU) Peperiksaan <span class="badge pilihan">Pilihan</span></label>
+            <input type="file" id="failJSU">
+        </div>
         
-        <button type="submit" id="btnHantar">Muat Naik ke Drive PD</button>
+        <button type="submit" id="btnHantar">Muat Naik Semua Bahan</button>
     </form>
     
-    <!-- Ruang paparan status pemprosesan -->
     <div id="status-message"></div>
 </div>
 
 <script>
-    /**
-     * Konfigurasi URL Web App Google Apps Script.
-     * Menggunakan URL eksekutif yang dibekalkan oleh pengguna.
-     */
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby1GAc398m9OGNLe1jNbsPsHvJ87vXs4YvyBh2gcTtQdAJYG4LOn76QHogYVZNbIraw/exec";
 
     /**
-     * Mengendalikan acara "submit" pada borang secara tak segerak (Asynchronous).
+     * Fungsi Helper (Asynchronous) untuk membaca fail fizikal kepada Base64 menggunakan Promise
+     * Mengendalikan ralat membaca fail (Edge Case) pada peringkat penyemak imbas (Browser)
+     * 
+     * @param {File} file - Objek file dari input HTML
+     * @param {String} jenis - Kategori fail (Contoh: "MK", "JST")
+     * @returns {Promise<Object|null>} - Mengembalikan objek fail yang telah ditukar, atau null jika tiada fail
      */
+    const bacaFailSebagaiBase64 = (file, jenis) => {
+        return new Promise((resolve, reject) => {
+            if (!file) {
+                resolve(null); // Return null secara selamat jika fail adalah pilihan (JSU) dan tidak dimuat naik
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = () => {
+                resolve({
+                    jenis: jenis,
+                    namaFail: file.name,
+                    mimeType: file.type,
+                    failBase64: reader.result
+                });
+            };
+            reader.onerror = error => reject(error);
+            reader.readAsDataURL(file);
+        });
+    };
+
     document.getElementById('uploadForm').addEventListener('submit', async (e) => {
-        // 1. Menghalang muat semula halaman lalai (default page refresh)
         e.preventDefault();
         
-        // 2. Menangkap nilai input daripada DOM
-        const namaPensyarah = document.getElementById('namaPensyarah').value;
-        const kodKursus = document.getElementById('kodKursus').value.trim().toUpperCase(); // Format seragam untuk elak duplikasi nama berbeza kes
-        const failInput = document.getElementById('failTugasan').files[0];
         const statusDiv = document.getElementById('status-message');
         const btnHantar = document.getElementById('btnHantar');
 
-        // 3. Kes Ralat (Edge Case): Pengesahan (Validation) fail pada peringkat klien
-        if (!failInput) {
-            statusDiv.innerHTML = '<span class="error">Sila pilih fail terlebih dahulu!</span>';
-            return;
-        }
-
-        // 4. Mengemas kini Antaramuka Pengguna (UI) untuk maklum balas responsif
-        btnHantar.innerText = "Memuat Naik... Sila Tunggu";
+        // Mengunci butang semasa memproses
+        btnHantar.innerText = "Mengekod & Memuat Naik... Sila Tunggu";
         btnHantar.disabled = true;
-        statusDiv.innerHTML = "Sedang memproses dan mencipta folder...";
-        statusDiv.className = ""; // Kosongkan kelas warna sementara
+        statusDiv.innerHTML = "Memproses fail bahan, ini mungkin mengambil masa sebentar...";
+        statusDiv.className = "";
 
-        // 5. API FileReader untuk manipulasi fail binari ke rentetan Base64
-        const reader = new FileReader();
-        
-        reader.onload = async () => {
-            const base64String = reader.result;
+        try {
+            // Membina tatasusunan (array) proses Promise secara serentak
+            const prosesFail = [
+                bacaFailSebagaiBase64(document.getElementById('failMK').files[0], "MK"),
+                bacaFailSebagaiBase64(document.getElementById('failJST').files[0], "JST"),
+                bacaFailSebagaiBase64(document.getElementById('failTugasan').files[0], "Tugasan"),
+                bacaFailSebagaiBase64(document.getElementById('failRubrik').files[0], "Rubrik"),
+                bacaFailSebagaiBase64(document.getElementById('failSME').files[0], "SME"),
+                bacaFailSebagaiBase64(document.getElementById('failJSU').files[0], "JSU")
+            ];
 
-            // 6. Menyediakan muatan Data (Payload) JSON
+            // Menunggu semua penukaran fail selesai
+            const failArrayBelumTapis = await Promise.all(prosesFail);
+            
+            // Menapis null (JSU jika tidak dimuat naik) untuk membersihkan Payload
+            const failArray = failArrayBelumTapis.filter(fail => fail !== null);
+
+            // Membina struktur Payload akhir
             const payload = {
-                namaPensyarah: namaPensyarah,
-                kodKursus: kodKursus,
-                namaFail: failInput.name,
-                mimeType: failInput.type,
-                failBase64: base64String
+                namaPensyarah: document.getElementById('namaPensyarah').value,
+                kodKursus: document.getElementById('kodKursus').value.trim().toUpperCase(),
+                failArray: failArray
             };
 
-            try {
-                // 7. Fetch API: Komunikasi silang sumber (CORS) ke pelayan Google
-                const response = await fetch(APPS_SCRIPT_URL, {
-                    method: "POST",
-                    body: JSON.stringify(payload)
-                });
-                
-                const result = await response.json();
+            // Menghantar data ke API Apps Script
+            const response = await fetch(APPS_SCRIPT_URL, {
+                method: "POST",
+                body: JSON.stringify(payload)
+            });
+            
+            const result = await response.json();
 
-                // 8. Memaparkan hasil proses berdasarkan logik pelayan
-                if (result.status === "success") {
-                    statusDiv.innerHTML = `<span class="success">${result.mesej}</span>`;
-                    document.getElementById('uploadForm').reset(); // Reset form jika berjaya
-                } else {
-                    statusDiv.innerHTML = `<span class="error">${result.mesej}</span>`;
-                }
-            } catch (error) {
-                // 9. Edge Case Rangkaian: Tangkap jika pengguna terputus internet / CORS disekat
-                statusDiv.innerHTML = `<span class="error">Ralat sambungan: Sila pastikan pautan Apps Script betul dan anda mempunyai sambungan internet. (${error.message})</span>`;
-            } finally {
-                // 10. Pemulihan Antaramuka Pengguna
-                btnHantar.innerText = "Muat Naik ke Drive PD";
-                btnHantar.disabled = false;
+            if (result.status === "success") {
+                statusDiv.innerHTML = `<span class="success">${result.mesej}</span>`;
+                document.getElementById('uploadForm').reset();
+            } else {
+                statusDiv.innerHTML = `<span class="error">${result.mesej}</span>`;
             }
-        };
 
-        reader.onerror = () => {
-            // Edge case: Ralat membaca fail secara lokal
-            statusDiv.innerHTML = `<span class="error">Gagal membaca fail dari peranti anda. Sila cuba lagi.</span>`;
-            btnHantar.innerText = "Muat Naik ke Drive PD";
+        } catch (error) {
+            statusDiv.innerHTML = `<span class="error">Ralat proses/sambungan: ${error.message}</span>`;
+        } finally {
+            // Memulihkan butang
+            btnHantar.innerText = "Muat Naik Semua Bahan";
             btnHantar.disabled = false;
-        };
-
-        // Mulakan proses bacaan
-        reader.readAsDataURL(failInput);
+        }
     });
 </script>
 </body>
