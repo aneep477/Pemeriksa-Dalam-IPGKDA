@@ -44,8 +44,9 @@
         body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-primary); line-height: 1.6; }
         a { text-decoration: none; color: inherit; }
         ul { list-style: none; }
-        section { padding: 2rem 8%; }
+        section { padding: 2.5rem 8%; }
         
+        /* LOADER SPINNER */
         #loader { 
             position: fixed; inset: 0; background: var(--bg-color); z-index: 9999; 
             display: flex; justify-content: center; align-items: center; 
@@ -55,6 +56,7 @@
         .spinner { width: 50px; height: 50px; border: 5px solid var(--border-color); border-top-color: var(--primary-color); border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
+        /* NAVBAR */
         navbar { position: fixed; top: 0; width: 100%; padding: 1rem 8%; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); display: flex; justify-content: space-between; align-items: center; z-index: 900; border-bottom: 1px solid var(--border-color); }
         body.dark-mode navbar { background: rgba(30, 41, 59, 0.85); }
         .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary-color); }
@@ -62,6 +64,7 @@
         .nav-links li a { font-weight: 600; font-size: 0.95rem; }
         .theme-toggle { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--text-primary); }
 
+        /* HERO & TAB SWITCHER */
         .hero { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; min-height: 25vh; padding-top: 100px; padding-bottom: 1rem; }
         .hero h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
         .hero p { font-size: 1.1rem; color: var(--text-secondary); max-width: 650px; margin-bottom: 1.5rem; }
@@ -74,6 +77,7 @@
         .btn-primary { background: var(--primary-color); color: white; }
         .btn-primary:hover { background: var(--primary-hover); }
 
+        /* BORANG GRID */
         .form-container { max-width: 1000px; margin: 0 auto; background: var(--surface-color); padding: 2rem; border-radius: 12px; box-shadow: var(--shadow); border: 1px solid var(--border-color); }
         .form-grid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
         .column-title { font-size: 1.1rem; color: var(--primary-color); margin-bottom: 1.5rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; }
@@ -91,6 +95,7 @@
         .search-box { flex: 1; min-width: 250px; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--surface-color); color: var(--text-primary); }
         .btn-refresh { background: var(--primary-color); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: var(--transition); }
 
+        /* JADUAL UTAMA */
         .table-container { background: var(--surface-color); border-radius: 12px; box-shadow: var(--shadow); overflow-x: auto; border: 1px solid var(--border-color); }
         table.main-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.92rem; }
         table.main-table > thead > tr > th, table.main-table > tbody > tr > td { padding: 1.2rem; border-bottom: 1px solid var(--border-color); vertical-align: top; }
@@ -103,6 +108,7 @@
         .btn-action { padding: 0.4rem 0.8rem; font-size: 0.8rem; border-radius: 6px; border: 1px solid var(--primary-color); background: rgba(37,99,235,0.1); color: var(--primary-color); cursor: pointer; font-weight: 600; margin-right: 5px; margin-bottom: 5px;}
         .btn-action:hover { background: var(--primary-color); color: white; }
 
+        /* MODAL POPUP */
         .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8); z-index: 10000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); backdrop-filter: blur(4px); }
         .modal-overlay.active { opacity: 1; visibility: visible; }
         .modal-box { background: var(--bg-color); width: 95%; max-width: 1000px; height: 90vh; border-radius: 12px; display: flex; flex-direction: column; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); transform: translateY(20px); transition: var(--transition); border: 1px solid var(--border-color); }
@@ -133,6 +139,19 @@
         .audit-status-tdkpatuh { background: var(--error-bg); color: var(--error-text); font-weight: 700; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem;}
         .audit-status-warning { background: var(--warning-bg); color: var(--warning-text); font-weight: 700; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem;}
 
+        /* ==========================================
+           REKA BENTUK ACCORDION SOALAN LAZIM (FAQ)
+           ========================================== */
+        .faq-container { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; }
+        .faq-item { background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); transition: var(--transition); }
+        .faq-question { width: 100%; padding: 1.2rem 1.5rem; text-align: left; background: none; border: none; font-size: 1rem; font-weight: 600; color: var(--text-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: inherit; }
+        .faq-question:hover { background: rgba(0,0,0,0.015); }
+        .faq-icon { font-size: 1.3rem; font-weight: bold; color: var(--primary-color); transition: transform 0.3s ease; }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease; padding: 0 1.5rem; background: var(--bg-color); font-size: 0.93rem; color: var(--text-secondary); line-height: 1.7; }
+        .faq-item.active { border-color: var(--primary-color); }
+        .faq-item.active .faq-answer { max-height: 300px; padding: 1rem 1.5rem 1.2rem 1.5rem; border-top: 1px solid var(--border-color); }
+        .faq-item.active .faq-icon { transform: rotate(45deg); color: var(--error-text); }
+
         #toast-container { position: fixed; bottom: 20px; left: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
         .toast { padding: 0.9rem 1.3rem; border-radius: 8px; color: white; font-weight: 600; box-shadow: var(--shadow); transform: translateX(-120%); opacity: 0; transition: all 0.4s ease; }
         .toast.show { transform: translateX(0); opacity: 1; }
@@ -150,6 +169,7 @@
             <li><a href="#home">Utama</a></li>
             <li><a href="#muatnaik">Muat Naik</a></li>
             <li><a href="#papanpemuka">Papan Pemuka</a></li>
+            <li><a href="#faq">FAQ</a></li>
             <li><button class="theme-toggle" id="themeToggle">🌙</button></li>
         </ul>
     </navbar>
@@ -259,6 +279,54 @@
         </div>
     </section>
 
+    <!-- SEKSYEN SOALAN LAZIM (FAQ) ACCORDION -->
+    <section id="faq" style="background-color: rgba(0,0,0,0.015); border-top: 1px solid var(--border-color);">
+        <h2 style="text-align: center; margin-bottom: 0.5rem;">Soalan Lazim (FAQ)</h2>
+        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">Panduan serta jawapan umum berkaitan penggunaan Portal Verifikasi PD IPG.</p>
+
+        <div class="faq-container">
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    <span>Apakah Proses Kerja bagi Pemeriksa Dalam (PD)?</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Pemeriksa Dalam (PD) bertanggungjawab menyemak dan memverifikasi bahan Pentaksiran Berterusan (PB) berasaskan Buku Panduan Pentaksiran IPG. Verifikasi dibahagikan kepada 2 Fasa: <strong>Fasa Perancangan (21 Item Senarai Semak)</strong> dan <strong>Fasa Selepas Moderasi (12 Item Senarai Semak)</strong>.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    <span>Bilakah ulasan atau Laporan Audit PD boleh dilihat?</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Laporan Audit diklasifikasikan sebagai <strong>SULIT</strong> demi memelihara kerahsiaan akademik. Laporan hanya boleh dibuka oleh Pensyarah/PD yang sah dengan menekan butang <code>🔐 Buka Laporan</code> dan memasukkan Kunci Rahsia (PIN/ID Staf) yang ditetapkan semasa muat naik.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    <span>Apakah fungsi butang '📝 Isi Verifikasi PD'?</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Butang ini digunakan khas oleh Pemeriksa Dalam (PD) untuk mengisi borang digital senarai semak verifikasi secara item-demi-item, memberikan ulasan keseluruhan, dan menetapkan Perakuan Final (PATUH / PATUH BERSYARAT / TIDAK PATUH).</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    <span>Apakah format fail yang dibenarkan untuk muat naik?</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Fail dokumen yang diterima adalah dalam format <strong>PDF (.pdf)</strong>, <strong>Microsoft Word (.doc, .docx)</strong>, dan <strong>Microsoft Excel (.xls, .xlsx)</strong> mengikut jenis instrumen yang ditetapkan.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- MODAL 1: BACA LAPORAN SULIT -->
     <div class="modal-overlay" id="reportModal">
         <div class="modal-box">
@@ -345,7 +413,7 @@
         let senaraiFasa1 = [], senaraiFasa2 = [];
         let kodSemasa = "";
 
-        // TATASUSUNAN 21 ITEM FASA 1 (BERSIH DARI AKSARA KORUP)
+        // TATASUSUNAN 21 ITEM FASA 1
         const senaraiSemakFasa1 = [
           "Pensyarah menerima arahan yang jelas pelaksanaan pentaksiran berterusan daripada Ketua Jabatan Akademik / Penyelaras Pentaksiran Berterusan",
           "JST yang disediakan mengikut format yang ditetapkan",
@@ -370,7 +438,7 @@
           "Skema pemarkahan dan Rubrik yang disediakan mengandungi kriteria / deskriptor untuk mengukur domain kemahiran insaniah (jika berkenaan)"
         ];
 
-        // TATASUSUNAN 12 ITEM FASA 2 (BERSIH DARI AKSARA KORUP)
+        // TATASUSUNAN 12 ITEM FASA 2
         const senaraiSemakFasa2 = [
           "Pelajar menerima taklimat pentaksiran berterusan daripada pensyarah",
           "Pemilihan sampel dan penyelarasan skema pemarkahan dan rubrik dilaksanakan (sekiranya 2 @lebih pemeriksa)",
@@ -411,6 +479,18 @@
             container.appendChild(toast);
             setTimeout(() => toast.classList.add('show'), 10);
             setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 4000);
+        }
+
+        /* LOGIK INTERAKSI FAQ ACCORDION */
+        function toggleFAQ(button) {
+            const faqItem = button.parentElement;
+            const isActive = faqItem.classList.contains('active');
+            
+            document.querySelectorAll('.faq-item').forEach(item => item.classList.remove('active'));
+            
+            if (!isActive) {
+                faqItem.classList.add('active');
+            }
         }
 
         function tukarFasa(fasa) {
