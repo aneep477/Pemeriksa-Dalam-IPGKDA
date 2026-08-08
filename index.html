@@ -105,7 +105,7 @@
 
         .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8); z-index: 10000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); backdrop-filter: blur(4px); }
         .modal-overlay.active { opacity: 1; visibility: visible; }
-        .modal-box { background: var(--bg-color); width: 95%; max-width: 1050px; height: 92vh; border-radius: 12px; display: flex; flex-direction: column; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); transform: translateY(20px); transition: var(--transition); border: 1px solid var(--border-color); }
+        .modal-box { background: var(--bg-color); width: 95%; max-width: 1000px; height: 90vh; border-radius: 12px; display: flex; flex-direction: column; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); transform: translateY(20px); transition: var(--transition); border: 1px solid var(--border-color); }
         .modal-overlay.active .modal-box { transform: translateY(0); }
         .modal-header { padding: 1.5rem 2rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background: var(--surface-color); border-radius: 12px 12px 0 0; }
         .modal-header h2 { font-size: 1.2rem; color: var(--primary-color); }
@@ -163,7 +163,7 @@
 
     <section class="hero" id="home">
         <h1>Sistem Verifikasi Pentaksiran Berterusan</h1>
-        <p>Portal Semakan Dokumen & Laporan Audit Akademik IPG:</p>
+        <p>Portal Semakan Dokumen & Laporan PD IPG:</p>
     </section>
 
     <!-- TAB SWITCHER -->
@@ -242,7 +242,7 @@
     <!-- PAPAN PEMUKA AUDIT -->
     <section id="papanpemuka">
         <h2 style="text-align: center; margin-bottom: 0.5rem;">Papan Pemuka Status Semakan PD</h2>
-        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">Laporan Audit Akademik diklasifikasikan sebagai <strong>SULIT</strong>.</p>
+        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">Laporan PD diklasifikasikan sebagai <strong>SULIT</strong>.</p>
 
         <div class="controls">
             <input type="text" id="searchInput" class="search-box" placeholder="Cari Kod Kursus, Nama Kursus atau Pensyarah..." onkeyup="tapisData()">
@@ -256,7 +256,7 @@
                         <th style="width: 12%;">Status Audit</th>
                         <th style="width: 18%;">Kod & Kursus</th>
                         <th style="width: 20%;">Pensyarah / Jabatan</th>
-                        <th style="width: 50%;">Tindakan Kawalan PD</th>
+                        <th style="width: 50%;">Akses Laporan PD (Cell M)</th>
                     </tr>
                 </thead>
                 <tbody id="jadualData">
@@ -274,11 +274,11 @@
         <div class="faq-container">
             <div class="faq-item">
                 <button class="faq-question" onclick="toggleFAQ(this)">
-                    <span>Apakah kandungan Laporan PD?</span>
+                    <span>Daripada manakah Laporan PD dibaca?</span>
                     <span class="faq-icon">+</span>
                 </button>
                 <div class="faq-answer">
-                    <p>Laporan PD mengandungi analisis menyeluruh terhadap dokumen pentaksiran berterusan yang dimuat naik (MK, JST, Soalan, Rubrik, dan SME). Ia memaparkan Ringkasan Eksekutif, Senarai Semak Verifikasi, Analisis Penjajaran Konstruktif, dan Perakuan Final Panel Audit.</p>
+                    <p>Laporan PD dibaca secara terus daripada <strong>Cell M (Lajur 13)</strong> di dalam pangkalan data Google Sheets anda. Kandungan ini dijana hasil daripada analisis dokumen yang dimuat naik.</p>
                 </div>
             </div>
 
@@ -288,13 +288,13 @@
                     <span class="faq-icon">+</span>
                 </button>
                 <div class="faq-answer">
-                    <p>Laporan PD diklasifikasikan sebagai <strong>SULIT</strong>. Untuk membacanya, tekan butang <code>📄 Laporan PD</code> pada Papan Pemuka dan masukkan Kunci Rahsia (PIN/ID Staf) yang anda tetapkan semasa muat naik bahan.</p>
+                    <p>Laporan PD diklasifikasikan sebagai <strong>SULIT</strong>. Untuk membacanya, tekan butang <code>📄 Laporan PD</code> pada Papan Pemuka dan masukkan Kunci Rahsia (PIN Kursus) yang ditetapkan semasa muat naik bahan.</p>
                 </div>
             </div>
 
             <div class="faq-item">
                 <button class="faq-question" onclick="toggleFAQ(this)">
-                    <span>Siapa yang boleh mengakses '🛡️ Borang Verifikasi (Admin)'?</span>
+                    <span>Siapakah yang boleh mengisi Borang Verifikasi Admin?</span>
                     <span class="faq-icon">+</span>
                 </button>
                 <div class="faq-answer">
@@ -304,7 +304,7 @@
         </div>
     </section>
 
-    <!-- MODAL 1: BACA LAPORAN PD (UNTUK PENSYARAH & PD) -->
+    <!-- MODAL 1: BACA LAPORAN PD TERUS DARI CELL M -->
     <div class="modal-overlay" id="reportModal">
         <div class="modal-box">
             <div class="modal-header">
@@ -314,7 +314,7 @@
             <div class="modal-body">
                 <div class="pin-overlay" id="pinOverlay">
                     <div class="pin-box">
-                        <h3 style="color: var(--primary-color); margin-bottom: 10px;">🔐 Akses Laporan PD SULIT</h3>
+                        <h3 style="color: var(--primary-color); margin-bottom: 10px;">🔐 Akses Laporan PD SULIT (Cell M)</h3>
                         <p style="font-size: 0.9rem; color: var(--text-secondary);">Sila masukkan Kunci Rahsia (PIN Kursus) yang anda tetapkan semasa memuat naik bahan ini.</p>
                         <input type="password" id="inputSemakPIN" placeholder="Masukkan PIN Kursus" onkeypress="if(event.key === 'Enter') mintaAksesLaporan()">
                         <input type="hidden" id="kodKursusSemasa">
@@ -323,13 +323,13 @@
                 </div>
 
                 <div class="audit-report-content" id="modalReportBody">
-                    <!-- Teks Laporan PD disuntik di sini -->
+                    <!-- Teks Laporan PD dari Cell M disuntik di sini -->
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL 2: BORANG DIGITAL SENARAI SEMAK VERIFIKASI PD (ADMIN ONLY) -->
+    <!-- MODAL 2: BORANG DIGITAL SENARAI SEMAK VERIFIKASI PD (ADMIN ONLY - LAJUR O) -->
     <div class="modal-overlay" id="checklistModal">
         <div class="modal-box">
             <div class="modal-header">
@@ -341,7 +341,7 @@
                 <div style="background: var(--warning-bg); padding: 1.2rem; border-radius: 8px; border: 1px solid var(--warning-text); margin-bottom: 1.5rem;">
                     <label style="color: var(--warning-text); font-weight: bold;">🛡️ Kawalan Akses Pentadbiran: Sila Masukkan Kunci Pentadbiran (Admin Master PIN):</label>
                     <input type="password" id="pinInputAdminPD" placeholder="Masukkan Admin Master PIN (Cth: ADMIN2026)..." style="margin-top: 5px; border-color: var(--warning-text);">
-                    <p style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 4px;">* Modul ini disekat daripada pensyarah yang memuat naik bahan.</p>
+                    <p style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 4px;">* Borang ini disekat daripada pensyarah dan disimpan di Lajur O secara berasingan.</p>
                 </div>
 
                 <form id="formChecklistPD" novalidate>
@@ -603,7 +603,7 @@
         function bukaPromptKeselamatan(kodKursus) {
             document.getElementById('kodKursusSemasa').value = kodKursus;
             document.getElementById('inputSemakPIN').value = "";
-            document.getElementById('modalTitle').innerText = "Akses Keselamatan Laporan PD: " + kodKursus;
+            document.getElementById('modalTitle').innerText = "Akses Keselamatan Laporan PD (Cell M): " + kodKursus;
             
             document.getElementById('pinOverlay').style.display = "flex";
             document.getElementById('modalReportBody').style.display = "none";
@@ -634,13 +634,13 @@
                 const result = await response.json();
 
                 if (result.status === "success") {
-                    showToast("Akses Dibenarkan. Memaparkan Laporan PD SULIT.", "success");
+                    showToast("Akses Dibenarkan. Memaparkan Laporan PD SULIT (Cell M).", "success");
                     
                     let htmlOutput = marked.parse(result.laporanPenuh);
                     htmlOutput = htmlOutput.replace(/\bPATUH BERSYARAT\b/g, "##WARN##").replace(/\bTIDAK PATUH\b/g, "##ERR1##").replace(/\bTIDAK DINYATAKAN\b/g, "##ERR2##").replace(/\bPATUH\b/g, "##SUCC##");
                     htmlOutput = htmlOutput.replace(/##WARN##/g, "<span class='audit-status-warning'>PATUH BERSYARAT</span>").replace(/##ERR1##/g, "<span class='audit-status-tdkpatuh'>TIDAK PATUH</span>").replace(/##ERR2##/g, "<span class='audit-status-tdkpatuh'>TIDAK DINYATAKAN</span>").replace(/##SUCC##/g, "<span class='audit-status-patuh'>PATUH</span>");
 
-                    document.getElementById('modalTitle').innerText = "Laporan PD (SULIT): " + kod;
+                    document.getElementById('modalTitle').innerText = "Laporan PD (Cell M): " + kod;
                     document.getElementById('modalReportBody').innerHTML = htmlOutput;
                     
                     document.getElementById('pinOverlay').style.display = "none";
