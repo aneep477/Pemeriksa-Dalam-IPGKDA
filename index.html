@@ -3,10 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Pemeriksa Dalam (PD) | Semakan Dokumen Akademik IPG</title>
+    <title>Portal Pemeriksa Dalam (PD) | Audit Akademik IPG</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Integrasi Pustaka Marked.js untuk menukar teks Markdown AI kepada Jadual HTML -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
     <style>
@@ -68,7 +66,7 @@
         .form-container { max-width: 800px; margin: 0 auto; background: var(--surface-color); padding: 2.5rem; border-radius: 12px; box-shadow: var(--shadow); border: 1px solid var(--border-color); }
         .form-group { margin-bottom: 1.2rem; }
         label { display: block; margin-bottom: 0.4rem; font-weight: 600; }
-        input[type="text"], input[type="file"] { width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-color); color: var(--text-primary); }
+        input[type="text"], input[type="file"], input[type="password"] { width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-color); color: var(--text-primary); }
 
         .controls { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
         .search-box { flex: 1; min-width: 250px; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--surface-color); color: var(--text-primary); }
@@ -84,96 +82,38 @@
         .badge-warning { background-color: var(--warning-bg); color: var(--warning-text); }
         .pending-text { color: var(--text-secondary); font-style: italic; }
 
-        /* ==============================================================
-           REKA BENTUK: PREVIEW 5 BARIS DAN BUTANG BACA LAPORAN
-           ============================================================== */
-        .report-preview {
-            display: -webkit-box;
-            -webkit-line-clamp: 4; /* Hadkan kepada lebih kurang 4-5 baris */
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.8rem;
-            line-height: 1.5;
+        /* Butang Akses Selamat */
+        .btn-secure-read {
+            background: rgba(37, 99, 235, 0.1); color: var(--primary-color);
+            border: 1px solid var(--primary-color); padding: 0.5rem 1rem;
+            border-radius: 6px; cursor: pointer; font-size: 0.85rem;
+            font-weight: 600; transition: var(--transition); display: inline-flex; align-items: center; gap: 6px;
         }
+        .btn-secure-read:hover { background: var(--primary-color); color: white; }
 
-        .btn-read-more {
-            background: transparent;
-            color: var(--primary-color);
-            border: 1px solid var(--primary-color);
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 600;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .btn-read-more:hover {
-            background: var(--primary-color);
-            color: white;
-        }
-
-        /* ==============================================================
-           REKA BENTUK MODAL (TETINGKAP TIMBUL LAPORAN PENUH)
-           ============================================================== */
-        .modal-overlay {
-            position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); z-index: 10000;
-            display: flex; justify-content: center; align-items: center;
-            opacity: 0; visibility: hidden; transition: var(--transition); backdrop-filter: blur(4px);
-        }
+        /* Modal Tetingkap Laporan */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8); z-index: 10000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); backdrop-filter: blur(4px); }
         .modal-overlay.active { opacity: 1; visibility: visible; }
-        
-        .modal-box {
-            background: var(--bg-color); width: 95%; max-width: 1000px; height: 90vh;
-            border-radius: 12px; display: flex; flex-direction: column;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            transform: translateY(20px); transition: var(--transition);
-            border: 1px solid var(--border-color);
-        }
+        .modal-box { background: var(--bg-color); width: 95%; max-width: 1000px; height: 90vh; border-radius: 12px; display: flex; flex-direction: column; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); transform: translateY(20px); transition: var(--transition); border: 1px solid var(--border-color); }
         .modal-overlay.active .modal-box { transform: translateY(0); }
-
-        .modal-header {
-            padding: 1.5rem 2rem; border-bottom: 1px solid var(--border-color);
-            display: flex; justify-content: space-between; align-items: center;
-            background: var(--surface-color); border-radius: 12px 12px 0 0;
-        }
+        .modal-header { padding: 1.5rem 2rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background: var(--surface-color); border-radius: 12px 12px 0 0; }
         .modal-header h2 { font-size: 1.2rem; color: var(--primary-color); }
-        .close-btn { 
-            background: var(--error-bg); color: var(--error-text); border: none; 
-            width: 35px; height: 35px; border-radius: 50%; cursor: pointer; 
-            font-weight: bold; font-size: 1.2rem; transition: 0.2s; 
-            display: flex; justify-content: center; align-items: center;
-        }
+        .close-btn { background: var(--error-bg); color: var(--error-text); border: none; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-weight: bold; font-size: 1.2rem; transition: 0.2s; display: flex; justify-content: center; align-items: center; }
         .close-btn:hover { background: var(--error); color: white; }
+        .modal-body { padding: 2rem; overflow-y: auto; background-color: var(--bg-color); flex-grow: 1; position: relative;}
+        
+        /* Modal PIN Request */
+        .pin-overlay { position: absolute; inset: 0; background: var(--bg-color); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; padding: 2rem; text-align: center;}
+        .pin-box { background: var(--surface-color); padding: 2rem; border-radius: 12px; box-shadow: var(--shadow); border: 1px solid var(--border-color); max-width: 400px; width: 100%;}
+        .pin-box input { margin: 1rem 0; font-size: 1.2rem; text-align: center; letter-spacing: 2px;}
 
-        .modal-body { 
-            padding: 2rem; overflow-y: auto; background-color: var(--bg-color); flex-grow: 1;
-        }
-        body.dark-mode .modal-body { background-color: #0f172a; }
-
-        /* Penggayaan Jadual di Dalam Modal Laporan */
-        .audit-report-content { font-size: 0.95rem; line-height: 1.7; color: var(--text-primary); }
-        .audit-report-content h1, .audit-report-content h2, .audit-report-content h3 {
-            margin-top: 1.5rem; margin-bottom: 0.8rem; color: var(--primary-color);
-            border-bottom: 1px solid var(--border-color); padding-bottom: 0.3rem; font-size: 1.15rem;
-        }
+        /* Penggayaan Markdown & Jadual Laporan */
+        .audit-report-content { font-size: 0.95rem; line-height: 1.7; color: var(--text-primary); display: none;}
+        .audit-report-content h1, .audit-report-content h2, .audit-report-content h3 { margin-top: 1.5rem; margin-bottom: 0.8rem; color: var(--primary-color); border-bottom: 1px solid var(--border-color); padding-bottom: 0.3rem; font-size: 1.15rem; }
         .audit-report-content p { margin-bottom: 1rem; }
         .audit-report-content ul, .audit-report-content ol { padding-left: 1.5rem; margin-bottom: 1rem; }
-        .audit-report-content li { margin-bottom: 0.3rem; }
-        .audit-report-content strong { font-weight: 700; color: var(--text-primary); }
-
-        .audit-report-content table {
-            width: 100%; border-collapse: collapse; margin-bottom: 1.5rem;
-            background-color: var(--surface-color); box-shadow: var(--shadow);
-        }
-        .audit-report-content th, .audit-report-content td {
-            border: 1px solid var(--border-color); padding: 12px 15px; text-align: left; vertical-align: top;
-        }
+        .audit-report-content table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; background-color: var(--surface-color); box-shadow: var(--shadow); }
+        .audit-report-content th, .audit-report-content td { border: 1px solid var(--border-color); padding: 12px 15px; text-align: left; vertical-align: top; }
         .audit-report-content th { background-color: var(--primary-color); color: white; font-weight: 600; }
         .audit-report-content tr:nth-child(even) { background-color: rgba(0, 0, 0, 0.02); }
         body.dark-mode .audit-report-content tr:nth-child(even) { background-color: rgba(255, 255, 255, 0.02); }
@@ -182,7 +122,6 @@
         .audit-status-tdkpatuh { background: var(--error-bg); color: var(--error-text); font-weight: 700; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem;}
         .audit-status-warning { background: var(--warning-bg); color: var(--warning-text); font-weight: 700; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem;}
 
-        /* Toast UI */
         #toast-container { position: fixed; bottom: 20px; left: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
         .toast { padding: 0.9rem 1.3rem; border-radius: 8px; color: white; font-weight: 600; box-shadow: var(--shadow); transform: translateX(-120%); opacity: 0; transition: all 0.4s ease; }
         .toast.show { transform: translateX(0); opacity: 1; }
@@ -206,7 +145,7 @@
 
     <section class="hero" id="home">
         <h1>Sistem Pengurusan<br><span style="color: var(--primary-color);">Pemeriksa Dalam (PD)</span></h1>
-        <p>Pusat sehenti pintar bagi penyelaras kursus menyerahkan bahan pentaksiran dan memantau status pengesahan kualiti secara berpusat.</p>
+        <p>Pusat sehenti pintar bagi pensyarah menyerahkan bahan pentaksiran dan memantau status pengesahan kualiti secara berpusat.</p>
         <div>
             <a href="#muatnaik" class="btn btn-primary">Mula Muat Naik</a>
             <a href="#papanpemuka" class="btn btn-primary" style="background: transparent; color: var(--primary-color); border: 2px solid var(--primary-color); margin-left: 10px;">Semak Status</a>
@@ -215,7 +154,7 @@
 
     <!-- BORANG PENYERAHAN -->
     <section id="muatnaik" style="background-color: rgba(0,0,0,0.015);">
-        <h2 style="text-align: center; margin-bottom: 1.8rem;">Penyerahan Bahan </h2>
+        <h2 style="text-align: center; margin-bottom: 1.8rem;">Penyerahan Bahan Pentaksiran</h2>
         <div class="form-container">
             <form id="uploadForm" novalidate>
                 <div class="form-group">
@@ -234,31 +173,19 @@
                     <label>Nama Kursus:</label>
                     <input type="text" id="namaKursus" required placeholder="Cth: Kesusasteraan Melayu">
                 </div>
+                <div class="form-group" style="background: var(--warning-bg); padding: 15px; border-radius: 8px; border: 1px solid var(--warning-text);">
+                    <label style="color: var(--warning-text);">🔐 Kunci Rahsia (PIN / ID Staf):</label>
+                    <input type="password" id="kunciRahsia" required placeholder="Cth: 123456 (Diperlukan untuk membaca laporan ini kelak)" style="border-color: var(--warning-text);">
+                    <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 5px;">* Sila ingat kunci rahsia ini. Laporan tidak akan didedahkan kepada umum demi menjaga kerahsiaan pensyarah.</p>
+                </div>
                 <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid var(--border-color);">
-                <div class="form-group">
-                    <label>1. Maklumat Kursus (MK):</label>
-                    <input type="file" id="failMK" required accept=".pdf,.doc,.docx">
-                </div>
-                <div class="form-group">
-                    <label>2. Jadual Spesifikasi Tugasan (JST):</label>
-                    <input type="file" id="failJST" required accept=".pdf,.doc,.docx,.xls,.xlsx">
-                </div>
-                <div class="form-group">
-                    <label>3. Soalan Tugasan:</label>
-                    <input type="file" id="failTugasan" required accept=".pdf,.doc,.docx">
-                </div>
-                <div class="form-group">
-                    <label>4. Rubrik Pemarkahan:</label>
-                    <input type="file" id="failRubrik" required accept=".pdf,.doc,.docx,.xls,.xlsx">
-                </div>
-                <div class="form-group">
-                    <label>5. Borang Semakan SME:</label>
-                    <input type="file" id="failSME" required accept=".pdf,.doc,.docx">
-                </div>
-                <div class="form-group">
-                    <label>6. Jadual Spesifikasi Ujian (JSU) (Pilihan):</label>
-                    <input type="file" id="failJSU" accept=".pdf,.doc,.docx,.xls,.xlsx">
-                </div>
+                <div class="form-group"><label>1. Maklumat Kursus (MK):</label><input type="file" id="failMK" required accept=".pdf,.doc,.docx"></div>
+                <div class="form-group"><label>2. Jadual Spesifikasi Tugasan (JST):</label><input type="file" id="failJST" required accept=".pdf,.doc,.docx,.xls,.xlsx"></div>
+                <div class="form-group"><label>3. Soalan Tugasan:</label><input type="file" id="failTugasan" required accept=".pdf,.doc,.docx"></div>
+                <div class="form-group"><label>4. Rubrik Pemarkahan:</label><input type="file" id="failRubrik" required accept=".pdf,.doc,.docx,.xls,.xlsx"></div>
+                <div class="form-group"><label>5. Borang Semakan SME:</label><input type="file" id="failSME" required accept=".pdf,.doc,.docx"></div>
+                <div class="form-group"><label>6. Jadual Spesifikasi Ujian (JSU) (Pilihan):</label><input type="file" id="failJSU" accept=".pdf,.doc,.docx,.xls,.xlsx"></div>
+                
                 <button type="submit" id="btnHantar" class="btn btn-primary" style="width: 100%;">Sahkan & Muat Naik Bahan</button>
             </form>
         </div>
@@ -267,7 +194,7 @@
     <!-- PAPAN PEMUKA AUDIT -->
     <section id="papanpemuka">
         <h2 style="text-align: center; margin-bottom: 0.5rem;">Papan Pemuka Status Semakan PD</h2>
-        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">Status semakan bahan dan ulasan rasmi Laporan Semakan Akademik IPGKDA.</p>
+        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">Laporan Audit Akademik diklasifikasikan sebagai <strong>SULIT</strong>.</p>
 
         <div class="controls">
             <input type="text" id="searchInput" class="search-box" placeholder="Cari Kod Kursus, Nama Kursus atau Pensyarah..." onkeyup="tapisData()">
@@ -278,10 +205,10 @@
             <table class="main-table">
                 <thead>
                     <tr>
-                        <th style="width: 12%;">Status Semakan</th>
+                        <th style="width: 12%;">Status Audit</th>
                         <th style="width: 18%;">Kod & Kursus</th>
-                        <th style="width: 20%;">Penyelaras / Jabatan</th>
-                        <th style="width: 50%;">Tindakan Semakan</th>
+                        <th style="width: 20%;">Pensyarah / Jabatan</th>
+                        <th style="width: 50%;">Akses Laporan (SULIT)</th>
                     </tr>
                 </thead>
                 <tbody id="jadualData">
@@ -291,16 +218,29 @@
         </div>
     </section>
 
-    <!-- TETINGKAP TIMBUL (MODAL) UNTUK LAPORAN PENUH -->
+    <!-- TETINGKAP TIMBUL (MODAL) AKSES SELAMAT -->
     <div class="modal-overlay" id="reportModal">
         <div class="modal-box">
             <div class="modal-header">
-                <h2 id="modalTitle">Laporan Semakan Akademik IPG</h2>
+                <h2 id="modalTitle">Kunci Rahsia Diperlukan</h2>
                 <button class="close-btn" onclick="tutupModalLaporan()">&times;</button>
             </div>
             <div class="modal-body">
+                
+                <!-- Borang Pengesahan PIN -->
+                <div class="pin-overlay" id="pinOverlay">
+                    <div class="pin-box">
+                        <h3 style="color: var(--primary-color); margin-bottom: 10px;">🔐 Akses Laporan SULIT</h3>
+                        <p style="font-size: 0.9rem; color: var(--text-secondary);">Sila masukkan Kunci Rahsia (PIN/ID) yang anda tetapkan semasa memuat naik bahan ini.</p>
+                        <input type="password" id="inputSemakPIN" placeholder="Masukkan PIN Rahsia">
+                        <input type="hidden" id="kodKursusSemasa">
+                        <button class="btn btn-primary" style="width:100%" onclick="mintaAksesLaporan()" id="btnSemakPIN">Sahkan Identiti</button>
+                    </div>
+                </div>
+
+                <!-- Paparan Laporan Sebenar -->
                 <div class="audit-report-content" id="modalReportBody">
-                    <!-- Teks markdown HTML akan disuntik di sini secara automatik -->
+                    <!-- Teks markdown HTML akan disuntik di sini selepas pengesahan berjaya -->
                 </div>
             </div>
         </div>
@@ -332,33 +272,19 @@
         }
 
         // ==============================================================
-        // LOGIK MODAL DAN FORMAT MARKDOWN
+        // LOGIK KESELAMATAN: PENGESAHAN PIN & PARSER LAPORAN
         // ==============================================================
-        function bukaModalLaporan(buttonElement) {
-            // Ambil data yang disulitkan dari atribut butang
-            const rawMarkdown = decodeURIComponent(buttonElement.getAttribute('data-laporan'));
-            const tajukKursus = buttonElement.getAttribute('data-tajuk');
-            
-            // Format Markdown ke HTML
-            let htmlOutput = marked.parse(rawMarkdown);
-            
-            // Penggantian Lencana Status berwarna
-            htmlOutput = htmlOutput.replace(/\bPATUH BERSYARAT\b/g, "##WARN##");
-            htmlOutput = htmlOutput.replace(/\bTIDAK PATUH\b/g, "##ERR1##");
-            htmlOutput = htmlOutput.replace(/\bTIDAK DINYATAKAN\b/g, "##ERR2##");
-            htmlOutput = htmlOutput.replace(/\bPATUH\b/g, "##SUCC##");
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyjvVuuxBEdEN-6AwxbNj5wnq8xpuA4qQs7aSa7ntnh607vd3ixim6GPa9oZT9mUMCA/exec";
+        let senaraiRekod = [];
 
-            htmlOutput = htmlOutput.replace(/##WARN##/g, "<span class='audit-status-warning'>PATUH BERSYARAT</span>");
-            htmlOutput = htmlOutput.replace(/##ERR1##/g, "<span class='audit-status-tdkpatuh'>TIDAK PATUH</span>");
-            htmlOutput = htmlOutput.replace(/##ERR2##/g, "<span class='audit-status-tdkpatuh'>TIDAK DINYATAKAN</span>");
-            htmlOutput = htmlOutput.replace(/##SUCC##/g, "<span class='audit-status-patuh'>PATUH</span>");
-
-            // Masukkan ke dalam Modal dan paparkan
-            document.getElementById('modalTitle').innerText = "Laporan Audit Akademik : " + tajukKursus;
-            document.getElementById('modalReportBody').innerHTML = htmlOutput;
+        function bukaPromptKeselamatan(kodKursus) {
+            document.getElementById('kodKursusSemasa').value = kodKursus;
+            document.getElementById('inputSemakPIN').value = "";
+            document.getElementById('modalTitle').innerText = "Akses Keselamatan: " + kodKursus;
+            
+            document.getElementById('pinOverlay').style.display = "flex";
+            document.getElementById('modalReportBody').style.display = "none";
             document.getElementById('reportModal').classList.add('active');
-            
-            // Cegah body dari di-scroll semasa modal terbuka
             document.body.style.overflow = 'hidden';
         }
 
@@ -367,20 +293,49 @@
             document.body.style.overflow = 'auto';
         }
 
-        // Tutup modal jika pengguna klik di luar kotak
-        window.addEventListener('click', function(event) {
-            const modal = document.getElementById('reportModal');
-            if (event.target === modal) {
-                tutupModalLaporan();
+        async function mintaAksesLaporan() {
+            const kod = document.getElementById('kodKursusSemasa').value;
+            const pin = document.getElementById('inputSemakPIN').value;
+            const btn = document.getElementById('btnSemakPIN');
+
+            if (!pin) return showToast("Sila masukkan Kunci Rahsia.", "error");
+
+            btn.innerText = "Mengesahkan...";
+            btn.disabled = true;
+
+            try {
+                const payload = { action: "bacaLaporan", kodKursus: kod, kunciRahsia: pin };
+                const response = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
+                const result = await response.json();
+
+                if (result.status === "success") {
+                    showToast("Akses Dibenarkan. Memaparkan Laporan SULIT.", "success");
+                    
+                    // Format laporan rahsia
+                    let htmlOutput = marked.parse(result.laporanPenuh);
+                    htmlOutput = htmlOutput.replace(/\bPATUH BERSYARAT\b/g, "##WARN##").replace(/\bTIDAK PATUH\b/g, "##ERR1##").replace(/\bTIDAK DINYATAKAN\b/g, "##ERR2##").replace(/\bPATUH\b/g, "##SUCC##");
+                    htmlOutput = htmlOutput.replace(/##WARN##/g, "<span class='audit-status-warning'>PATUH BERSYARAT</span>").replace(/##ERR1##/g, "<span class='audit-status-tdkpatuh'>TIDAK PATUH</span>").replace(/##ERR2##/g, "<span class='audit-status-tdkpatuh'>TIDAK DINYATAKAN</span>").replace(/##SUCC##/g, "<span class='audit-status-patuh'>PATUH</span>");
+
+                    document.getElementById('modalTitle').innerText = "Laporan Audit Akademik (SULIT): " + kod;
+                    document.getElementById('modalReportBody').innerHTML = htmlOutput;
+                    
+                    // Tukar paparan modal
+                    document.getElementById('pinOverlay').style.display = "none";
+                    document.getElementById('modalReportBody').style.display = "block";
+                } else {
+                    showToast(result.mesej, "error");
+                }
+            } catch (error) {
+                showToast("Ralat pelayan: " + error.message, "error");
+            } finally {
+                btn.innerText = "Sahkan Identiti";
+                btn.disabled = false;
             }
-        });
+        }
 
         // ==============================================================
-        // INTEGRASI PELAYAN (BACKEND)
+        // INTEGRASI MUAT NAIK & DAPATKAN DATA (ROUTING)
         // ==============================================================
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyjvVuuxBEdEN-6AwxbNj5wnq8xpuA4qQs7aSa7ntnh607vd3ixim6GPa9oZT9mUMCA/exec";
-        let senaraiRekod = [];
-
         const bacaFailSebagaiBase64 = (file, jenis) => {
             return new Promise((resolve, reject) => {
                 if (!file) { resolve(null); return; }
@@ -411,10 +366,12 @@
                 const failArray = (await Promise.all(prosesFail)).filter(f => f !== null);
 
                 const payload = {
+                    action: "upload", // Menandakan routing operasi
                     jabatan: document.getElementById('jabatan').value.trim(),
                     namaPensyarah: document.getElementById('namaPensyarah').value.trim(),
                     kodKursus: document.getElementById('kodKursus').value.trim().toUpperCase(),
                     namaKursus: document.getElementById('namaKursus').value.trim(),
+                    kunciRahsia: document.getElementById('kunciRahsia').value.trim(),
                     failArray: failArray
                 };
 
@@ -470,20 +427,16 @@
                 const isDisahkan = row.status === "Disahkan PD" || row.status === "Selesai Disemak";
                 const badgeClass = isDisahkan ? "badge-success" : "badge-warning";
                 
-                let paparanLaporanHTML = "";
+                let paparanAksesHTML = "";
                 if (isDisahkan) {
-                    // Cipta versi pratonton teks (buang simbol markdown secara kasar untuk preview)
-                    const previewText = row.ulasanPD.replace(/[*#|]/g, "").substring(0, 180) + "...";
-                    const safeText = encodeURIComponent(row.ulasanPD);
-                    
-                    paparanLaporanHTML = `
-                        <div class="report-preview">${previewText}</div>
-                        <button class="btn-read-more" data-tajuk="${row.kodKursus}" data-laporan="${safeText}" onclick="bukaModalLaporan(this)">
-                            📄 Sila Baca Laporan
+                    paparanAksesHTML = `
+                        <div style="font-size: 0.85rem; color: var(--error); font-weight:600; margin-bottom: 5px;">Laporan Bersatus SULIT</div>
+                        <button class="btn-secure-read" onclick="bukaPromptKeselamatan('${row.kodKursus}')">
+                            🔐 Buka Laporan Selamat
                         </button>
                     `;
                 } else {
-                    paparanLaporanHTML = `<span class="pending-text">Laporan masih dalam proses penjanaan atau menunggu kelulusan Pemeriksa Dalam (PD).</span>`;
+                    paparanAksesHTML = `<span class="pending-text">Laporan masih dalam proses penjanaan atau menunggu kelulusan Pemeriksa Dalam (PD).</span>`;
                 }
 
                 tbody.innerHTML += `
@@ -500,7 +453,7 @@
                             <span style="font-size: 0.9rem; font-weight: 500;">${row.namaPensyarah}</span><br>
                             <span style="font-size: 0.8rem; color: var(--text-secondary);">${row.jabatan}</span>
                         </td>
-                        <td>${paparanLaporanHTML}</td>
+                        <td>${paparanAksesHTML}</td>
                     </tr>
                 `;
             });
