@@ -664,7 +664,7 @@
             }
         }
 
-        // KAWALAN DIPERKUAT: PENENTUAN LENCANA STATUS DENGAN LABEL JELAS (LAPORAN SEDIA)
+        // KAWALAN DIPERKUAT: HANYA PAPARKAN BUTANG LAPORAN PD BILA STATUS 'DISAHKAN PD'
         function paparkanJadual(dataArray) {
             const tbody = document.getElementById('jadualData');
             tbody.innerHTML = '';
@@ -679,13 +679,16 @@
                 
                 let badgeClass = "badge-warning";
                 let statusTextText = row.status;
+                let butangLaporanHTML = "";
 
                 if (isDisahkan) {
                     badgeClass = "badge-success";
                     statusTextText = "Disahkan PD";
-                } else if (row.adaLaporan || row.status.includes("Menunggu Pengesahan")) {
+                    butangLaporanHTML = `<button class="btn-action" style="background: rgba(16, 185, 129, 0.1); color: #059669; border-color: #059669;" onclick="bukaPromptKeselamatan('${row.kodKursus}')">📄 Laporan PD</button>`;
+                } else {
                     badgeClass = "badge-info";
-                    statusTextText = "🔵 Laporan Sedia (Menunggu Pengesahan PD)";
+                    statusTextText = "🔵 Menunggu Pengesahan PD";
+                    butangLaporanHTML = `<span class="pending-text" style="font-size:0.8rem; margin-right:8px; display:inline-block; color:var(--text-secondary);">(Laporan Belum Boleh Dibuka - Menunggu Pengesahan PD)</span>`;
                 }
 
                 tbody.innerHTML += `
@@ -703,7 +706,7 @@
                             <span style="font-size: 0.8rem; color: var(--text-secondary);">${row.jabatan}</span>
                         </td>
                         <td>
-                            <button class="btn-action" style="background: rgba(16, 185, 129, 0.1); color: #059669; border-color: #059669;" onclick="bukaPromptKeselamatan('${row.kodKursus}')">📄 Laporan PD</button>
+                            ${butangLaporanHTML}
                             <button class="btn-action" style="background: rgba(239, 68, 68, 0.1); color: var(--error-text); border-color: var(--error-text);" onclick="bukaBorangChecklistPD('${row.kodKursus}')">🛡️ Borang Verifikasi (Admin)</button>
                         </td>
                     </tr>
