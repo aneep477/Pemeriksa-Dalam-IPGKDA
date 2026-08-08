@@ -6,7 +6,7 @@
     <title>Portal Pemeriksa Dalam (PD) | Semakan Dokumen Akademik IPG</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Integrasi Pustaka Marked.js untuk menukar teks Markdown AI kepada Jadual HTML secara automatik -->
+    <!-- Integrasi Pustaka Marked.js untuk menukar teks Markdown AI kepada Jadual HTML -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
     <style>
@@ -75,8 +75,6 @@
         .btn-refresh { background: var(--primary-color); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; }
 
         .table-container { background: var(--surface-color); border-radius: 12px; box-shadow: var(--shadow); overflow-x: auto; border: 1px solid var(--border-color); }
-        
-        /* Penggayaan Asas Jadual Luar */
         table.main-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.92rem; }
         table.main-table > thead > tr > th, table.main-table > tbody > tr > td { padding: 1.2rem; border-bottom: 1px solid var(--border-color); vertical-align: top; }
         table.main-table > thead > tr > th { background-color: rgba(0,0,0,0.02); font-weight: 600; white-space: nowrap; }
@@ -87,70 +85,102 @@
         .pending-text { color: var(--text-secondary); font-style: italic; }
 
         /* ==============================================================
-           PENGGAYAAN KAD LAPORAN AUDIT & JADUAL DALAMAN (INNER TABLES)
+           REKA BENTUK: PREVIEW 5 BARIS DAN BUTANG BACA LAPORAN
            ============================================================== */
-        .audit-report-card {
-            background-color: var(--bg-color);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-top: 0.5rem;
-            min-width: 500px;
-            font-size: 0.9rem;
-            line-height: 1.7;
-            color: var(--text-primary);
-            overflow-x: auto; /* Membenarkan skrol mendatar jika jadual terlampau lebar */
-        }
-        
-        body.dark-mode .audit-report-card {
-            background-color: rgba(255,255,255,0.02);
-        }
-
-        /* Penggayaan khusus untuk elemen yang dijana oleh marked.js */
-        .audit-report-card h1, .audit-report-card h2, .audit-report-card h3 {
-            margin-top: 1.5rem;
+        .report-preview {
+            display: -webkit-box;
+            -webkit-line-clamp: 4; /* Hadkan kepada lebih kurang 4-5 baris */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
             margin-bottom: 0.8rem;
+            line-height: 1.5;
+        }
+
+        .btn-read-more {
+            background: transparent;
             color: var(--primary-color);
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 0.3rem;
-            font-size: 1.1rem;
-        }
-
-        .audit-report-card p { margin-bottom: 1rem; }
-        .audit-report-card ul, .audit-report-card ol { padding-left: 1.5rem; margin-bottom: 1rem; }
-        .audit-report-card li { margin-bottom: 0.3rem; }
-        .audit-report-card strong { font-weight: 700; color: var(--text-primary); }
-
-        /* PENGGAYAAN JADUAL AUDIT (Dalaman) */
-        .audit-report-card table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 1.5rem;
-            background-color: var(--surface-color);
-            box-shadow: var(--shadow);
-        }
-        .audit-report-card th, .audit-report-card td {
-            border: 1px solid var(--border-color);
-            padding: 10px 12px;
-            text-align: left;
-            vertical-align: top;
-        }
-        .audit-report-card th {
-            background-color: var(--primary-color);
-            color: white;
+            border: 1px solid var(--primary-color);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
             font-weight: 600;
-        }
-        .audit-report-card tr:nth-child(even) {
-            background-color: rgba(0, 0, 0, 0.02);
-        }
-        body.dark-mode .audit-report-card tr:nth-child(even) {
-            background-color: rgba(255, 255, 255, 0.02);
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        /* Sistem Lencana Warna Khas dalam Laporan */
-        .audit-status-patuh { background: var(--success-bg); color: var(--success-text); font-weight: 700; padding: 3px 8px; border-radius: 4px; display: inline-block; font-size: 0.8rem;}
-        .audit-status-tdkpatuh { background: var(--error-bg); color: var(--error-text); font-weight: 700; padding: 3px 8px; border-radius: 4px; display: inline-block; font-size: 0.8rem;}
-        .audit-status-warning { background: var(--warning-bg); color: var(--warning-text); font-weight: 700; padding: 3px 8px; border-radius: 4px; display: inline-block; font-size: 0.8rem;}
+        .btn-read-more:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* ==============================================================
+           REKA BENTUK MODAL (TETINGKAP TIMBUL LAPORAN PENUH)
+           ============================================================== */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); z-index: 10000;
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0; visibility: hidden; transition: var(--transition); backdrop-filter: blur(4px);
+        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        
+        .modal-box {
+            background: var(--bg-color); width: 95%; max-width: 1000px; height: 90vh;
+            border-radius: 12px; display: flex; flex-direction: column;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            transform: translateY(20px); transition: var(--transition);
+            border: 1px solid var(--border-color);
+        }
+        .modal-overlay.active .modal-box { transform: translateY(0); }
+
+        .modal-header {
+            padding: 1.5rem 2rem; border-bottom: 1px solid var(--border-color);
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--surface-color); border-radius: 12px 12px 0 0;
+        }
+        .modal-header h2 { font-size: 1.2rem; color: var(--primary-color); }
+        .close-btn { 
+            background: var(--error-bg); color: var(--error-text); border: none; 
+            width: 35px; height: 35px; border-radius: 50%; cursor: pointer; 
+            font-weight: bold; font-size: 1.2rem; transition: 0.2s; 
+            display: flex; justify-content: center; align-items: center;
+        }
+        .close-btn:hover { background: var(--error); color: white; }
+
+        .modal-body { 
+            padding: 2rem; overflow-y: auto; background-color: var(--bg-color); flex-grow: 1;
+        }
+        body.dark-mode .modal-body { background-color: #0f172a; }
+
+        /* Penggayaan Jadual di Dalam Modal Laporan */
+        .audit-report-content { font-size: 0.95rem; line-height: 1.7; color: var(--text-primary); }
+        .audit-report-content h1, .audit-report-content h2, .audit-report-content h3 {
+            margin-top: 1.5rem; margin-bottom: 0.8rem; color: var(--primary-color);
+            border-bottom: 1px solid var(--border-color); padding-bottom: 0.3rem; font-size: 1.15rem;
+        }
+        .audit-report-content p { margin-bottom: 1rem; }
+        .audit-report-content ul, .audit-report-content ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+        .audit-report-content li { margin-bottom: 0.3rem; }
+        .audit-report-content strong { font-weight: 700; color: var(--text-primary); }
+
+        .audit-report-content table {
+            width: 100%; border-collapse: collapse; margin-bottom: 1.5rem;
+            background-color: var(--surface-color); box-shadow: var(--shadow);
+        }
+        .audit-report-content th, .audit-report-content td {
+            border: 1px solid var(--border-color); padding: 12px 15px; text-align: left; vertical-align: top;
+        }
+        .audit-report-content th { background-color: var(--primary-color); color: white; font-weight: 600; }
+        .audit-report-content tr:nth-child(even) { background-color: rgba(0, 0, 0, 0.02); }
+        body.dark-mode .audit-report-content tr:nth-child(even) { background-color: rgba(255, 255, 255, 0.02); }
+
+        .audit-status-patuh { background: var(--success-bg); color: var(--success-text); font-weight: 700; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem;}
+        .audit-status-tdkpatuh { background: var(--error-bg); color: var(--error-text); font-weight: 700; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem;}
+        .audit-status-warning { background: var(--warning-bg); color: var(--warning-text); font-weight: 700; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem;}
 
         /* Toast UI */
         #toast-container { position: fixed; bottom: 20px; left: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
@@ -165,7 +195,7 @@
     <div id="loader"><div class="spinner"></div></div>
 
     <navbar>
-        <div class="logo">Portal Pemeriksa Dalam</div>
+        <div class="logo">Portal PD</div>
         <ul class="nav-links">
             <li><a href="#home">Utama</a></li>
             <li><a href="#muatnaik">Muat Naik</a></li>
@@ -176,7 +206,7 @@
 
     <section class="hero" id="home">
         <h1>Sistem Pengurusan<br><span style="color: var(--primary-color);">Pemeriksa Dalam (PD)</span></h1>
-        <p>Pusat sehenti pintar bagi pensyarah menyerahkan bahan pentaksiran dan memantau status pengesahan kualiti secara berpusat.</p>
+        <p>Pusat sehenti pintar bagi penyelaras kursus menyerahkan bahan pentaksiran dan memantau status pengesahan kualiti secara berpusat.</p>
         <div>
             <a href="#muatnaik" class="btn btn-primary">Mula Muat Naik</a>
             <a href="#papanpemuka" class="btn btn-primary" style="background: transparent; color: var(--primary-color); border: 2px solid var(--primary-color); margin-left: 10px;">Semak Status</a>
@@ -185,7 +215,7 @@
 
     <!-- BORANG PENYERAHAN -->
     <section id="muatnaik" style="background-color: rgba(0,0,0,0.015);">
-        <h2 style="text-align: center; margin-bottom: 1.8rem;">Penyerahan Bahan Pentaksiran</h2>
+        <h2 style="text-align: center; margin-bottom: 1.8rem;">Penyerahan Bahan </h2>
         <div class="form-container">
             <form id="uploadForm" novalidate>
                 <div class="form-group">
@@ -237,7 +267,7 @@
     <!-- PAPAN PEMUKA AUDIT -->
     <section id="papanpemuka">
         <h2 style="text-align: center; margin-bottom: 0.5rem;">Papan Pemuka Status Semakan PD</h2>
-        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">Status semakan bahan dan ulasan rasmi Laporan Pemeriksa Dalam.</p>
+        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">Status semakan bahan dan ulasan rasmi Laporan Semakan Akademik IPGKDA.</p>
 
         <div class="controls">
             <input type="text" id="searchInput" class="search-box" placeholder="Cari Kod Kursus, Nama Kursus atau Pensyarah..." onkeyup="tapisData()">
@@ -248,10 +278,10 @@
             <table class="main-table">
                 <thead>
                     <tr>
-                        <th style="width: 10%;">Status Audit</th>
-                        <th style="width: 15%;">Kod & Kursus</th>
-                        <th style="width: 15%;">Pensyarah / Jabatan</th>
-                        <th style="width: 60%;">Laporan Pemeriksa Dalam IPGKDA</th>
+                        <th style="width: 12%;">Status Semakan</th>
+                        <th style="width: 18%;">Kod & Kursus</th>
+                        <th style="width: 20%;">Penyelaras / Jabatan</th>
+                        <th style="width: 50%;">Tindakan Semakan</th>
                     </tr>
                 </thead>
                 <tbody id="jadualData">
@@ -261,10 +291,24 @@
         </div>
     </section>
 
+    <!-- TETINGKAP TIMBUL (MODAL) UNTUK LAPORAN PENUH -->
+    <div class="modal-overlay" id="reportModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2 id="modalTitle">Laporan Semakan Akademik IPG</h2>
+                <button class="close-btn" onclick="tutupModalLaporan()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="audit-report-content" id="modalReportBody">
+                    <!-- Teks markdown HTML akan disuntik di sini secara automatik -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="toast-container"></div>
 
     <script>
-        // INIT PENGGUNA
         window.addEventListener('load', () => {
             document.getElementById('loader').style.opacity = '0';
             setTimeout(() => document.getElementById('loader').style.display = 'none', 500);
@@ -288,32 +332,51 @@
         }
 
         // ==============================================================
-        // LOGIK PENTERJEMAHAN MARKDOWN KE HTML BERSTRUKTUR (JADUAL)
+        // LOGIK MODAL DAN FORMAT MARKDOWN
         // ==============================================================
-        function formatMarkdownToHTML(text) {
-            if (!text) return "Tiada maklumat laporan direkodkan.";
-
-            // Menterjemah keseluruhan sintaks Markdown AI (termasuk jadual) kepada HTML menggunakan Pustaka marked.js
-            let htmlOutput = marked.parse(text);
-
-            // Logik Penggantian Placeholder Berperingkat (Mengelakkan pertindihan gaya warna)
-            // 1. Kenal pasti perkataan
+        function bukaModalLaporan(buttonElement) {
+            // Ambil data yang disulitkan dari atribut butang
+            const rawMarkdown = decodeURIComponent(buttonElement.getAttribute('data-laporan'));
+            const tajukKursus = buttonElement.getAttribute('data-tajuk');
+            
+            // Format Markdown ke HTML
+            let htmlOutput = marked.parse(rawMarkdown);
+            
+            // Penggantian Lencana Status berwarna
             htmlOutput = htmlOutput.replace(/\bPATUH BERSYARAT\b/g, "##WARN##");
             htmlOutput = htmlOutput.replace(/\bTIDAK PATUH\b/g, "##ERR1##");
             htmlOutput = htmlOutput.replace(/\bTIDAK DINYATAKAN\b/g, "##ERR2##");
             htmlOutput = htmlOutput.replace(/\bPATUH\b/g, "##SUCC##");
 
-            // 2. Suntik kelas lencana (badge CSS)
             htmlOutput = htmlOutput.replace(/##WARN##/g, "<span class='audit-status-warning'>PATUH BERSYARAT</span>");
             htmlOutput = htmlOutput.replace(/##ERR1##/g, "<span class='audit-status-tdkpatuh'>TIDAK PATUH</span>");
             htmlOutput = htmlOutput.replace(/##ERR2##/g, "<span class='audit-status-tdkpatuh'>TIDAK DINYATAKAN</span>");
             htmlOutput = htmlOutput.replace(/##SUCC##/g, "<span class='audit-status-patuh'>PATUH</span>");
 
-            return htmlOutput;
+            // Masukkan ke dalam Modal dan paparkan
+            document.getElementById('modalTitle').innerText = "Laporan Audit Akademik : " + tajukKursus;
+            document.getElementById('modalReportBody').innerHTML = htmlOutput;
+            document.getElementById('reportModal').classList.add('active');
+            
+            // Cegah body dari di-scroll semasa modal terbuka
+            document.body.style.overflow = 'hidden';
         }
 
+        function tutupModalLaporan() {
+            document.getElementById('reportModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Tutup modal jika pengguna klik di luar kotak
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('reportModal');
+            if (event.target === modal) {
+                tutupModalLaporan();
+            }
+        });
+
         // ==============================================================
-        // INTEGRASI PELAYAN (BACKEND CALLS)
+        // INTEGRASI PELAYAN (BACKEND)
         // ==============================================================
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyjvVuuxBEdEN-6AwxbNj5wnq8xpuA4qQs7aSa7ntnh607vd3ixim6GPa9oZT9mUMCA/exec";
         let senaraiRekod = [];
@@ -328,7 +391,7 @@
             });
         };
 
-        // MUAT NAIK BORANG (POST)
+        // MUAT NAIK POST
         document.getElementById('uploadForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btnHantar = document.getElementById('btnHantar');
@@ -373,7 +436,7 @@
             }
         });
 
-        // MUAT TARIK DATA PAPAN PEMUKA (GET)
+        // DAPATKAN DATA GET
         async function muatTarikData() {
             const tbody = document.getElementById('jadualData');
             tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Memuatkan data pangkalan pelayan...</td></tr>';
@@ -383,7 +446,7 @@
                 const data = await response.json();
 
                 if (data.status === "success" && data.rekod && data.rekod.length > 0) {
-                    senaraiRekod = data.rekod.reverse(); // Susun dari paling baharu
+                    senaraiRekod = data.rekod.reverse(); 
                     paparkanJadual(senaraiRekod);
                 } else {
                     tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Tiada rekod penyerahan ditemui.</td></tr>';
@@ -393,7 +456,7 @@
             }
         }
 
-        // PAPARAN JADUAL DAN KAD LAPORAN
+        // PAPARAN JADUAL
         function paparkanJadual(dataArray) {
             const tbody = document.getElementById('jadualData');
             tbody.innerHTML = '';
@@ -409,14 +472,18 @@
                 
                 let paparanLaporanHTML = "";
                 if (isDisahkan) {
-                    // Masukkan ke dalam div .audit-report-card
+                    // Cipta versi pratonton teks (buang simbol markdown secara kasar untuk preview)
+                    const previewText = row.ulasanPD.replace(/[*#|]/g, "").substring(0, 180) + "...";
+                    const safeText = encodeURIComponent(row.ulasanPD);
+                    
                     paparanLaporanHTML = `
-                        <div class="audit-report-card">
-                            ${formatMarkdownToHTML(row.ulasanPD)}
-                        </div>
+                        <div class="report-preview">${previewText}</div>
+                        <button class="btn-read-more" data-tajuk="${row.kodKursus}" data-laporan="${safeText}" onclick="bukaModalLaporan(this)">
+                            📄 Sila Baca Laporan
+                        </button>
                     `;
                 } else {
-                    paparanLaporanHTML = `<span class="pending-text">Laporan masih dalam proses semakan atau menunggu kelulusan Pemeriksa Dalam (PD).</span>`;
+                    paparanLaporanHTML = `<span class="pending-text">Laporan masih dalam proses penjanaan atau menunggu kelulusan Pemeriksa Dalam (PD).</span>`;
                 }
 
                 tbody.innerHTML += `
@@ -439,7 +506,6 @@
             });
         }
 
-        // TAPISAN CARIAN DINAMIK
         function tapisData() {
             const kataKunci = document.getElementById('searchInput').value.toLowerCase();
             const hasilTapis = senaraiRekod.filter(r => 
