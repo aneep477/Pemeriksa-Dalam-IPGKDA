@@ -9,70 +9,158 @@
 
     <style>
         :root {
-            --bg-color: #f8fafc; --surface-color: #ffffff; --text-primary: #1e293b;
-            --text-secondary: #64748b; --primary-color: #2563eb; --primary-hover: #1d4ed8;
-            --border-color: #e2e8f0; --success-bg: #d1fae5; --success-text: #065f46;
-            --warning-bg: #fef3c7; --warning-text: #92400e; --error-bg: #fee2e2;
-            --error-text: #b91c1c; --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --bg-color: #f8fafc;
+            --surface-color: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --border-color: #e2e8f0;
+            --success-bg: #d1fae5;
+            --success-text: #065f46;
+            --warning-bg: #fef3c7;
+            --warning-text: #92400e;
+            --error-bg: #fee2e2;
+            --error-text: #b91c1c;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body.dark-mode {
+            --bg-color: #0f172a;
+            --surface-color: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --success-bg: rgba(6, 95, 70, 0.3);
+            --success-text: #34d399;
+            --warning-bg: rgba(146, 64, 14, 0.3);
+            --warning-text: #fbbf24;
+            --error-bg: rgba(153, 27, 27, 0.3);
+            --error-text: #f87171;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
         body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-primary); line-height: 1.6; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
         section { padding: 2rem 8%; }
+        
+        #loader { position: fixed; inset: 0; background: var(--bg-color); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s; }
+        .spinner { width: 50px; height: 50px; border: 5px solid var(--border-color); border-top-color: var(--primary-color); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        navbar { position: fixed; top: 0; width: 100%; padding: 1rem 8%; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); display: flex; justify-content: space-between; align-items: center; z-index: 900; border-bottom: 1px solid var(--border-color); }
-        .logo { font-size: 1.4rem; font-weight: 700; color: var(--primary-color); }
+        navbar { position: fixed; top: 0; width: 100%; padding: 1rem 8%; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); display: flex; justify-content: space-between; align-items: center; z-index: 900; border-bottom: 1px solid var(--border-color); }
+        body.dark-mode navbar { background: rgba(30, 41, 59, 0.85); }
+        .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary-color); }
+        .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+        .nav-links li a { font-weight: 600; font-size: 0.95rem; }
+        .theme-toggle { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--text-primary); }
 
-        .hero { text-align: center; padding-top: 100px; padding-bottom: 1rem; }
+        .hero { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; min-height: 30vh; padding-top: 100px; padding-bottom: 1rem; }
         .hero h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
-
+        .hero p { font-size: 1.1rem; color: var(--text-secondary); max-width: 650px; margin-bottom: 1.5rem; }
+        
         /* SISTEM TAB NAVIGASI FASA 1 & FASA 2 */
         .tab-container { display: flex; justify-content: center; gap: 1rem; margin-bottom: 1.5rem; }
-        .tab-btn { padding: 0.8rem 1.8rem; border-radius: 8px; font-weight: 600; cursor: pointer; border: 1px solid var(--border-color); background: var(--surface-color); color: var(--text-secondary); transition: 0.3s; }
+        .tab-btn { padding: 0.8rem 1.8rem; border-radius: 8px; font-weight: 600; cursor: pointer; border: 1px solid var(--border-color); background: var(--surface-color); color: var(--text-secondary); transition: var(--transition); }
         .tab-btn.active { background: var(--primary-color); color: white; border-color: var(--primary-color); box-shadow: var(--shadow); }
+
+        .btn { padding: 0.8rem 1.8rem; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; font-size: 0.95rem; transition: var(--transition); }
+        .btn-primary { background: var(--primary-color); color: white; }
+        .btn-primary:hover { background: var(--primary-hover); }
+
+        #muatnaik { padding-top: 1rem; }
 
         .form-container { max-width: 1000px; margin: 0 auto; background: var(--surface-color); padding: 2rem; border-radius: 12px; box-shadow: var(--shadow); border: 1px solid var(--border-color); }
         .form-grid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
-        @media (max-width: 768px) { .form-grid-layout { grid-template-columns: 1fr; } }
+        .column-title { font-size: 1.1rem; color: var(--primary-color); margin-bottom: 1.5rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; }
 
-        .form-group { margin-bottom: 1rem; }
-        label { display: block; margin-bottom: 0.3rem; font-weight: 600; font-size: 0.9rem; }
-        input[type="text"], input[type="email"], input[type="date"], input[type="file"], input[type="password"] { width: 100%; padding: 0.65rem; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-color); }
+        @media (max-width: 768px) {
+            .form-grid-layout { grid-template-columns: 1fr; gap: 1.5rem; }
+        }
 
-        .btn { padding: 0.8rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; font-size: 0.95rem; }
-        .btn-primary { background: var(--primary-color); color: white; width: 100%; }
+        .form-group { margin-bottom: 1.2rem; }
+        label { display: block; margin-bottom: 0.4rem; font-weight: 600; font-size: 0.95rem; }
+        input[type="text"], input[type="email"], input[type="date"], input[type="file"], input[type="password"] { width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-color); color: var(--text-primary); transition: var(--transition); }
+        input:focus { outline: none; border-color: var(--primary-color); }
 
-        /* JADUAL & MODAL */
+        .controls { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+        .search-box { flex: 1; min-width: 250px; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--surface-color); color: var(--text-primary); }
+        .btn-refresh { background: var(--primary-color); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: var(--transition); }
+        .btn-refresh:hover { background: var(--primary-hover); }
+
         .table-container { background: var(--surface-color); border-radius: 12px; box-shadow: var(--shadow); overflow-x: auto; border: 1px solid var(--border-color); }
-        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; }
-        th, td { padding: 1rem; border-bottom: 1px solid var(--border-color); vertical-align: top; }
-        th { background: rgba(0,0,0,0.02); }
+        table.main-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.92rem; }
+        table.main-table > thead > tr > th, table.main-table > tbody > tr > td { padding: 1.2rem; border-bottom: 1px solid var(--border-color); vertical-align: top; }
+        table.main-table > thead > tr > th { background-color: rgba(0,0,0,0.02); font-weight: 600; white-space: nowrap; }
+        
+        .badge-status { padding: 0.35rem 0.75rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 600; display: inline-block; white-space: nowrap; }
+        .badge-success { background-color: var(--success-bg); color: var(--success-text); }
+        .badge-warning { background-color: var(--warning-bg); color: var(--warning-text); }
+        .pending-text { color: var(--text-secondary); font-style: italic; }
 
-        .badge-status { padding: 0.3rem 0.6rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600; }
-        .badge-success { background: var(--success-bg); color: var(--success-text); }
-        .badge-warning { background: var(--warning-bg); color: var(--warning-text); }
+        .btn-secure-read {
+            background: rgba(37, 99, 235, 0.1); color: var(--primary-color);
+            border: 1px solid var(--primary-color); padding: 0.5rem 1rem;
+            border-radius: 6px; cursor: pointer; font-size: 0.85rem;
+            font-weight: 600; transition: var(--transition); display: inline-flex; align-items: center; gap: 6px;
+        }
+        .btn-secure-read:hover { background: var(--primary-color); color: white; }
 
-        .btn-action { padding: 0.4rem 0.8rem; font-size: 0.8rem; border-radius: 6px; border: 1px solid var(--primary-color); background: rgba(37,99,235,0.1); color: var(--primary-color); cursor: pointer; font-weight: 600; margin-right: 5px; }
-        .btn-action:hover { background: var(--primary-color); color: white; }
-
-        .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8); z-index: 10000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8); z-index: 10000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); backdrop-filter: blur(4px); }
         .modal-overlay.active { opacity: 1; visibility: visible; }
-        .modal-box { background: var(--bg-color); width: 95%; max-width: 900px; height: 85vh; border-radius: 12px; display: flex; flex-direction: column; }
-        .modal-header { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; background: var(--surface-color); }
-        .modal-body { padding: 1.5rem; overflow-y: auto; flex-grow: 1; }
+        .modal-box { background: var(--bg-color); width: 95%; max-width: 1000px; height: 90vh; border-radius: 12px; display: flex; flex-direction: column; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); transform: translateY(20px); transition: var(--transition); border: 1px solid var(--border-color); }
+        .modal-overlay.active .modal-box { transform: translateY(0); }
+        .modal-header { padding: 1.5rem 2rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background: var(--surface-color); border-radius: 12px 12px 0 0; }
+        .modal-header h2 { font-size: 1.2rem; color: var(--primary-color); }
+        .close-btn { background: var(--error-bg); color: var(--error-text); border: none; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-weight: bold; font-size: 1.2rem; transition: 0.2s; display: flex; justify-content: center; align-items: center; }
+        .close-btn:hover { background: var(--error); color: white; }
+        .modal-body { padding: 2rem; overflow-y: auto; background-color: var(--bg-color); flex-grow: 1; position: relative;}
+        
+        .pin-overlay { position: absolute; inset: 0; background: var(--bg-color); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; padding: 2rem; text-align: center;}
+        .pin-box { background: var(--surface-color); padding: 2rem; border-radius: 12px; box-shadow: var(--shadow); border: 1px solid var(--border-color); max-width: 400px; width: 100%;}
+        .pin-box input { margin: 1rem 0; font-size: 1.2rem; text-align: center; letter-spacing: 2px;}
 
-        #toast-container { position: fixed; bottom: 20px; left: 20px; z-index: 9999; }
-        .toast { padding: 0.8rem 1.2rem; border-radius: 6px; color: white; font-weight: 600; margin-top: 5px; background: #059669; }
+        .audit-report-content { font-size: 0.95rem; line-height: 1.7; color: var(--text-primary); display: none;}
+        .audit-report-content h1, .audit-report-content h2, .audit-report-content h3 { margin-top: 1.5rem; margin-bottom: 0.8rem; color: var(--primary-color); border-bottom: 1px solid var(--border-color); padding-bottom: 0.3rem; font-size: 1.15rem; }
+        .audit-report-content p { margin-bottom: 1rem; }
+        .audit-report-content ul, .audit-report-content ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+        .audit-report-content table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; background-color: var(--surface-color); box-shadow: var(--shadow); }
+        .audit-report-content th, .audit-report-content td { border: 1px solid var(--border-color); padding: 12px 15px; text-align: left; vertical-align: top; }
+        .audit-report-content th { background-color: var(--primary-color); color: white; font-weight: 600; }
+        .audit-report-content tr:nth-child(even) { background-color: rgba(0, 0, 0, 0.02); }
+        body.dark-mode .audit-report-content tr:nth-child(even) { background-color: rgba(255, 255, 255, 0.02); }
+
+        .audit-status-patuh { background: var(--success-bg); color: var(--success-text); font-weight: 700; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem;}
+        .audit-status-tdkpatuh { background: var(--error-bg); color: var(--error-text); font-weight: 700; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem;}
+        .audit-status-warning { background: var(--warning-bg); color: var(--warning-text); font-weight: 700; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem;}
+
+        #toast-container { position: fixed; bottom: 20px; left: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+        .toast { padding: 0.9rem 1.3rem; border-radius: 8px; color: white; font-weight: 600; box-shadow: var(--shadow); transform: translateX(-120%); opacity: 0; transition: all 0.4s ease; }
+        .toast.show { transform: translateX(0); opacity: 1; }
+        .toast.success { background-color: var(--success-text); }
+        .toast.error { background-color: var(--error); }
     </style>
 </head>
 <body>
 
-    <navbar><div class="logo">Portal PD IPG</div></navbar>
+    <div id="loader"><div class="spinner"></div></div>
 
-    <div class="hero">
+    <navbar>
+        <div class="logo">Portal PD IPG</div>
+        <ul class="nav-links">
+            <li><a href="#home">Utama</a></li>
+            <li><a href="#muatnaik">Muat Naik</a></li>
+            <li><a href="#papanpemuka">Papan Pemuka</a></li>
+            <li><button class="theme-toggle" id="themeToggle">🌙</button></li>
+        </ul>
+    </navbar>
+
+    <section class="hero" id="home">
         <h1>Sistem Verifikasi Pentaksiran Berterusan</h1>
-        <p>Pilih fasa verifikasi di bawah untuk membuat muat naik atau semakan status:</p>
-    </div>
+        <p>Pilih fasa verifikasi di bawah untuk muat naik bahan pentaksiran ke dalam folder bersarang Google Drive secara automatik:</p>
+    </section>
 
     <!-- TAB SWITCHER -->
     <div class="tab-container">
@@ -80,96 +168,122 @@
         <button class="tab-btn" id="btnTab2" onclick="tukarFasa(2)">Fasa 2: Selepas Moderasi</button>
     </div>
 
-    <!-- SEKSYEN FASA 1: PERANCANGAN -->
+    <!-- BORANG FASA 1 (PERANCANGAN) -->
     <section id="seksyenFasa1">
         <div class="form-container">
-            <h2 style="margin-bottom: 1rem; color: var(--primary-color);">Muat Naik Fasa 1 (Perancangan)</h2>
-            <form id="formFasa1">
+            <h2 style="text-align: center; margin-bottom: 1.5rem; color: var(--primary-color);">Penyerahan Bahan (Fasa Perancangan)</h2>
+            <form id="formFasa1" novalidate>
                 <div class="form-grid-layout">
-                    <div>
-                        <div class="form-group"><label>Jabatan:</label><input type="text" id="jabatan1" required></div>
-                        <div class="form-group"><label>Nama Pensyarah:</label><input type="text" id="pensyarah1" required></div>
-                        <div class="form-group"><label>Kod Kursus:</label><input type="text" id="kod1" required style="text-transform:uppercase;"></div>
-                        <div class="form-group"><label>Nama Kursus:</label><input type="text" id="namaKursus1" required></div>
-                        <div class="form-group"><label>🔐 Kunci Rahsia (PIN):</label><input type="password" id="pin1" required></div>
+                    <div class="form-column">
+                        <h3 class="column-title">A. Maklumat Asas Kursus</h3>
+                        <div class="form-group"><label>Jabatan:</label><input type="text" id="jabatan1" required placeholder="Cth: Jabatan Pengajian Melayu"></div>
+                        <div class="form-group"><label>Nama Pensyarah:</label><input type="text" id="pensyarah1" required placeholder="Cth: Dr. Ahmad Hakimi"></div>
+                        <div class="form-group"><label>Kod Kursus:</label><input type="text" id="kod1" required placeholder="Cth: BMMB3013" style="text-transform: uppercase;"></div>
+                        <div class="form-group"><label>Nama Kursus:</label><input type="text" id="namaKursus1" required placeholder="Cth: Kesusasteraan Melayu"></div>
+                        <div class="form-group" style="background: var(--warning-bg); padding: 15px; border-radius: 8px; border: 1px solid var(--warning-text); margin-top: 1rem;">
+                            <label style="color: var(--warning-text);">🔐 Kunci Rahsia (PIN / ID Staf):</label>
+                            <input type="password" id="pin1" required placeholder="Cth: 123456" style="border-color: var(--warning-text);">
+                            <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 5px;">* PIN ini diperlukan untuk membaca Laporan Audit SULIT kelak.</p>
+                        </div>
                     </div>
-                    <div>
-                        <div class="form-group"><label>1. Maklumat Kursus (MK):</label><input type="file" id="failMK" required></div>
-                        <div class="form-group"><label>2. JST:</label><input type="file" id="failJST" required></div>
-                        <div class="form-group"><label>3. Soalan Tugasan:</label><input type="file" id="failTugasan" required></div>
-                        <div class="form-group"><label>4. Rubrik Pemarkahan:</label><input type="file" id="failRubrik" required></div>
-                        <div class="form-group"><label>5. Borang SME:</label><input type="file" id="failSME" required></div>
+                    <div class="form-column">
+                        <h3 class="column-title">B. Muat Naik Instrumen (Subfolder: Fasa_Perancangan)</h3>
+                        <div class="form-group"><label>1. Maklumat Kursus (MK):</label><input type="file" id="failMK" required accept=".pdf,.doc,.docx"></div>
+                        <div class="form-group"><label>2. Jadual Spesifikasi Tugasan (JST):</label><input type="file" id="failJST" required accept=".pdf,.doc,.docx,.xls,.xlsx"></div>
+                        <div class="form-group"><label>3. Soalan Tugasan:</label><input type="file" id="failTugasan" required accept=".pdf,.doc,.docx"></div>
+                        <div class="form-group"><label>4. Rubrik Pemarkahan:</label><input type="file" id="failRubrik" required accept=".pdf,.doc,.docx,.xls,.xlsx"></div>
+                        <div class="form-group"><label>5. Borang Semakan SME:</label><input type="file" id="failSME" required accept=".pdf,.doc,.docx"></div>
+                        <div class="form-group"><label>6. JSU (Pilihan):</label><input type="file" id="failJSU" accept=".pdf,.doc,.docx,.xls,.xlsx"></div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary" id="btnHantar1">Muat Naik Bahan Fasa 1</button>
+                <button type="submit" id="btnHantar1" class="btn btn-primary" style="width: 100%; padding: 1rem;">Sahkan & Muat Naik Bahan Fasa 1</button>
             </form>
         </div>
     </section>
 
-    <!-- SEKSYEN FASA 2: SELEPAS MODERASI -->
+    <!-- BORANG FASA 2 (SELEPAS MODERASI) -->
     <section id="seksyenFasa2" style="display: none;">
         <div class="form-container">
-            <h2 style="margin-bottom: 1rem; color: #059669;">Muat Naik Fasa 2 (Selepas Moderasi)</h2>
-            <form id="formFasa2">
+            <h2 style="text-align: center; margin-bottom: 1.5rem; color: #059669;">Penyerahan Bahan (Fasa Selepas Moderasi)</h2>
+            <form id="formFasa2" novalidate>
                 <div class="form-grid-layout">
-                    <div>
-                        <div class="form-group"><label>Jabatan:</label><input type="text" id="jabatan2" required></div>
-                        <div class="form-group"><label>Nama Pensyarah:</label><input type="text" id="pensyarah2" required></div>
-                        <div class="form-group"><label>Emel Pensyarah (Untuk Peringatan):</label><input type="email" id="emel2" required placeholder="pensyarah@ipg.edu.my"></div>
-                        <div class="form-group"><label>Kod Kursus:</label><input type="text" id="kod2" required style="text-transform:uppercase;"></div>
-                        <div class="form-group"><label>Nama Kursus:</label><input type="text" id="namaKursus2" required></div>
+                    <div class="form-column">
+                        <h3 class="column-title" style="color: #059669;">A. Maklumat Asas & Kawalan</h3>
+                        <div class="form-group"><label>Jabatan:</label><input type="text" id="jabatan2" required placeholder="Cth: Jabatan Pengajian Melayu"></div>
+                        <div class="form-group"><label>Nama Pensyarah:</label><input type="text" id="pensyarah2" required placeholder="Cth: Dr. Ahmad Hakimi"></div>
+                        <div class="form-group"><label>Emel Pensyarah:</label><input type="email" id="emel2" required placeholder="pensyarah@ipg.edu.my"></div>
+                        <div class="form-group"><label>Kod Kursus:</label><input type="text" id="kod2" required placeholder="Cth: BMMB3013" style="text-transform: uppercase;"></div>
+                        <div class="form-group"><label>Nama Kursus:</label><input type="text" id="namaKursus2" required placeholder="Cth: Kesusasteraan Melayu"></div>
                         <div class="form-group"><label>Tarikh Taklimat PB Pelajar:</label><input type="date" id="taklimat2" required></div>
                         <div class="form-group"><label>Tarikh Akhir Verifikasi PD:</label><input type="date" id="tarikhAkhir2" required></div>
-                        <div class="form-group"><label>🔐 Kunci Rahsia (PIN):</label><input type="password" id="pin2" required></div>
+                        <div class="form-group" style="background: var(--warning-bg); padding: 15px; border-radius: 8px; border: 1px solid var(--warning-text);">
+                            <label style="color: var(--warning-text);">🔐 Kunci Rahsia (PIN / ID Staf):</label>
+                            <input type="password" id="pin2" required placeholder="Cth: 123456" style="border-color: var(--warning-text);">
+                        </div>
                     </div>
-                    <div>
-                        <div class="form-group"><label>1. Sampel Tugasan & Komen Pensyarah:</label><input type="file" id="failSampel" required></div>
-                        <div class="form-group"><label>2. Borang Markah PB (LAM PT04-01):</label><input type="file" id="failLAM1" required></div>
-                        <div class="form-group"><label>3. Borang Moderasi (LAM PT04-02):</label><input type="file" id="failLAM2" required></div>
-                        <div class="form-group"><label>4. Laporan Panel (LAM PT04-03):</label><input type="file" id="failLAM3" required></div>
-                        <div class="form-group"><label>5. Laporan Kes Gagal (LAM PT04-04) (Jika Ada):</label><input type="file" id="failLAM4"></div>
+                    <div class="form-column">
+                        <h3 class="column-title" style="color: #059669;">B. Muat Naik Instrumen (Subfolder: Fasa_Selepas_Moderasi)</h3>
+                        <div class="form-group"><label>1. Sampel Tugasan & Komen Pensyarah:</label><input type="file" id="failSampel" required accept=".pdf,.doc,.docx"></div>
+                        <div class="form-group"><label>2. Borang Markah PB (LAM PT04-01):</label><input type="file" id="failLAM1" required accept=".pdf,.doc,.docx,.xls,.xlsx"></div>
+                        <div class="form-group"><label>3. Borang Moderasi (LAM PT04-02):</label><input type="file" id="failLAM2" required accept=".pdf,.doc,.docx"></div>
+                        <div class="form-group"><label>4. Laporan Panel (LAM PT04-03):</label><input type="file" id="failLAM3" required accept=".pdf,.doc,.docx"></div>
+                        <div class="form-group"><label>5. Laporan Kes Gagal (LAM PT04-04) (Pilihan):</label><input type="file" id="failLAM4" accept=".pdf,.doc,.docx"></div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary" style="background: #059669;" id="btnHantar2">Muat Naik Bahan Fasa 2</button>
+                <button type="submit" id="btnHantar2" class="btn btn-primary" style="background: #059669; width: 100%; padding: 1rem;">Sahkan & Muat Naik Bahan Fasa 2</button>
             </form>
         </div>
     </section>
 
-    <!-- PAPAN PEMUKA JADUAL -->
-    <section>
-        <h2 style="text-align: center; margin-bottom: 1rem;">Papan Pemuka Status Semakan PD</h2>
+    <!-- PAPAN PEMUKA AUDIT -->
+    <section id="papanpemuka">
+        <h2 style="text-align: center; margin-bottom: 0.5rem;">Papan Pemuka Status Semakan PD</h2>
+        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">Laporan Audit Akademik diklasifikasikan sebagai <strong>SULIT</strong>.</p>
+
+        <div class="controls">
+            <input type="text" id="searchInput" class="search-box" placeholder="Cari Kod Kursus, Nama Kursus atau Pensyarah..." onkeyup="tapisData()">
+            <button class="btn-refresh" onclick="muatTarikData()">Kemaskini Data</button>
+        </div>
+
         <div class="table-container">
-            <table>
+            <table class="main-table">
                 <thead>
                     <tr>
-                        <th>Status</th>
-                        <th>Kod & Kursus</th>
-                        <th>Pensyarah / Jabatan</th>
-                        <th>Tindakan & Peringatan</th>
+                        <th style="width: 12%;">Status Audit</th>
+                        <th style="width: 18%;">Kod & Kursus</th>
+                        <th style="width: 20%;">Pensyarah / Jabatan</th>
+                        <th style="width: 50%;">Akses Laporan (SULIT)</th>
                     </tr>
                 </thead>
                 <tbody id="jadualData">
-                    <tr><td colspan="4" style="text-align: center;">Memuatkan data...</td></tr>
+                    <tr><td colspan="4" style="text-align: center; color: var(--text-secondary);">Sedang memuatkan data pangkalan pelayan...</td></tr>
                 </tbody>
             </table>
         </div>
     </section>
 
-    <!-- MODAL AKSES LAPORAN -->
+    <!-- TETINGKAP TIMBUL (MODAL) AKSES SELAMAT -->
     <div class="modal-overlay" id="reportModal">
         <div class="modal-box">
             <div class="modal-header">
-                <h3 id="modalTitle">Kunci Rahsia Diperlukan</h3>
-                <button onclick="tutupModal()" style="border:none; background:none; font-size:1.5rem; cursor:pointer;">&times;</button>
+                <h2 id="modalTitle">Kunci Rahsia Diperlukan</h2>
+                <button class="close-btn" onclick="tutupModalLaporan()">&times;</button>
             </div>
             <div class="modal-body">
-                <div id="pinBox" style="text-align: center; padding: 2rem;">
-                    <p>Masukkan PIN untuk membaca Laporan SULIT:</p>
-                    <input type="password" id="pinInput" style="width: 200px; text-align: center; margin: 10px 0; font-size: 1.2rem;">
-                    <br>
-                    <button class="btn btn-primary" style="width: auto;" onclick="sahkanPIN()">Sahkan PIN</button>
+                
+                <div class="pin-overlay" id="pinOverlay">
+                    <div class="pin-box">
+                        <h3 style="color: var(--primary-color); margin-bottom: 10px;">🔐 Akses Laporan SULIT</h3>
+                        <p style="font-size: 0.9rem; color: var(--text-secondary);">Sila masukkan Kunci Rahsia (PIN/ID) yang anda tetapkan semasa memuat naik bahan ini.</p>
+                        <input type="password" id="inputSemakPIN" placeholder="Masukkan PIN Rahsia" onkeypress="if(event.key === 'Enter') mintaAksesLaporan()">
+                        <input type="hidden" id="kodKursusSemasa">
+                        <button class="btn btn-primary" style="width:100%" onclick="mintaAksesLaporan()" id="btnSemakPIN">Sahkan Identiti</button>
+                    </div>
                 </div>
-                <div id="laporanText" style="display: none;" class="audit-report-content"></div>
+
+                <div class="audit-report-content" id="modalReportBody">
+                    <!-- Teks markdown HTML disuntik di sini -->
+                </div>
             </div>
         </div>
     </div>
@@ -177,16 +291,31 @@
     <div id="toast-container"></div>
 
     <script>
+        window.addEventListener('load', () => {
+            document.getElementById('loader').style.opacity = '0';
+            setTimeout(() => document.getElementById('loader').style.display = 'none', 500);
+            muatTarikData();
+        });
+
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            themeToggle.innerText = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+        });
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = type === 'success' ? `✅ ${message}` : `❌ ${message}`;
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 4000);
+        }
+
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyjvVuuxBEdEN-6AwxbNj5wnq8xpuA4qQs7aSa7ntnh607vd3ixim6GPa9oZT9mUMCA/exec";
         let fasaAktif = 1;
         let senaraiFasa1 = [], senaraiFasa2 = [];
-        let kodSemasa = "";
-
-        function showToast(msg) {
-            const container = document.getElementById('toast-container');
-            const t = document.createElement('div'); t.className = 'toast'; t.innerText = msg;
-            container.appendChild(t); setTimeout(() => t.remove(), 3000);
-        }
 
         function tukarFasa(fasa) {
             fasaAktif = fasa;
@@ -194,151 +323,247 @@
             document.getElementById('btnTab2').classList.toggle('active', fasa === 2);
             document.getElementById('seksyenFasa1').style.display = (fasa === 1) ? 'block' : 'none';
             document.getElementById('seksyenFasa2').style.display = (fasa === 2) ? 'block' : 'none';
-            paparkanJadual();
+            paparkanJadual(fasa === 1 ? senaraiFasa1 : senaraiFasa2);
         }
+
+        function bukaPromptKeselamatan(kodKursus) {
+            document.getElementById('kodKursusSemasa').value = kodKursus;
+            document.getElementById('inputSemakPIN').value = "";
+            document.getElementById('modalTitle').innerText = "Akses Keselamatan: " + kodKursus;
+            
+            document.getElementById('pinOverlay').style.display = "flex";
+            document.getElementById('modalReportBody').style.display = "none";
+            document.getElementById('reportModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            setTimeout(() => document.getElementById('inputSemakPIN').focus(), 100);
+        }
+
+        function tutupModalLaporan() {
+            document.getElementById('reportModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        async function mintaAksesLaporan() {
+            const kod = document.getElementById('kodKursusSemasa').value;
+            const pin = document.getElementById('inputSemakPIN').value;
+            const btn = document.getElementById('btnSemakPIN');
+
+            if (!pin) return showToast("Sila masukkan Kunci Rahsia.", "error");
+
+            btn.innerText = "Mengesahkan...";
+            btn.disabled = true;
+
+            try {
+                const payload = { action: "bacaLaporan", fasa: fasaAktif, kodKursus: kod, kunciRahsia: pin };
+                const response = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
+                const result = await response.json();
+
+                if (result.status === "success") {
+                    showToast("Akses Dibenarkan. Memaparkan Laporan SULIT.", "success");
+                    
+                    let htmlOutput = marked.parse(result.laporanPenuh);
+                    htmlOutput = htmlOutput.replace(/\bPATUH BERSYARAT\b/g, "##WARN##").replace(/\bTIDAK PATUH\b/g, "##ERR1##").replace(/\bTIDAK DINYATAKAN\b/g, "##ERR2##").replace(/\bPATUH\b/g, "##SUCC##");
+                    htmlOutput = htmlOutput.replace(/##WARN##/g, "<span class='audit-status-warning'>PATUH BERSYARAT</span>").replace(/##ERR1##/g, "<span class='audit-status-tdkpatuh'>TIDAK PATUH</span>").replace(/##ERR2##/g, "<span class='audit-status-tdkpatuh'>TIDAK DINYATAKAN</span>").replace(/##SUCC##/g, "<span class='audit-status-patuh'>PATUH</span>");
+
+                    document.getElementById('modalTitle').innerText = "Laporan Audit Akademik (SULIT): " + kod;
+                    document.getElementById('modalReportBody').innerHTML = htmlOutput;
+                    
+                    document.getElementById('pinOverlay').style.display = "none";
+                    document.getElementById('modalReportBody').style.display = "block";
+                } else {
+                    showToast(result.mesej, "error");
+                }
+            } catch (error) {
+                showToast("Ralat pelayan: " + error.message, "error");
+            } finally {
+                btn.innerText = "Sahkan Identiti";
+                btn.disabled = false;
+            }
+        }
+
+        const bacaFailSebagaiBase64 = (file, jenis) => {
+            return new Promise((resolve, reject) => {
+                if (!file) { resolve(null); return; }
+                const reader = new FileReader();
+                reader.onload = () => resolve({ jenis: jenis, namaFail: file.name, mimeType: file.type, failBase64: reader.result });
+                reader.onerror = error => reject(error);
+                reader.readAsDataURL(file);
+            });
+        };
+
+        // MUAT NAIK FORM FASA 1
+        document.getElementById('formFasa1').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btnHantar = document.getElementById('btnHantar1');
+            btnHantar.innerText = "Memproses...";
+            btnHantar.disabled = true;
+
+            try {
+                const prosesFail = [
+                    bacaFailSebagaiBase64(document.getElementById('failMK').files[0], "MK"),
+                    bacaFailSebagaiBase64(document.getElementById('failJST').files[0], "JST"),
+                    bacaFailSebagaiBase64(document.getElementById('failTugasan').files[0], "Tugasan"),
+                    bacaFailSebagaiBase64(document.getElementById('failRubrik').files[0], "Rubrik"),
+                    bacaFailSebagaiBase64(document.getElementById('failSME').files[0], "SME"),
+                    bacaFailSebagaiBase64(document.getElementById('failJSU').files[0], "JSU")
+                ];
+
+                const failArray = (await Promise.all(prosesFail)).filter(f => f !== null);
+
+                const payload = {
+                    action: "upload",
+                    jabatan: document.getElementById('jabatan1').value.trim(),
+                    namaPensyarah: document.getElementById('pensyarah1').value.trim(),
+                    kodKursus: document.getElementById('kod1').value.trim().toUpperCase(),
+                    namaKursus: document.getElementById('namaKursus1').value.trim(),
+                    kunciRahsia: document.getElementById('pin1').value.trim(),
+                    failArray: failArray
+                };
+
+                const response = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
+                const result = await response.json();
+
+                if (result.status === "success") {
+                    showToast(result.mesej, "success");
+                    document.getElementById('formFasa1').reset();
+                    muatTarikData();
+                } else {
+                    showToast(result.mesej, "error");
+                }
+            } catch (error) {
+                showToast(`Ralat: ${error.message}`, "error");
+            } finally {
+                btnHantar.innerText = "Sahkan & Muat Naik Bahan Fasa 1";
+                btnHantar.disabled = false;
+            }
+        });
+
+        // MUAT NAIK FORM FASA 2
+        document.getElementById('formFasa2').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btnHantar = document.getElementById('btnHantar2');
+            btnHantar.innerText = "Memproses...";
+            btnHantar.disabled = true;
+
+            try {
+                const prosesFail = [
+                    bacaFailSebagaiBase64(document.getElementById('failSampel').files[0], "Sampel"),
+                    bacaFailSebagaiBase64(document.getElementById('failLAM1').files[0], "LAM1"),
+                    bacaFailSebagaiBase64(document.getElementById('failLAM2').files[0], "LAM2"),
+                    bacaFailSebagaiBase64(document.getElementById('failLAM3').files[0], "LAM3"),
+                    bacaFailSebagaiBase64(document.getElementById('failLAM4').files[0], "LAM4")
+                ];
+
+                const failArray = (await Promise.all(prosesFail)).filter(f => f !== null);
+
+                const payload = {
+                    action: "uploadFasa2",
+                    jabatan: document.getElementById('jabatan2').value.trim(),
+                    namaPensyarah: document.getElementById('pensyarah2').value.trim(),
+                    emelPensyarah: document.getElementById('emel2').value.trim(),
+                    kodKursus: document.getElementById('kod2').value.trim().toUpperCase(),
+                    namaKursus: document.getElementById('namaKursus2').value.trim(),
+                    tarikhTaklimat: document.getElementById('taklimat2').value,
+                    tarikhAkhir: document.getElementById('tarikhAkhir2').value,
+                    kunciRahsia: document.getElementById('pin2').value.trim(),
+                    failArray: failArray
+                };
+
+                const response = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
+                const result = await response.json();
+
+                if (result.status === "success") {
+                    showToast(result.mesej, "success");
+                    document.getElementById('formFasa2').reset();
+                    muatTarikData();
+                } else {
+                    showToast(result.mesej, "error");
+                }
+            } catch (error) {
+                showToast(`Ralat: ${error.message}`, "error");
+            } finally {
+                btnHantar.innerText = "Sahkan & Muat Naik Bahan Fasa 2";
+                btnHantar.disabled = false;
+            }
+        });
 
         async function muatTarikData() {
+            const tbody = document.getElementById('jadualData');
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Memuatkan data pangkalan pelayan...</td></tr>';
+
             try {
-                const res = await fetch(APPS_SCRIPT_URL);
-                const data = await res.json();
+                const response = await fetch(APPS_SCRIPT_URL);
+                const data = await response.json();
+
                 if (data.status === "success") {
-                    senaraiFasa1 = data.fasa1.reverse();
-                    senaraiFasa2 = data.fasa2.reverse();
-                    paparkanJadual();
+                    senaraiFasa1 = data.fasa1 ? data.fasa1.reverse() : [];
+                    senaraiFasa2 = data.fasa2 ? data.fasa2.reverse() : [];
+                    paparkanJadual(fasaAktif === 1 ? senaraiFasa1 : senaraiFasa2);
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Tiada rekod penyerahan ditemui.</td></tr>';
                 }
-            } catch (e) {}
+            } catch (error) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--error);">Ralat: ${error.message}</td></tr>`;
+            }
         }
 
-        function paparkanJadual() {
+        function paparkanJadual(dataArray) {
             const tbody = document.getElementById('jadualData');
             tbody.innerHTML = '';
-            const senarai = (fasaAktif === 1) ? senaraiFasa1 : senaraiFasa2;
 
-            if (senarai.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Tiada rekod penyerahan.</td></tr>';
+            if (!dataArray || dataArray.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Tiada rekod penyerahan bagi fasa ini.</td></tr>';
                 return;
             }
 
-            senarai.forEach(row => {
-                const isDisahkan = row.status === "Disahkan PD";
-                const badge = isDisahkan ? "badge-success" : "badge-warning";
+            dataArray.forEach(row => {
+                const isDisahkan = row.status === "Disahkan PD" || row.status === "Selesai Disemak";
+                const badgeClass = isDisahkan ? "badge-success" : "badge-warning";
                 
-                let butangPeringatan = "";
-                if (fasaAktif === 2 && row.emelPensyarah !== "-") {
-                    butangPeringatan = `<button class="btn-action" style="border-color:#dc2626; color:#dc2626;" onclick="hantarPeringatan('${row.kodKursus}', '${row.emelPensyarah}', '${row.tarikhAkhir}')">📧 Hantar Peringatan</button>`;
+                let paparanAksesHTML = "";
+                if (isDisahkan) {
+                    paparanAksesHTML = `
+                        <div style="font-size: 0.85rem; color: var(--error-text); font-weight:600; margin-bottom: 5px;">Laporan Bersatus SULIT</div>
+                        <button class="btn-secure-read" onclick="bukaPromptKeselamatan('${row.kodKursus}')">
+                            🔐 Buka Laporan Selamat
+                        </button>
+                    `;
+                } else {
+                    paparanAksesHTML = `<span class="pending-text">Laporan masih dalam proses penjanaan atau menunggu kelulusan Pemeriksa Dalam (PD).</span>`;
                 }
 
                 tbody.innerHTML += `
                     <tr>
-                        <td><span class="badge-status ${badge}">${row.status}</span><br><small>${row.tarikh}</small></td>
-                        <td><strong>${row.kodKursus}</strong><br><small>${row.namaKursus}</small></td>
-                        <td>${row.namaPensyarah}<br><small>${row.jabatan}</small></td>
                         <td>
-                            ${isDisahkan ? `<button class="btn-action" onclick="bukaModal('${row.kodKursus}')">🔐 Buka Laporan</button>` : '<em>Dalam semakan</em>'}
-                            ${butangPeringatan}
+                            <span class="badge-status ${badgeClass}">${row.status}</span>
+                            <div style="margin-top: 10px; font-size: 0.8rem; color: var(--text-secondary);">${row.tarikh}</div>
                         </td>
+                        <td>
+                            <strong>${row.kodKursus}</strong><br>
+                            <span style="font-size: 0.85rem;">${row.namaKursus}</span>
+                        </td>
+                        <td>
+                            <span style="font-size: 0.9rem; font-weight: 500;">${row.namaPensyarah}</span><br>
+                            <span style="font-size: 0.8rem; color: var(--text-secondary);">${row.jabatan}</span>
+                        </td>
+                        <td>${paparanAksesHTML}</td>
                     </tr>
                 `;
             });
         }
 
-        async function hantarPeringatan(kod, emel, tarikhAkhir) {
-            if (!confirm(`Hantar emel peringatan tarikh akhir verifikasi (${tarikhAkhir}) kepada ${emel}?`)) return;
-            showToast("Hantar emel peringatan...");
-            
-            const payload = { action: "hantarPeringatan", kodKursus: kod, emelPensyarah: emel, tarikhAkhir: tarikhAkhir };
-            const res = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
-            const result = await res.json();
-            showToast(result.mesej);
+        function tapisData() {
+            const kataKunci = document.getElementById('searchInput').value.toLowerCase();
+            const sumber = fasaAktif === 1 ? senaraiFasa1 : senaraiFasa2;
+            const hasilTapis = sumber.filter(r => 
+                r.kodKursus.toLowerCase().includes(kataKunci) ||
+                r.namaKursus.toLowerCase().includes(kataKunci) ||
+                r.namaPensyarah.toLowerCase().includes(kataKunci) ||
+                r.jabatan.toLowerCase().includes(kataKunci)
+            );
+            paparkanJadual(hasilTapis);
         }
-
-        function bukaModal(kod) {
-            kodSemasa = kod;
-            document.getElementById('pinInput').value = "";
-            document.getElementById('pinBox').style.display = "block";
-            document.getElementById('laporanText').style.display = "none";
-            document.getElementById('reportModal').classList.add('active');
-        }
-
-        function tutupModal() { document.getElementById('reportModal').classList.remove('active'); }
-
-        async function sahkanPIN() {
-            const pin = document.getElementById('pinInput').value;
-            const payload = { action: "bacaLaporan", fasa: fasaAktif, kodKursus: kodSemasa, kunciRahsia: pin };
-            const res = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
-            const result = await res.json();
-
-            if (result.status === "success") {
-                document.getElementById('pinBox').style.display = "none";
-                document.getElementById('laporanText').style.display = "block";
-                document.getElementById('laporanText').innerHTML = marked.parse(result.laporanPenuh);
-            } else {
-                showToast(result.mesej);
-            }
-        }
-
-        const bacaBase64 = (file, jenis) => new Promise((resolve) => {
-            if (!file) return resolve(null);
-            const r = new FileReader();
-            r.onload = () => resolve({ jenis: jenis, namaFail: file.name, mimeType: file.type, failBase64: r.result });
-            r.readAsDataURL(file);
-        });
-
-        // FORM SUBMIT FASA 1
-        document.getElementById('formFasa1').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            document.getElementById('btnHantar1').innerText = "Memproses...";
-            const failArray = (await Promise.all([
-                bacaBase64(document.getElementById('failMK').files[0], "MK"),
-                bacaBase64(document.getElementById('failJST').files[0], "JST"),
-                bacaBase64(document.getElementById('failTugasan').files[0], "Tugasan"),
-                bacaBase64(document.getElementById('failRubrik').files[0], "Rubrik"),
-                bacaBase64(document.getElementById('failSME').files[0], "SME")
-            ])).filter(f => f !== null);
-
-            const payload = {
-                action: "upload", jabatan: document.getElementById('jabatan1').value,
-                namaPensyarah: document.getElementById('pensyarah1').value, kodKursus: document.getElementById('kod1').value.toUpperCase(),
-                namaKursus: document.getElementById('namaKursus1').value, kunciRahsia: document.getElementById('pin1').value, failArray: failArray
-            };
-
-            const res = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
-            const r = await res.json();
-            showToast(r.mesej);
-            document.getElementById('formFasa1').reset();
-            document.getElementById('btnHantar1').innerText = "Muat Naik Bahan Fasa 1";
-            muatTarikData();
-        });
-
-        // FORM SUBMIT FASA 2
-        document.getElementById('formFasa2').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            document.getElementById('btnHantar2').innerText = "Memproses...";
-            const failArray = (await Promise.all([
-                bacaBase64(document.getElementById('failSampel').files[0], "Sampel"),
-                bacaBase64(document.getElementById('failLAM1').files[0], "LAM1"),
-                bacaBase64(document.getElementById('failLAM2').files[0], "LAM2"),
-                bacaBase64(document.getElementById('failLAM3').files[0], "LAM3"),
-                bacaBase64(document.getElementById('failLAM4').files[0], "LAM4")
-            ])).filter(f => f !== null);
-
-            const payload = {
-                action: "uploadFasa2", jabatan: document.getElementById('jabatan2').value,
-                namaPensyarah: document.getElementById('pensyarah2').value, emelPensyarah: document.getElementById('emel2').value,
-                kodKursus: document.getElementById('kod2').value.toUpperCase(), namaKursus: document.getElementById('namaKursus2').value,
-                tarikhTaklimat: document.getElementById('taklimat2').value, tarikhAkhir: document.getElementById('tarikhAkhir2').value,
-                kunciRahsia: document.getElementById('pin2').value, failArray: failArray
-            };
-
-            const res = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
-            const r = await res.json();
-            showToast(r.mesej);
-            document.getElementById('formFasa2').reset();
-            document.getElementById('btnHantar2').innerText = "Muat Naik Bahan Fasa 2";
-            muatTarikData();
-        });
-
-        window.onload = muatTarikData;
     </script>
 </body>
 </html>
