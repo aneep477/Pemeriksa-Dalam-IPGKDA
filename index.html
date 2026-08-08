@@ -3,168 +3,471 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal PD - Muat Naik Berbilang Bahan</title>
+    <title>Portal Pemeriksa Dalam (PD)</title>
+    <!-- Penggunaan Google Font moden -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 20px; }
-        .container { max-width: 650px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: #333; margin-bottom: 20px; }
-        .form-group { margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        .form-group:last-child { border-bottom: none; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; }
-        .badge { font-size: 0.8em; padding: 3px 6px; border-radius: 4px; margin-left: 5px; }
-        .mandatori { background-color: #dc3545; color: white; }
-        .pilihan { background-color: #6c757d; color: white; }
-        input[type="text"], input[type="file"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; font-weight: bold; }
-        button:hover { background-color: #0056b3; }
-        button:disabled { background-color: #a0c4ff; cursor: not-allowed; }
-        #status-message { margin-top: 20px; text-align: center; font-weight: bold; padding: 10px; border-radius: 4px; }
-        .success { color: #155724; background-color: #d4edda; border: 1px solid #c3e6cb; display: block; }
-        .error { color: #721c24; background-color: #f8d7da; border: 1px solid #f5c6cb; display: block; }
+        /* ==========================================================================
+           CSS VARIABLES & DESIGN SYSTEM (Menyokong Dark Mode)
+           ========================================================================== */
+        :root {
+            --bg-color: #f8fafc;
+            --surface-color: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --border-color: #e2e8f0;
+            --success: #10b981;
+            --error: #ef4444;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body.dark-mode {
+            --bg-color: #0f172a;
+            --surface-color: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+            --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+        }
+
+        /* ==========================================================================
+           ASAS DAN RESET
+           ========================================================================== */
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; transition: background-color 0.3s, color 0.3s; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        section { padding: 6rem 10%; min-height: 50vh; }
+        
+        /* ==========================================================================
+           KOMPONEN UI (Loader, Progress Bar, Navbar)
+           ========================================================================== */
+        #loader { position: fixed; inset: 0; background: var(--bg-color); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s; }
+        .spinner { width: 50px; height: 50px; border: 5px solid var(--border-color); border-top-color: var(--primary-color); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        #progress-bar { position: fixed; top: 0; left: 0; height: 4px; background: var(--primary-color); width: 0%; z-index: 1000; transition: width 0.1s; }
+
+        navbar { position: fixed; top: 0; width: 100%; padding: 1rem 10%; background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); display: flex; justify-content: space-between; align-items: center; z-index: 900; border-bottom: 1px solid var(--border-color); transition: var(--transition); }
+        body.dark-mode navbar { background: rgba(30, 41, 59, 0.8); }
+        .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary-color); }
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
+        .nav-links li a { font-weight: 600; transition: color 0.3s; }
+        .nav-links li a:hover { color: var(--primary-color); }
+        .theme-toggle { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-primary); }
+
+        /* ==========================================================================
+           SEKSYEN UTAMA (Hero, Kad Interaktif)
+           ========================================================================== */
+        .hero { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; min-height: 100vh; padding-top: 80px; }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; line-height: 1.2; }
+        .hero p { font-size: 1.2rem; color: var(--text-secondary); max-width: 600px; margin-bottom: 2rem; }
+        .btn { padding: 0.8rem 2rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: var(--transition); border: none; display: inline-block; }
+        .btn-primary { background: var(--primary-color); color: white; }
+        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: var(--shadow); }
+
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem; }
+        .card { background: var(--surface-color); padding: 2.5rem; border-radius: 12px; box-shadow: var(--shadow); transition: var(--transition); border: 1px solid var(--border-color); }
+        .card:hover { transform: translateY(-10px); box-shadow: var(--shadow-hover); border-color: var(--primary-color); }
+        .card h3 { margin-bottom: 1rem; color: var(--primary-color); font-size: 1.25rem; }
+
+        /* ==========================================================================
+           BORANG MUAT NAIK
+           ========================================================================== */
+        .form-container { max-width: 800px; margin: 0 auto; background: var(--surface-color); padding: 3rem; border-radius: 12px; box-shadow: var(--shadow); border: 1px solid var(--border-color); }
+        .form-group { margin-bottom: 1.5rem; }
+        label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary); }
+        .badge { font-size: 0.75rem; padding: 2px 8px; border-radius: 12px; margin-left: 10px; font-weight: normal; }
+        .mandatori { background: rgba(239, 68, 68, 0.1); color: var(--error); border: 1px solid var(--error); }
+        .pilihan { background: rgba(100, 116, 139, 0.1); color: var(--text-secondary); border: 1px solid var(--text-secondary); }
+        
+        input[type="text"], input[type="file"] { width: 100%; padding: 0.8rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-color); color: var(--text-primary); transition: var(--transition); font-family: inherit; }
+        input:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2); }
+        
+        button[type="submit"] { width: 100%; font-size: 1.1rem; padding: 1rem; margin-top: 1rem; }
+        button:disabled { background-color: #94a3b8; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+
+        /* ==========================================================================
+           ACCORDION FAQ
+           ========================================================================== */
+        .accordion { max-width: 800px; margin: 0 auto; }
+        .accordion-item { background: var(--surface-color); border: 1px solid var(--border-color); margin-bottom: 1rem; border-radius: 8px; overflow: hidden; }
+        .accordion-header { padding: 1.5rem; width: 100%; text-align: left; background: none; border: none; font-size: 1.1rem; font-weight: 600; color: var(--text-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: var(--transition); }
+        .accordion-header:hover { background-color: rgba(0,0,0,0.02); }
+        body.dark-mode .accordion-header:hover { background-color: rgba(255,255,255,0.05); }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; background: var(--bg-color); }
+        .accordion-content p { padding: 1.5rem; border-top: 1px solid var(--border-color); color: var(--text-secondary); }
+
+        /* ==========================================================================
+           UTILITI ANIMASI & PEMBERITAHUAN
+           ========================================================================== */
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        #scrollTopBtn { position: fixed; bottom: 30px; right: 30px; background: var(--primary-color); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; opacity: 0; visibility: hidden; transition: var(--transition); border: none; z-index: 100; box-shadow: var(--shadow); font-size: 1.5rem; }
+        #scrollTopBtn.show { opacity: 1; visibility: visible; }
+        #scrollTopBtn:hover { transform: translateY(-5px); }
+
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 2000; opacity: 0; visibility: hidden; transition: var(--transition); backdrop-filter: blur(5px); }
+        .modal.active { opacity: 1; visibility: visible; }
+        .modal-content { background: var(--surface-color); padding: 2rem; border-radius: 12px; max-width: 500px; width: 90%; transform: scale(0.9); transition: var(--transition); border: 1px solid var(--border-color); }
+        .modal.active .modal-content { transform: scale(1); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; }
+        .close-modal { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-primary); transition: color 0.3s; }
+        .close-modal:hover { color: var(--error); }
+
+        #toast-container { position: fixed; bottom: 20px; left: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+        .toast { padding: 1rem 1.5rem; border-radius: 8px; color: white; font-weight: 600; box-shadow: var(--shadow); transform: translateX(-120%); opacity: 0; transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); display: flex; align-items: center; gap: 10px; }
+        .toast.show { transform: translateX(0); opacity: 1; }
+        .toast.success { background-color: var(--success); }
+        .toast.error { background-color: var(--error); }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>Muat Naik Bahan Pentaksiran (Berpusat)</h2>
-    <form id="uploadForm">
+    <!-- Animasi Skrin Memuat (Loader) -->
+    <div id="loader"><div class="spinner"></div></div>
+
+    <!-- Bar Kemajuan Skrol -->
+    <div id="progress-bar"></div>
+
+    <!-- Navigasi Utama -->
+    <navbar>
+        <div class="logo">Portal PD</div>
+        <ul class="nav-links">
+            <li><a href="#peranan">Peranan</a></li>
+            <li><a href="#muatnaik">Muat Naik</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><button class="theme-toggle" id="themeToggle" aria-label="Tukar Mod Gelap">🌙</button></li>
+        </ul>
+    </navbar>
+
+    <!-- Seksyen: Hero -->
+    <section class="hero" id="home">
+        <h1 class="reveal">Sistem Pengurusan<br><span style="color: var(--primary-color);">Pemeriksa Dalam (PD)</span></h1>
+        <p class="reveal" style="transition-delay: 0.1s;">Pusat sehenti pintar bagi pensyarah menyerahkan bahan pentaksiran secara selamat. Menjamin kualiti berpusat IPGM/IPGK.</p>
+        <div class="reveal" style="transition-delay: 0.2s;">
+            <a href="#muatnaik" class="btn btn-primary">Mula Muat Naik</a>
+            <button class="btn btn-primary" onclick="openModal()" style="background: transparent; color: var(--primary-color); border: 2px solid var(--primary-color); margin-left: 10px;">Terma Rujukan</button>
+        </div>
+    </section>
+
+    <!-- Seksyen: Info Peranan (Hover Cards) -->
+    <section id="peranan">
+        <h2 class="reveal" style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem;">Peranan & Fungsi Eksekutif</h2>
+        <p class="reveal" style="text-align: center; color: var(--text-secondary);">Bertanggungjawab memastikan integriti dan standard akademik pentaksiran IPGK.</p>
         
-        <div class="form-group">
-            <label for="namaPensyarah">Nama Pensyarah:</label>
-            <input type="text" id="namaPensyarah" required placeholder="Cth: Dr. Ahmad">
+        <div class="grid-container">
+            <div class="card reveal">
+                <h3>Akreditasi & Kualiti</h3>
+                <p>Membantu dalam mengawal dan menentukan kualiti pentaksiran dan peperiksaan bagi tujuan pengauditan dan akreditasi MQA.</p>
+            </div>
+            <div class="card reveal" style="transition-delay: 0.1s;">
+                <h3>Khidmat Rundingan</h3>
+                <p>Memberi pandangan dan khidmat rundingan secara langsung berkaitan pelaksanaan pentaksiran sejajar dengan Maklumat Kursus (MK).</p>
+            </div>
+            <div class="card reveal" style="transition-delay: 0.2s;">
+                <h3>Moderasi & Penyelarasan</h3>
+                <p>Menyelaras piawaian rubrik dan skema pemarkahan bagi memastikan keadilan sistem pentaksiran terhadap pelajar.</p>
+            </div>
         </div>
+    </section>
+
+    <!-- Seksyen: Borang Utama -->
+    <section id="muatnaik" style="background-color: rgba(0,0,0,0.02);">
+        <h2 class="reveal" style="text-align: center; font-size: 2.5rem; margin-bottom: 2rem;">Penyerahan Bahan Pentaksiran</h2>
         
-        <div class="form-group">
-            <label for="kodKursus">Kod Kursus:</label>
-            <input type="text" id="kodKursus" required placeholder="Cth: BMMB3013" style="text-transform: uppercase;">
+        <div class="form-container reveal">
+            <form id="uploadForm" novalidate>
+                <!-- Maklumat Asas -->
+                <div class="form-group">
+                    <label for="jabatan">Jabatan:</label>
+                    <input type="text" id="jabatan" required placeholder="Cth: Jabatan Pengajian Melayu">
+                </div>
+                <div class="form-group">
+                    <label for="namaPensyarah">Nama Pensyarah:</label>
+                    <input type="text" id="namaPensyarah" required placeholder="Cth: Dr. Ahmad Hakimi">
+                </div>
+                <div class="form-group">
+                    <label for="kodKursus">Kod Kursus:</label>
+                    <input type="text" id="kodKursus" required placeholder="Cth: BMMB3013" style="text-transform: uppercase;">
+                </div>
+                <div class="form-group">
+                    <label for="namaKursus">Nama Kursus:</label>
+                    <input type="text" id="namaKursus" required placeholder="Cth: Kesusasteraan Melayu">
+                </div>
+
+                <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 2rem 0;">
+
+                <!-- Pemilihan Fail -->
+                <div class="form-group">
+                    <label>1. Maklumat Kursus (MK) <span class="badge mandatori">Mandatori</span></label>
+                    <input type="file" id="failMK" required accept=".pdf,.doc,.docx">
+                </div>
+                <div class="form-group">
+                    <label>2. Jadual Spesifikasi Tugasan (JST) <span class="badge mandatori">Mandatori</span></label>
+                    <input type="file" id="failJST" required accept=".pdf,.doc,.docx,.xls,.xlsx">
+                </div>
+                <div class="form-group">
+                    <label>3. Soalan Tugasan <span class="badge mandatori">Mandatori</span></label>
+                    <input type="file" id="failTugasan" required accept=".pdf,.doc,.docx">
+                </div>
+                <div class="form-group">
+                    <label>4. Rubrik Pemarkahan <span class="badge mandatori">Mandatori</span></label>
+                    <input type="file" id="failRubrik" required accept=".pdf,.doc,.docx,.xls,.xlsx">
+                </div>
+                <div class="form-group">
+                    <label>5. Borang Semakan SME <span class="badge mandatori">Mandatori</span></label>
+                    <input type="file" id="failSME" required accept=".pdf,.doc,.docx">
+                </div>
+                <div class="form-group">
+                    <label>6. Jadual Spesifikasi Ujian (JSU) <span class="badge pilihan">Pilihan</span></label>
+                    <input type="file" id="failJSU" accept=".pdf,.doc,.docx,.xls,.xlsx">
+                </div>
+                
+                <button type="submit" id="btnHantar" class="btn btn-primary">Sahkan & Muat Naik Bahan</button>
+            </form>
         </div>
+    </section>
 
-        <div class="form-group">
-            <label>1. Maklumat Kursus (MK) <span class="badge mandatori">Mandatori</span></label>
-            <input type="file" id="failMK" required>
+    <!-- Seksyen: Accordion FAQ -->
+    <section id="faq">
+        <h2 class="reveal" style="text-align: center; font-size: 2.5rem; margin-bottom: 2rem;">Soalan Lazim (FAQ)</h2>
+        <div class="accordion reveal">
+            <div class="accordion-item">
+                <button class="accordion-header">Apakah jenis/format fail yang dibenarkan? <span class="icon">+</span></button>
+                <div class="accordion-content">
+                    <p>Sistem ini menyokong format standard seperti PDF, Microsoft Word, dan Microsoft Excel bagi tujuan pemeliharaan format yang optimum semasa semakan dibuat.</p>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <button class="accordion-header">Bagaimana jika kursus tiada peperiksaan akhir (JSU)? <span class="icon">+</span></button>
+                <div class="accordion-content">
+                    <p>Bagi kursus yang diuji 100% secara Kerja Kursus, anda boleh mengabaikan ruangan muat naik fail JSU (pilihan) tanpa menjejaskan operasi serahan form ini.</p>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <button class="accordion-header">Berapa lamakah semakan AI Gemini beroperasi? <span class="icon">+</span></button>
+                <div class="accordion-content">
+                    <p>Sebaik sahaja fail berjaya dimuat naik, bahan anda akan direkodkan dan dijadualkan untuk imbasan automatik. Status semakan akan dikemas kini dalam tempoh 24 - 48 jam waktu bekerja.</p>
+                </div>
+            </div>
         </div>
+    </section>
 
-        <div class="form-group">
-            <label>2. Jadual Spesifikasi Tugasan (JST) <span class="badge mandatori">Mandatori</span></label>
-            <input type="file" id="failJST" required>
+    <footer style="text-align: center; padding: 2rem; border-top: 1px solid var(--border-color); background: var(--surface-color);">
+        <p>&copy; 2026 Portal Pemeriksa Dalam (PD) IPGK. Rekaan untuk Prestasi & Kualiti.</p>
+    </footer>
+
+    <!-- Utiliti UI: Scroll Top, Modal, Toast -->
+    <button id="scrollTopBtn" aria-label="Kembali ke atas">↑</button>
+
+    <div class="modal" id="infoModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 style="color: var(--primary-color)">Terma & Punca Kuasa</h3>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Punca kuasa bagi melaksanakan fungsi Pemeriksa Dalam (PD) adalah berpandukan kepada Perkara 7(a) Peraturan-Peraturan Pendidikan (Institut-institut Pendidikan Guru) 2010.</p>
+                <p style="margin-top: 15px; color: var(--text-secondary);">Setiap maklumat dan fail yang dikemukakan adalah tertakluk di bawah Akta Rahsia Rasmi (OSA) 1972 dan garis panduan kerahsiaan pentaksiran IPGM.</p>
+            </div>
         </div>
+    </div>
 
-        <div class="form-group">
-            <label>3. Soalan Tugasan <span class="badge mandatori">Mandatori</span></label>
-            <input type="file" id="failTugasan" required>
-        </div>
+    <div id="toast-container"></div>
 
-        <div class="form-group">
-            <label>4. Rubrik Pemarkahan <span class="badge mandatori">Mandatori</span></label>
-            <input type="file" id="failRubrik" required>
-        </div>
+    <!-- ==========================================================================
+         JAVASCRIPT & API LOGIC
+         ========================================================================== -->
+    <script>
+        // 1. Skrin Memuat
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            loader.style.opacity = '0';
+            setTimeout(() => loader.style.display = 'none', 500);
+        });
 
-        <div class="form-group">
-            <label>5. Borang Semakan SME <span class="badge mandatori">Mandatori</span></label>
-            <input type="file" id="failSME" required>
-        </div>
+        // 2. Mod Gelap (Local Storage)
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        if(localStorage.getItem('theme') === 'dark') {
+            body.classList.add('dark-mode');
+            themeToggle.innerText = '☀️';
+        }
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+                themeToggle.innerText = '☀️';
+            } else {
+                localStorage.setItem('theme', 'light');
+                themeToggle.innerText = '🌙';
+            }
+        });
 
-        <div class="form-group">
-            <label>6. Jadual Spesifikasi Ujian (JSU) Peperiksaan <span class="badge pilihan">Pilihan</span></label>
-            <input type="file" id="failJSU">
-        </div>
-        
-        <button type="submit" id="btnHantar">Muat Naik Semua Bahan</button>
-    </form>
-    
-    <div id="status-message"></div>
-</div>
+        // 3. Progres Skrol & Butang Tatal Atas
+        const progressBar = document.getElementById('progress-bar');
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            progressBar.style.width = ((winScroll / height) * 100) + '%';
+            winScroll > 300 ? scrollTopBtn.classList.add('show') : scrollTopBtn.classList.remove('show');
+        });
+        scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-<script>
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby1GAc398m9OGNLe1jNbsPsHvJ87vXs4YvyBh2gcTtQdAJYG4LOn76QHogYVZNbIraw/exec";
+        // 4. Animasi Intersection Observer (Reveal)
+        const revealElements = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    obs.unobserve(entry.target); // Hanya trigger sekali
+                }
+            });
+        }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
+        revealElements.forEach(el => observer.observe(el));
 
-    /**
-     * Fungsi Helper (Asynchronous) untuk membaca fail fizikal kepada Base64 menggunakan Promise
-     * Mengendalikan ralat membaca fail (Edge Case) pada peringkat penyemak imbas (Browser)
-     * 
-     * @param {File} file - Objek file dari input HTML
-     * @param {String} jenis - Kategori fail (Contoh: "MK", "JST")
-     * @returns {Promise<Object|null>} - Mengembalikan objek fail yang telah ditukar, atau null jika tiada fail
-     */
-    const bacaFailSebagaiBase64 = (file, jenis) => {
-        return new Promise((resolve, reject) => {
-            if (!file) {
-                resolve(null); // Return null secara selamat jika fail adalah pilihan (JSU) dan tidak dimuat naik
+        // 5. Accordion (FAQ)
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', function() {
+                // Tutup tab lain yang aktif
+                document.querySelectorAll('.accordion-header').forEach(h => {
+                    if (h !== this) {
+                        h.nextElementSibling.style.maxHeight = null;
+                        h.querySelector('.icon').innerText = '+';
+                    }
+                });
+                // Toggle tab semasa
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('.icon');
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                    icon.innerText = '+';
+                } else {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                    icon.innerText = '-';
+                }
+            });
+        });
+
+        // 6. Logik Modal
+        const modal = document.getElementById('infoModal');
+        function openModal() { modal.classList.add('active'); }
+        function closeModal() { modal.classList.remove('active'); }
+        window.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
+        // 7. Notifikasi Toast
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = type === 'success' ? `✅ ${message}` : `❌ ${message}`;
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 400);
+            }, 4000);
+        }
+
+        // 8. Logik Utama Borang (API Google Apps Script)
+        // URL TELAH DIKEMAS KINI BERDASARKAN PROMPT TERBAHARU
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyjvVuuxBEdEN-6AwxbNj5wnq8xpuA4qQs7aSa7ntnh607vd3ixim6GPa9oZT9mUMCA/exec";
+
+        /**
+         * Fungsi Helper (Asynchronous) untuk membaca fail fizikal kepada Base64 menggunakan Promise.
+         * Menangani kes fail tidak wajib (pilihan) dengan memulangkan nilai null secara selamat.
+         */
+        const bacaFailSebagaiBase64 = (file, jenis) => {
+            return new Promise((resolve, reject) => {
+                if (!file) { resolve(null); return; } // Edge case file optional
+                const reader = new FileReader();
+                reader.onload = () => resolve({ jenis: jenis, namaFail: file.name, mimeType: file.type, failBase64: reader.result });
+                reader.onerror = error => reject(error);
+                reader.readAsDataURL(file);
+            });
+        };
+
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Validasi Form Kustom
+            const requiredInputs = document.querySelectorAll('#uploadForm input[required]');
+            let isValid = true;
+            requiredInputs.forEach(input => {
+                if (!input.value) {
+                    isValid = false;
+                    input.style.borderColor = 'var(--error)';
+                } else {
+                    input.style.borderColor = 'var(--border-color)';
+                }
+            });
+
+            if (!isValid) {
+                showToast("Pengesahan Gagal: Sila isikan semua ruangan mandatori.", "error");
                 return;
             }
-            const reader = new FileReader();
-            reader.onload = () => {
-                resolve({
-                    jenis: jenis,
-                    namaFail: file.name,
-                    mimeType: file.type,
-                    failBase64: reader.result
+
+            const btnHantar = document.getElementById('btnHantar');
+            btnHantar.innerText = "Sistem Sedang Memproses... Sila Tunggu";
+            btnHantar.disabled = true;
+
+            try {
+                // Menukar semua fail secara asynchronous dengan logik berkelajuan tinggi
+                const prosesFail = [
+                    bacaFailSebagaiBase64(document.getElementById('failMK').files[0], "MK"),
+                    bacaFailSebagaiBase64(document.getElementById('failJST').files[0], "JST"),
+                    bacaFailSebagaiBase64(document.getElementById('failTugasan').files[0], "Tugasan"),
+                    bacaFailSebagaiBase64(document.getElementById('failRubrik').files[0], "Rubrik"),
+                    bacaFailSebagaiBase64(document.getElementById('failSME').files[0], "SME"),
+                    bacaFailSebagaiBase64(document.getElementById('failJSU').files[0], "JSU")
+                ];
+
+                const failArrayBelumTapis = await Promise.all(prosesFail);
+                const failArray = failArrayBelumTapis.filter(fail => fail !== null);
+
+                // Membina Objek Payload untuk dihantar ke Server (Apps Script)
+                const payload = {
+                    jabatan: document.getElementById('jabatan').value.trim(),
+                    namaPensyarah: document.getElementById('namaPensyarah').value.trim(),
+                    kodKursus: document.getElementById('kodKursus').value.trim().toUpperCase(),
+                    namaKursus: document.getElementById('namaKursus').value.trim(),
+                    failArray: failArray
+                };
+
+                // Panggilan API POST (Interaksi dengan Google Apps Script)
+                const response = await fetch(APPS_SCRIPT_URL, {
+                    method: "POST",
+                    body: JSON.stringify(payload)
                 });
-            };
-            reader.onerror = error => reject(error);
-            reader.readAsDataURL(file);
-        });
-    };
+                
+                const result = await response.json();
 
-    document.getElementById('uploadForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        const statusDiv = document.getElementById('status-message');
-        const btnHantar = document.getElementById('btnHantar');
+                if (result.status === "success") {
+                    showToast(result.mesej, "success");
+                    document.getElementById('uploadForm').reset();
+                    // Reset warna border kembali kepada asal selepas berjaya
+                    requiredInputs.forEach(input => input.style.borderColor = 'var(--border-color)');
+                } else {
+                    showToast(result.mesej, "error");
+                }
 
-        // Mengunci butang semasa memproses
-        btnHantar.innerText = "Mengekod & Memuat Naik... Sila Tunggu";
-        btnHantar.disabled = true;
-        statusDiv.innerHTML = "Memproses fail bahan, ini mungkin mengambil masa sebentar...";
-        statusDiv.className = "";
-
-        try {
-            // Membina tatasusunan (array) proses Promise secara serentak
-            const prosesFail = [
-                bacaFailSebagaiBase64(document.getElementById('failMK').files[0], "MK"),
-                bacaFailSebagaiBase64(document.getElementById('failJST').files[0], "JST"),
-                bacaFailSebagaiBase64(document.getElementById('failTugasan').files[0], "Tugasan"),
-                bacaFailSebagaiBase64(document.getElementById('failRubrik').files[0], "Rubrik"),
-                bacaFailSebagaiBase64(document.getElementById('failSME').files[0], "SME"),
-                bacaFailSebagaiBase64(document.getElementById('failJSU').files[0], "JSU")
-            ];
-
-            // Menunggu semua penukaran fail selesai
-            const failArrayBelumTapis = await Promise.all(prosesFail);
-            
-            // Menapis null (JSU jika tidak dimuat naik) untuk membersihkan Payload
-            const failArray = failArrayBelumTapis.filter(fail => fail !== null);
-
-            // Membina struktur Payload akhir
-            const payload = {
-                namaPensyarah: document.getElementById('namaPensyarah').value,
-                kodKursus: document.getElementById('kodKursus').value.trim().toUpperCase(),
-                failArray: failArray
-            };
-
-            // Menghantar data ke API Apps Script
-            const response = await fetch(APPS_SCRIPT_URL, {
-                method: "POST",
-                body: JSON.stringify(payload)
-            });
-            
-            const result = await response.json();
-
-            if (result.status === "success") {
-                statusDiv.innerHTML = `<span class="success">${result.mesej}</span>`;
-                document.getElementById('uploadForm').reset();
-            } else {
-                statusDiv.innerHTML = `<span class="error">${result.mesej}</span>`;
+            } catch (error) {
+                // Pengendalian Ralat Rangkaian / API (Edge Case Handling)
+                showToast(`Ralat Sambungan: ${error.message}`, "error");
+            } finally {
+                // Memulihkan antaramuka pengguna selepas proses tamat (berjaya mahupun ralat)
+                btnHantar.innerText = "Sahkan & Muat Naik Bahan";
+                btnHantar.disabled = false;
             }
-
-        } catch (error) {
-            statusDiv.innerHTML = `<span class="error">Ralat proses/sambungan: ${error.message}</span>`;
-        } finally {
-            // Memulihkan butang
-            btnHantar.innerText = "Muat Naik Semua Bahan";
-            btnHantar.disabled = false;
-        }
-    });
-</script>
+        });
+    </script>
 </body>
 </html>
