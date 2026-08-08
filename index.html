@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Pemeriksa Dalam (PD) | Fasa Perancangan IPG</title>
+    <title>Portal Pemeriksa Dalam (PD) | IPGM (Kemaskini Ogos 2026)</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
@@ -65,6 +65,10 @@
         .hero { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; min-height: 25vh; padding-top: 100px; padding-bottom: 1rem; }
         .hero h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
         .hero p { font-size: 1.1rem; color: var(--text-secondary); max-width: 650px; margin-bottom: 1.5rem; }
+        
+        .tab-container { display: flex; justify-content: center; gap: 1rem; margin-bottom: 1.5rem; }
+        .tab-btn { padding: 0.8rem 1.8rem; border-radius: 8px; font-weight: 600; cursor: pointer; border: 1px solid var(--border-color); background: var(--surface-color); color: var(--text-secondary); transition: var(--transition); }
+        .tab-btn.active { background: var(--primary-color); color: white; border-color: var(--primary-color); box-shadow: var(--shadow); }
 
         .btn { padding: 0.8rem 1.8rem; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; font-size: 0.95rem; transition: var(--transition); }
         .btn-primary { background: var(--primary-color); color: white; }
@@ -80,7 +84,7 @@
 
         .form-group { margin-bottom: 1.2rem; }
         label { display: block; margin-bottom: 0.4rem; font-weight: 600; font-size: 0.95rem; }
-        input[type="text"], input[type="file"], input[type="password"], textarea, select { width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-color); color: var(--text-primary); transition: var(--transition); font-family: inherit;}
+        input[type="text"], input[type="email"], input[type="date"], input[type="file"], input[type="password"], textarea, select { width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-color); color: var(--text-primary); transition: var(--transition); font-family: inherit;}
         input:focus, textarea:focus, select:focus { outline: none; border-color: var(--primary-color); }
 
         .controls { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
@@ -101,7 +105,7 @@
 
         .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8); z-index: 10000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); backdrop-filter: blur(4px); }
         .modal-overlay.active { opacity: 1; visibility: visible; }
-        .modal-box { background: var(--bg-color); width: 95%; max-width: 1000px; height: 90vh; border-radius: 12px; display: flex; flex-direction: column; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); transform: translateY(20px); transition: var(--transition); border: 1px solid var(--border-color); }
+        .modal-box { background: var(--bg-color); width: 95%; max-width: 1050px; height: 92vh; border-radius: 12px; display: flex; flex-direction: column; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); transform: translateY(20px); transition: var(--transition); border: 1px solid var(--border-color); }
         .modal-overlay.active .modal-box { transform: translateY(0); }
         .modal-header { padding: 1.5rem 2rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background: var(--surface-color); border-radius: 12px 12px 0 0; }
         .modal-header h2 { font-size: 1.2rem; color: var(--primary-color); }
@@ -159,11 +163,17 @@
 
     <section class="hero" id="home">
         <h1>Sistem Verifikasi Pentaksiran Berterusan</h1>
-        <p>Portal Semakan Dokumen & Laporan PD IPG (Fasa Perancangan):</p>
+        <p>Borang Verifikasi Penjaminan Kualiti IPGM (Kemaskini Ogos 2026):</p>
     </section>
 
-    <!-- BORANG FASA PERANCANGAN -->
-    <section id="muatnaik">
+    <!-- TAB SWITCHER -->
+    <div class="tab-container">
+        <button class="tab-btn active" id="btnTab1" onclick="tukarFasa(1)">Fasa 1: Perancangan</button>
+        <button class="tab-btn" id="btnTab2" onclick="tukarFasa(2)">Fasa 2: Selepas Moderasi</button>
+    </div>
+
+    <!-- BORANG FASA 1 (PERANCANGAN) -->
+    <section id="seksyenFasa1">
         <div class="form-container">
             <h2 style="text-align: center; margin-bottom: 1.5rem; color: var(--primary-color);">Penyerahan Bahan (Fasa Perancangan)</h2>
             <form id="formFasa1" novalidate>
@@ -177,7 +187,7 @@
                         <div class="form-group" style="background: var(--warning-bg); padding: 15px; border-radius: 8px; border: 1px solid var(--warning-text); margin-top: 1rem;">
                             <label style="color: var(--warning-text);">🔐 Kunci Rahsia (PIN / ID Staf):</label>
                             <input type="password" id="pin1" required placeholder="Cth: 123456" style="border-color: var(--warning-text);">
-                            <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 5px;">* PIN ini diperlukan untuk membaca Laporan PD SULIT.</p>
+                            <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 5px;">* PIN ini diperlukan untuk pengesahan & membaca Laporan Audit SULIT.</p>
                         </div>
                     </div>
                     <div class="form-column">
@@ -195,10 +205,44 @@
         </div>
     </section>
 
+    <!-- BORANG FASA 2 (SELEPAS MODERASI) -->
+    <section id="seksyenFasa2" style="display: none;">
+        <div class="form-container">
+            <h2 style="text-align: center; margin-bottom: 1.5rem; color: #059669;">Penyerahan Bahan (Fasa Selepas Moderasi)</h2>
+            <form id="formFasa2" novalidate>
+                <div class="form-grid-layout">
+                    <div class="form-column">
+                        <h3 class="column-title" style="color: #059669;">A. Maklumat Asas & Kawalan</h3>
+                        <div class="form-group"><label>Jabatan:</label><input type="text" id="jabatan2" required placeholder="Cth: Jabatan Pengajian Melayu"></div>
+                        <div class="form-group"><label>Nama Pensyarah:</label><input type="text" id="pensyarah2" required placeholder="Cth: Dr. Ahmad Hakimi"></div>
+                        <div class="form-group"><label>Emel Pensyarah:</label><input type="email" id="emel2" required placeholder="pensyarah@ipg.edu.my"></div>
+                        <div class="form-group"><label>Kod Kursus:</label><input type="text" id="kod2" required placeholder="Cth: BMMB3013" style="text-transform: uppercase;"></div>
+                        <div class="form-group"><label>Nama Kursus:</label><input type="text" id="namaKursus2" required placeholder="Cth: Kesusasteraan Melayu"></div>
+                        <div class="form-group"><label>Tarikh Taklimat PB Pelajar:</label><input type="date" id="taklimat2" required></div>
+                        <div class="form-group"><label>Tarikh Akhir Verifikasi PD:</label><input type="date" id="tarikhAkhir2" required></div>
+                        <div class="form-group" style="background: var(--warning-bg); padding: 15px; border-radius: 8px; border: 1px solid var(--warning-text);">
+                            <label style="color: var(--warning-text);">🔐 Kunci Rahsia (PIN / ID Staf):</label>
+                            <input type="password" id="pin2" required placeholder="Cth: 123456" style="border-color: var(--warning-text);">
+                        </div>
+                    </div>
+                    <div class="form-column">
+                        <h3 class="column-title" style="color: #059669;">B. Muat Naik Instrumen</h3>
+                        <div class="form-group"><label>1. Sampel Tugasan & Komen Pensyarah:</label><input type="file" id="failSampel" required accept=".pdf,.doc,.docx"></div>
+                        <div class="form-group"><label>2. Borang Markah PB (LAM PT04-01):</label><input type="file" id="failLAM1" required accept=".pdf,.doc,.docx,.xls,.xlsx"></div>
+                        <div class="form-group"><label>3. Borang Moderasi (LAM PT04-02):</label><input type="file" id="failLAM2" required accept=".pdf,.doc,.docx"></div>
+                        <div class="form-group"><label>4. Laporan Panel (LAM PT04-03):</label><input type="file" id="failLAM3" required accept=".pdf,.doc,.docx"></div>
+                        <div class="form-group"><label>5. Laporan Kes Gagal (LAM PT04-04) (Pilihan):</label><input type="file" id="failLAM4" accept=".pdf,.doc,.docx"></div>
+                    </div>
+                </div>
+                <button type="submit" id="btnHantar2" class="btn btn-primary" style="background: #059669; width: 100%; padding: 1rem;">Sahkan & Muat Naik Bahan Fasa 2</button>
+            </form>
+        </div>
+    </section>
+
     <!-- PAPAN PEMUKA AUDIT -->
     <section id="papanpemuka">
         <h2 style="text-align: center; margin-bottom: 0.5rem;">Papan Pemuka Status Semakan PD</h2>
-        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">Laporan PD diklasifikasikan sebagai <strong>SULIT</strong>.</p>
+        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">Laporan Audit Akademik diklasifikasikan sebagai <strong>SULIT</strong>.</p>
 
         <div class="controls">
             <input type="text" id="searchInput" class="search-box" placeholder="Cari Kod Kursus, Nama Kursus atau Pensyarah..." onkeyup="tapisData()">
@@ -212,7 +256,7 @@
                         <th style="width: 12%;">Status Audit</th>
                         <th style="width: 18%;">Kod & Kursus</th>
                         <th style="width: 20%;">Pensyarah / Jabatan</th>
-                        <th style="width: 50%;">Akses Laporan PD (Cell M)</th>
+                        <th style="width: 50%;">Tindakan Verifikasi PD</th>
                     </tr>
                 </thead>
                 <tbody id="jadualData">
@@ -230,11 +274,11 @@
         <div class="faq-container">
             <div class="faq-item">
                 <button class="faq-question" onclick="toggleFAQ(this)">
-                    <span>Daripada manakah Laporan PD dibaca?</span>
+                    <span>Apakah kandungan Laporan PD?</span>
                     <span class="faq-icon">+</span>
                 </button>
                 <div class="faq-answer">
-                    <p>Laporan PD dibaca secara terus daripada <strong>Cell M (Lajur 13)</strong> di dalam pangkalan data Google Sheets anda.</p>
+                    <p>Laporan PD mengandungi analisis menyeluruh terhadap dokumen pentaksiran berterusan yang dimuat naik (MK, JST, Soalan, Rubrik, dan SME). Ia memaparkan Ringkasan Eksekutif, Senarai Semak Verifikasi, Analisis Penjajaran Konstruktif berserta Kemahiran Insaniah (KI), dan Perakuan Final Panel Audit.</p>
                 </div>
             </div>
 
@@ -353,7 +397,8 @@
 
     <script>
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyjvVuuxBEdEN-6AwxbNj5wnq8xpuA4qQs7aSa7ntnh607vd3ixim6GPa9oZT9mUMCA/exec";
-        let senaraiRekod = [];
+        let fasaAktif = 1;
+        let senaraiFasa1 = [], senaraiFasa2 = [];
         let kodSemasa = "";
 
         const soalanFasa1 = [
@@ -390,6 +435,25 @@
             { id: 31, soalan: "Adakah skema pemarkahan/rubrik yang disediakan dengan kriteria/deskriptor dapat mengukur Value Based Education (VBE)?", opsi: ["Kriteria/deskriptor dapat menilai aras kemahiran insaniah dengan tepat.", "Tidak Berkenaan.", "Kriteria/deskriptor terlalu umum.", "Kriteria/deskriptor tidak disediakan.", "Kriteria/deskriptor tidak menjurus kepada soalan tugasan PB.", "Kriteria/deskriptor tidak menilai aras kemahiran insaniah dengan tepat."] }
         ];
 
+        const soalanFasa2 = [
+            { id: 1, soalan: "Adakah pelajar menerima arahan tentang pentaksiran berterusan (PB) daripada pensyarah.", opsi: ["Ya", "Tidak"] },
+            { id: 2, soalan: "Adakah pemilihan sampel dan penyelarasan skema pemarkahan dan rubrik telah dilaksanakan? (sekiranya 2 atau lebih pemeriksa).", opsi: ["Telah dilaksanakan.", "Tidak dilaksanakan.", "Tidak berkenaan (hanya seorang pemeriksa)."] },
+            { id: 3, soalan: "Adakah tugasan PB disemak oleh pensyarah berdasarkan skema pemarkahan dan rubrik yang disediakan?", opsi: ["YA", "TIDAK"] },
+            { id: 4, soalan: "Adakah pemeriksa memberi maklum balas dalam hasil tugasan pelajar?", opsi: ["Memberi maklum balas yang konstruktif dalam hasil tugasan pelajar.", "Maklum balas diberikan pada beberapa muka surat sahaja.", "Tiada maklum balas pada hasil tugasan pelajar.", "Memberi maklum balas yang tidak konstruktif", "Maklum balas tidak menepati rubrik pemarkahan.", "Memberi maklum balas yang terlalu ringkas secara berulang kali."] },
+            { id: 5, soalan: "Adakah terdapat bukti pemeriksa memberi maklum balas kepada pelajar secara individu/kumpulan?", opsi: ["Terdapat tandatangan pelajar pada ruang/borang yang disediakan sebagai bukti pelajar menerima maklum balas daripada pemeriksa.", "Tiada bukti pemeriksa memberi maklum balas kepada pelajar."] },
+            { id: 6, soalan: "Adakah Borang Rekod Penyelarasan Markah Pentaksiran Berterusan (BRPMPB) sebelum pemeriksaan diisi dengan lengkap?", opsi: ["YA", "Tidak", "Tidak Berkenaan"] },
+            { id: 7, soalan: "Adakah pemilihan sampel hasil tugasan mengikut bilangan pemeriksa yang ditetapkan dalam BPP IPGM terkini?", opsi: ["Pemilihan sampel hasil tugasan adalah mengikut bilangan pemeriksa seperti yang ditetapkan dalam BPP IPGM yang terkini.", "Tidak memilih sampel hasil tugasan dari setiap pemeriksa.", "Tidak Berkenaan"] },
+            { id: 8, soalan: "Adakah pemeriksa menggunakan warna pen yang BETUL semasa proses moderasi markah PB dilaksanakan?", opsi: ["Ya", "Tidak", "Tidak Berkenaan"] },
+            { id: 9, soalan: "Adakah Ketua Pemeriksa mengisi markah sampel dalam Borang Moderasi (LAM-PT-04-02) selepas tamat proses moderasi?", opsi: ["Borang Moderasi Pentaksiran Berterusan telah diisi dengan lengkap.", "Tidak mengisi markah sampel dalam Borang Moderasi Pentaksiran Berterusan.", "Borang Moderasi Pentaksiran Berterusan tidak diisi dengan lengkap.", "Borang Moderasi Pentaksiran Berterusan telah diisi dengan lengkap. Pemindahan markah dalam Borang LAM-PT-04-02 tidak tepat.", "Tidak Berkenaan."] },
+            { id: 10, soalan: "Adakah KP telah memilih 9 tugasan (3 tinggi, 3 sederhana, 3 rendah) ATAU 1 sampel/pemeriksa sekiranya >9 pemeriksa?", opsi: ["Ketua Pemeriksa telah memilih sampel tugasan seperti ketetapan dalam BPP terkini.", "Pemilihan bilangan tugasan adalah tidak tepat.", "Sampel yang dipilih tidak mewakili semua pemeriksa/Ketua Pemeriksa."] },
+            { id: 11, soalan: "Adakah markah persetujuan skrip amat cemerlang dinyatakan dengan jelas?", opsi: ["Markah persetujuan skrip amat cemerlang dinyatakan dengan jelas di muka hadapan dengan menggunakan pen hijau.", "Markah persetujuan bagi skrip amat cemerlang tidak dinyatakan dengan jelas.", "Tidak berkenaan."] },
+            { id: 12, soalan: "Adakah Borang Markah PB (LAM-PT-04-01) diisi lengkap dan tepat oleh KP/pemeriksa dan disemak oleh KJA?", opsi: ["Borang LAM-PT-04-01 telah diisi oleh KP/pemeriksa dan disahkan oleh KJA.", "Borang LAM-PT-04-01 telah diisi oleh KP/pemeriksa tetapi tidak disahkan oleh KJA.", "Borang LAM-PT-04-01 tiada pembahagian HPP/HP mengikut MK.", "Markah dalam Borang LAM-PT-04-01 tidak diisi kepada satu tempat perpuluhan."] },
+            { id: 13, soalan: "Adakah Borang Moderasi (LAM-PT-04-02) diisi oleh panel moderasi dan disahkan oleh Ketua Pemeriksa?", opsi: ["Borang Moderasi (LAM-PT-04-02) telah diisi oleh panel moderasi dan disahkan oleh Ketua Pemeriksa.", "Panel Moderasi tidak mengisi Borang Moderasi (LAM-PT-04-02).", "Tidak Berkenaan."] },
+            { id: 14, soalan: "Adakah pemeriksa memberi justifikasi dalam Borang Laporan Panel Pemeriksa PB (LAM PT-04-03) bagi taburan markah PB?", opsi: ["Ya", "Tidak"] },
+            { id: 15, soalan: "Adakah Borang Laporan Kes Gagal/Amat Cemerlang (LAM-PT-04-04) diisi oleh pemeriksa dan disahkan oleh KP?", opsi: ["Borang LAM-PT-04-04 telah diisi oleh pemeriksa dan disahkan oleh KP.", "Borang LAM-PT-04-04 telah diisi oleh pemeriksa tetapi tidak disahkan oleh KP.", "Borang LAM-PT-04-04 tidak disediakan.", "Tidak berkenaan."] },
+            { id: 16, soalan: "Adakah taburan markah PB merentasi tiga gred dan dua kategori gred (Cth: A, A- dan B) dan tidak terlalu pencong?", opsi: ["Ya", "Tidak"] }
+        ];
+
         function padamLoader() {
             const loader = document.getElementById('loader');
             if (loader) {
@@ -424,9 +488,18 @@
             if (!isActive) faqItem.classList.add('active');
         }
 
+        function tukarFasa(fasa) {
+            fasaAktif = fasa;
+            document.getElementById('btnTab1').classList.toggle('active', fasa === 1);
+            document.getElementById('btnTab2').classList.toggle('active', fasa === 2);
+            document.getElementById('seksyenFasa1').style.display = (fasa === 1) ? 'block' : 'none';
+            document.getElementById('seksyenFasa2').style.display = (fasa === 2) ? 'block' : 'none';
+            paparkanJadual(fasa === 1 ? senaraiFasa1 : senaraiFasa2);
+        }
+
         function bukaBorangChecklistPD(kod) {
             kodSemasa = kod;
-            document.getElementById('checklistTitle').innerText = `Borang Verifikasi Penjaminan Kualiti PD (Admin) : ${kod}`;
+            document.getElementById('checklistTitle').innerText = `Borang Verifikasi Penjaminan Kualiti PD (Admin) : ${kod} (Fasa ${fasaAktif})`;
             document.getElementById('pinInputAdminPD').value = "";
             document.getElementById('kekuatanPDVal').value = "";
             document.getElementById('kelemahanPDVal').value = "";
@@ -435,7 +508,8 @@
             const tbody = document.getElementById('checklistTableBody');
             tbody.innerHTML = "";
             
-            soalanFasa1.forEach((item, idx) => {
+            const listSoalan = (fasaAktif === 1) ? soalanFasa1 : soalanFasa2;
+            listSoalan.forEach((item, idx) => {
                 let optionsHTML = `<option value="">-- Sila Pilih Status --</option>`;
                 item.opsi.forEach(opt => {
                     optionsHTML += `<option value="${opt}">${opt}</option>`;
@@ -464,9 +538,10 @@
             const adminPin = document.getElementById('pinInputAdminPD').value.trim();
             if (!adminPin) return showToast("Sila masukkan Kunci Pentadbiran (Admin Master PIN)!", "error");
 
+            const listSoalan = (fasaAktif === 1) ? soalanFasa1 : soalanFasa2;
             let itemBelumDitanda = [];
 
-            soalanFasa1.forEach((item, idx) => {
+            listSoalan.forEach((item, idx) => {
                 const selectElem = document.getElementById(`select_status_${idx}`);
                 const rowElem = document.getElementById(`row_item_${idx}`);
                 
@@ -488,7 +563,7 @@
             btnSimpan.disabled = true;
 
             const senaraiSemakData = [];
-            soalanFasa1.forEach((item, idx) => {
+            listSoalan.forEach((item, idx) => {
                 const statusVal = document.getElementById(`select_status_${idx}`).value;
                 const catatanVal = document.getElementById(`catatan_${idx}`).value.trim();
                 senaraiSemakData.push({ perkara: item.soalan, status: statusVal, catatan: catatanVal });
@@ -496,7 +571,7 @@
 
             const payload = {
                 action: "simpanVerifikasiPD",
-                fasa: 1,
+                fasa: fasaAktif,
                 kodKursus: kodSemasa,
                 adminPin: adminPin,
                 senaraiSemak: senaraiSemakData,
@@ -554,7 +629,7 @@
             btn.disabled = true;
 
             try {
-                const payload = { action: "bacaLaporan", fasa: 1, kodKursus: kod, kunciRahsia: pin };
+                const payload = { action: "bacaLaporan", fasa: fasaAktif, kodKursus: kod, kunciRahsia: pin };
                 const response = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
                 const result = await response.json();
 
@@ -591,7 +666,7 @@
             });
         };
 
-        // MUAT NAIK FORM FASA PERANCANGAN
+        // MUAT NAIK FORM FASA 1
         document.getElementById('formFasa1').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btnHantar = document.getElementById('btnHantar1');
@@ -638,6 +713,55 @@
             }
         });
 
+        // MUAT NAIK FORM FASA 2
+        document.getElementById('formFasa2').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btnHantar = document.getElementById('btnHantar2');
+            btnHantar.innerText = "Memproses...";
+            btnHantar.disabled = true;
+
+            try {
+                const prosesFail = [
+                    bacaFailSebagaiBase64(document.getElementById('failSampel').files[0], "Sampel"),
+                    bacaFailSebagaiBase64(document.getElementById('failLAM1').files[0], "LAM1"),
+                    bacaFailSebagaiBase64(document.getElementById('failLAM2').files[0], "LAM2"),
+                    bacaFailSebagaiBase64(document.getElementById('failLAM3').files[0], "LAM3"),
+                    bacaFailSebagaiBase64(document.getElementById('failLAM4').files[0], "LAM4")
+                ];
+
+                const failArray = (await Promise.all(prosesFail)).filter(f => f !== null);
+
+                const payload = {
+                    action: "uploadFasa2",
+                    jabatan: document.getElementById('jabatan2').value.trim(),
+                    namaPensyarah: document.getElementById('pensyarah2').value.trim(),
+                    emelPensyarah: document.getElementById('emel2').value.trim(),
+                    kodKursus: document.getElementById('kod2').value.trim().toUpperCase(),
+                    namaKursus: document.getElementById('namaKursus2').value.trim(),
+                    tarikhTaklimat: document.getElementById('taklimat2').value,
+                    tarikhAkhir: document.getElementById('tarikhAkhir2').value,
+                    kunciRahsia: document.getElementById('pin2').value.trim(),
+                    failArray: failArray
+                };
+
+                const response = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
+                const result = await response.json();
+
+                if (result.status === "success") {
+                    showToast(result.mesej, "success");
+                    document.getElementById('formFasa2').reset();
+                    muatTarikData();
+                } else {
+                    showToast(result.mesej, "error");
+                }
+            } catch (error) {
+                showToast(`Ralat: ${error.message}`, "error");
+            } finally {
+                btnHantar.innerText = "Sahkan & Muat Naik Bahan Fasa 2";
+                btnHantar.disabled = false;
+            }
+        });
+
         async function muatTarikData() {
             const tbody = document.getElementById('jadualData');
             tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Memuatkan data pangkalan pelayan...</td></tr>';
@@ -647,8 +771,9 @@
                 const data = await response.json();
 
                 if (data.status === "success") {
-                    senaraiRekod = data.fasa1 ? data.fasa1.reverse() : (data.rekod ? data.rekod.reverse() : []);
-                    paparkanJadual(senaraiRekod);
+                    senaraiFasa1 = data.fasa1 ? data.fasa1.reverse() : [];
+                    senaraiFasa2 = data.fasa2 ? data.fasa2.reverse() : [];
+                    paparkanJadual(fasaAktif === 1 ? senaraiFasa1 : senaraiFasa2);
                 } else {
                     tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Tiada rekod penyerahan ditemui.</td></tr>';
                 }
@@ -664,7 +789,7 @@
             tbody.innerHTML = '';
 
             if (!dataArray || dataArray.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Tiada rekod penyerahan.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Tiada rekod penyerahan bagi fasa ini.</td></tr>';
                 return;
             }
 
@@ -697,7 +822,8 @@
 
         function tapisData() {
             const kataKunci = document.getElementById('searchInput').value.toLowerCase();
-            const hasilTapis = senaraiRekod.filter(r => 
+            const sumber = fasaAktif === 1 ? senaraiFasa1 : senaraiFasa2;
+            const hasilTapis = sumber.filter(r => 
                 r.kodKursus.toLowerCase().includes(kataKunci) ||
                 r.namaKursus.toLowerCase().includes(kataKunci) ||
                 r.namaPensyarah.toLowerCase().includes(kataKunci) ||
