@@ -46,7 +46,12 @@
         ul { list-style: none; }
         section { padding: 2rem 8%; }
         
-        #loader { position: fixed; inset: 0; background: var(--bg-color); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s; }
+        #loader { 
+            position: fixed; inset: 0; background: var(--bg-color); z-index: 9999; 
+            display: flex; justify-content: center; align-items: center; 
+            transition: opacity 0.4s ease, visibility 0.4s ease; 
+        }
+        #loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
         .spinner { width: 50px; height: 50px; border: 5px solid var(--border-color); border-top-color: var(--primary-color); border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
@@ -57,11 +62,10 @@
         .nav-links li a { font-weight: 600; font-size: 0.95rem; }
         .theme-toggle { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--text-primary); }
 
-        .hero { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; min-height: 30vh; padding-top: 100px; padding-bottom: 1rem; }
+        .hero { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; min-height: 25vh; padding-top: 100px; padding-bottom: 1rem; }
         .hero h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
         .hero p { font-size: 1.1rem; color: var(--text-secondary); max-width: 650px; margin-bottom: 1.5rem; }
         
-        /* SISTEM TAB NAVIGASI FASA 1 & FASA 2 */
         .tab-container { display: flex; justify-content: center; gap: 1rem; margin-bottom: 1.5rem; }
         .tab-btn { padding: 0.8rem 1.8rem; border-radius: 8px; font-weight: 600; cursor: pointer; border: 1px solid var(--border-color); background: var(--surface-color); color: var(--text-secondary); transition: var(--transition); }
         .tab-btn.active { background: var(--primary-color); color: white; border-color: var(--primary-color); box-shadow: var(--shadow); }
@@ -69,8 +73,6 @@
         .btn { padding: 0.8rem 1.8rem; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; font-size: 0.95rem; transition: var(--transition); }
         .btn-primary { background: var(--primary-color); color: white; }
         .btn-primary:hover { background: var(--primary-hover); }
-
-        #muatnaik { padding-top: 1rem; }
 
         .form-container { max-width: 1000px; margin: 0 auto; background: var(--surface-color); padding: 2rem; border-radius: 12px; box-shadow: var(--shadow); border: 1px solid var(--border-color); }
         .form-grid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
@@ -82,13 +84,12 @@
 
         .form-group { margin-bottom: 1.2rem; }
         label { display: block; margin-bottom: 0.4rem; font-weight: 600; font-size: 0.95rem; }
-        input[type="text"], input[type="email"], input[type="date"], input[type="file"], input[type="password"] { width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-color); color: var(--text-primary); transition: var(--transition); }
-        input:focus { outline: none; border-color: var(--primary-color); }
+        input[type="text"], input[type="email"], input[type="date"], input[type="file"], input[type="password"], textarea, select { width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-color); color: var(--text-primary); transition: var(--transition); font-family: inherit;}
+        input:focus, textarea:focus, select:focus { outline: none; border-color: var(--primary-color); }
 
         .controls { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
         .search-box { flex: 1; min-width: 250px; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--surface-color); color: var(--text-primary); }
         .btn-refresh { background: var(--primary-color); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: var(--transition); }
-        .btn-refresh:hover { background: var(--primary-hover); }
 
         .table-container { background: var(--surface-color); border-radius: 12px; box-shadow: var(--shadow); overflow-x: auto; border: 1px solid var(--border-color); }
         table.main-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.92rem; }
@@ -98,15 +99,9 @@
         .badge-status { padding: 0.35rem 0.75rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 600; display: inline-block; white-space: nowrap; }
         .badge-success { background-color: var(--success-bg); color: var(--success-text); }
         .badge-warning { background-color: var(--warning-bg); color: var(--warning-text); }
-        .pending-text { color: var(--text-secondary); font-style: italic; }
 
-        .btn-secure-read {
-            background: rgba(37, 99, 235, 0.1); color: var(--primary-color);
-            border: 1px solid var(--primary-color); padding: 0.5rem 1rem;
-            border-radius: 6px; cursor: pointer; font-size: 0.85rem;
-            font-weight: 600; transition: var(--transition); display: inline-flex; align-items: center; gap: 6px;
-        }
-        .btn-secure-read:hover { background: var(--primary-color); color: white; }
+        .btn-action { padding: 0.4rem 0.8rem; font-size: 0.8rem; border-radius: 6px; border: 1px solid var(--primary-color); background: rgba(37,99,235,0.1); color: var(--primary-color); cursor: pointer; font-weight: 600; margin-right: 5px; margin-bottom: 5px;}
+        .btn-action:hover { background: var(--primary-color); color: white; }
 
         .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8); z-index: 10000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); backdrop-filter: blur(4px); }
         .modal-overlay.active { opacity: 1; visibility: visible; }
@@ -117,7 +112,12 @@
         .close-btn { background: var(--error-bg); color: var(--error-text); border: none; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-weight: bold; font-size: 1.2rem; transition: 0.2s; display: flex; justify-content: center; align-items: center; }
         .close-btn:hover { background: var(--error); color: white; }
         .modal-body { padding: 2rem; overflow-y: auto; background-color: var(--bg-color); flex-grow: 1; position: relative;}
-        
+
+        .checklist-table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; background: var(--surface-color); border-radius: 8px; overflow: hidden; }
+        .checklist-table th, .checklist-table td { border: 1px solid var(--border-color); padding: 10px 12px; font-size: 0.88rem; vertical-align: middle; }
+        .checklist-table th { background: var(--primary-color); color: white; text-align: left; }
+        .checklist-table tr.item-unselected { background-color: #fef2f2 !important; border: 1px solid #fca5a5; }
+
         .pin-overlay { position: absolute; inset: 0; background: var(--bg-color); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; padding: 2rem; text-align: center;}
         .pin-box { background: var(--surface-color); padding: 2rem; border-radius: 12px; box-shadow: var(--shadow); border: 1px solid var(--border-color); max-width: 400px; width: 100%;}
         .pin-box input { margin: 1rem 0; font-size: 1.2rem; text-align: center; letter-spacing: 2px;}
@@ -125,12 +125,9 @@
         .audit-report-content { font-size: 0.95rem; line-height: 1.7; color: var(--text-primary); display: none;}
         .audit-report-content h1, .audit-report-content h2, .audit-report-content h3 { margin-top: 1.5rem; margin-bottom: 0.8rem; color: var(--primary-color); border-bottom: 1px solid var(--border-color); padding-bottom: 0.3rem; font-size: 1.15rem; }
         .audit-report-content p { margin-bottom: 1rem; }
-        .audit-report-content ul, .audit-report-content ol { padding-left: 1.5rem; margin-bottom: 1rem; }
         .audit-report-content table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; background-color: var(--surface-color); box-shadow: var(--shadow); }
         .audit-report-content th, .audit-report-content td { border: 1px solid var(--border-color); padding: 12px 15px; text-align: left; vertical-align: top; }
         .audit-report-content th { background-color: var(--primary-color); color: white; font-weight: 600; }
-        .audit-report-content tr:nth-child(even) { background-color: rgba(0, 0, 0, 0.02); }
-        body.dark-mode .audit-report-content tr:nth-child(even) { background-color: rgba(255, 255, 255, 0.02); }
 
         .audit-status-patuh { background: var(--success-bg); color: var(--success-text); font-weight: 700; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem;}
         .audit-status-tdkpatuh { background: var(--error-bg); color: var(--error-text); font-weight: 700; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem;}
@@ -140,7 +137,7 @@
         .toast { padding: 0.9rem 1.3rem; border-radius: 8px; color: white; font-weight: 600; box-shadow: var(--shadow); transform: translateX(-120%); opacity: 0; transition: all 0.4s ease; }
         .toast.show { transform: translateX(0); opacity: 1; }
         .toast.success { background-color: var(--success-text); }
-        .toast.error { background-color: var(--error); }
+        .toast.error { background-color: var(--error-text); }
     </style>
 </head>
 <body>
@@ -159,7 +156,7 @@
 
     <section class="hero" id="home">
         <h1>Sistem Verifikasi Pentaksiran Berterusan</h1>
-        <p>Pilih fasa verifikasi di bawah untuk muat naik bahan pentaksiran ke dalam folder bersarang Google Drive secara automatik:</p>
+        <p>Pilih fasa di bawah untuk muat naik bahan atau borang verifikasi senarai semak PD:</p>
     </section>
 
     <!-- TAB SWITCHER -->
@@ -183,11 +180,11 @@
                         <div class="form-group" style="background: var(--warning-bg); padding: 15px; border-radius: 8px; border: 1px solid var(--warning-text); margin-top: 1rem;">
                             <label style="color: var(--warning-text);">🔐 Kunci Rahsia (PIN / ID Staf):</label>
                             <input type="password" id="pin1" required placeholder="Cth: 123456" style="border-color: var(--warning-text);">
-                            <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 5px;">* PIN ini diperlukan untuk membaca Laporan Audit SULIT kelak.</p>
+                            <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 5px;">* PIN ini diperlukan untuk pengesahan & membaca Laporan Audit SULIT.</p>
                         </div>
                     </div>
                     <div class="form-column">
-                        <h3 class="column-title">B. Muat Naik Instrumen (Subfolder: Fasa_Perancangan)</h3>
+                        <h3 class="column-title">B. Muat Naik Instrumen</h3>
                         <div class="form-group"><label>1. Maklumat Kursus (MK):</label><input type="file" id="failMK" required accept=".pdf,.doc,.docx"></div>
                         <div class="form-group"><label>2. Jadual Spesifikasi Tugasan (JST):</label><input type="file" id="failJST" required accept=".pdf,.doc,.docx,.xls,.xlsx"></div>
                         <div class="form-group"><label>3. Soalan Tugasan:</label><input type="file" id="failTugasan" required accept=".pdf,.doc,.docx"></div>
@@ -222,7 +219,7 @@
                         </div>
                     </div>
                     <div class="form-column">
-                        <h3 class="column-title" style="color: #059669;">B. Muat Naik Instrumen (Subfolder: Fasa_Selepas_Moderasi)</h3>
+                        <h3 class="column-title" style="color: #059669;">B. Muat Naik Instrumen</h3>
                         <div class="form-group"><label>1. Sampel Tugasan & Komen Pensyarah:</label><input type="file" id="failSampel" required accept=".pdf,.doc,.docx"></div>
                         <div class="form-group"><label>2. Borang Markah PB (LAM PT04-01):</label><input type="file" id="failLAM1" required accept=".pdf,.doc,.docx,.xls,.xlsx"></div>
                         <div class="form-group"><label>3. Borang Moderasi (LAM PT04-02):</label><input type="file" id="failLAM2" required accept=".pdf,.doc,.docx"></div>
@@ -252,25 +249,24 @@
                         <th style="width: 12%;">Status Audit</th>
                         <th style="width: 18%;">Kod & Kursus</th>
                         <th style="width: 20%;">Pensyarah / Jabatan</th>
-                        <th style="width: 50%;">Akses Laporan (SULIT)</th>
+                        <th style="width: 50%;">Tindakan Verifikasi PD</th>
                     </tr>
                 </thead>
                 <tbody id="jadualData">
-                    <tr><td colspan="4" style="text-align: center; color: var(--text-secondary);">Sedang memuatkan data pangkalan pelayan...</td></tr>
+                    <tr><td colspan="4" style="text-align: center; color: var(--text-secondary);">Sedang memuatkan data...</td></tr>
                 </tbody>
             </table>
         </div>
     </section>
 
-    <!-- TETINGKAP TIMBUL (MODAL) AKSES SELAMAT -->
+    <!-- MODAL 1: BACA LAPORAN SULIT -->
     <div class="modal-overlay" id="reportModal">
         <div class="modal-box">
             <div class="modal-header">
                 <h2 id="modalTitle">Kunci Rahsia Diperlukan</h2>
-                <button class="close-btn" onclick="tutupModalLaporan()">&times;</button>
+                <button class="close-btn" onclick="tutupModal('reportModal')">&times;</button>
             </div>
             <div class="modal-body">
-                
                 <div class="pin-overlay" id="pinOverlay">
                     <div class="pin-box">
                         <h3 style="color: var(--primary-color); margin-bottom: 10px;">🔐 Akses Laporan SULIT</h3>
@@ -282,8 +278,61 @@
                 </div>
 
                 <div class="audit-report-content" id="modalReportBody">
-                    <!-- Teks markdown HTML disuntik di sini -->
+                    <!-- Teks markdown disuntik di sini -->
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: BORANG DIGITAL SENARAI SEMAK VERIFIKASI PD -->
+    <div class="modal-overlay" id="checklistModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2 id="checklistTitle">Borang Senarai Semak Verifikasi PD</h2>
+                <button class="close-btn" onclick="tutupModal('checklistModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="background: var(--surface-color); padding: 1.2rem; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 1.5rem;">
+                    <label style="color: var(--primary-color);">🔐 Pengesahan PD: Masukkan Kunci Rahsia / PIN Kursus untuk Menyimpan Verifikasi:</label>
+                    <input type="password" id="pinInputPD" placeholder="Masukkan PIN Kursus..." style="margin-top: 5px;">
+                </div>
+
+                <form id="formChecklistPD" novalidate>
+                    <table class="checklist-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%;">Bil</th>
+                                <th style="width: 45%;">Perkara / Item Senarai Semak</th>
+                                <th style="width: 25%;">Status (Wajib Tanda)</th>
+                                <th style="width: 25%;">Catatan Audit</th>
+                            </tr>
+                        </thead>
+                        <tbody id="checklistTableBody">
+                            <!-- Senarai semak dinamik disuntik JS -->
+                        </tbody>
+                    </table>
+
+                    <div class="form-group" style="margin-top: 1.5rem;">
+                        <label>Ulasan Keseluruhan Panel PD:</label>
+                        <textarea id="ulasanPDVal" rows="3" placeholder="Masukkan ulasan keseluruhan verifikasi..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Cadangan Penambahbaikan:</label>
+                        <textarea id="cadanganPDVal" rows="2" placeholder="Masukkan cadangan penambahbaikan (jika ada)..."></textarea>
+                    </div>
+
+                    <div class="form-group" style="background: var(--warning-bg); padding: 15px; border-radius: 8px; border: 1px solid var(--warning-text);">
+                        <label style="color: var(--warning-text);">Perakuan Final Panel Audit:</label>
+                        <select id="perakuanPDVal" style="width: 100%; padding: 10px; margin-top: 5px; border-color: var(--warning-text);" required>
+                            <option value="[ / ] PATUH - Diluluskan tanpa syarat.">[ / ] PATUH - Diluluskan tanpa syarat.</option>
+                            <option value="[ / ] PATUH BERSYARAT - Diluluskan tertakluk pembetulan." selected>[ / ] PATUH BERSYARAT - Diluluskan tertakluk pembetulan.</option>
+                            <option value="[ / ] TIDAK PATUH - Perlu digubal semula dan diaudit semula.">[ / ] TIDAK PATUH - Perlu digubal semula dan diaudit semula.</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="margin-top: 1.5rem; padding: 1rem;" id="btnSimpanChecklist">Sahkan & Simpan Verifikasi PD</button>
+                </form>
             </div>
         </div>
     </div>
@@ -291,9 +340,60 @@
     <div id="toast-container"></div>
 
     <script>
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyjvVuuxBEdEN-6AwxbNj5wnq8xpuA4qQs7aSa7ntnh607vd3ixim6GPa9oZT9mUMCA/exec";
+        let fasaAktif = 1;
+        let senaraiFasa1 = [], senaraiFasa2 = [];
+        let kodSemasa = "";
+
+        // TATASUSUNAN 21 ITEM FASA 1 (BERSIH DARI AKSARA KORUP)
+        const senaraiSemakFasa1 = [
+          "Pensyarah menerima arahan yang jelas pelaksanaan pentaksiran berterusan daripada Ketua Jabatan Akademik / Penyelaras Pentaksiran Berterusan",
+          "JST yang disediakan mengikut format yang ditetapkan",
+          "Tempoh pelaksanaan pentaksiran berterusan sesuai dengan bentuk tugasan dan selaras dengan RMK/MK",
+          "Jam pembelajaran pelajar (JPP) sejajar dengan matriks hasil pembelajaran kursus dalam RMK/MK",
+          "Hasil pembelajaran kursus (HPK) sejajar dengan matriks hasil pembelajaran kursus dalam RMK/MK",
+          "Objektif tugasan memenuhi hasil pembelajaran kursus (HPK) yang telah ditetapkan dalam RMK/MK",
+          "Wajaran markah tugasan mengikut wajaran dalam RMK/MK",
+          "Aspek/ Kriteria penilaian dinyatakan dengan jelas untuk mentaksir tugasan yang diberikan",
+          "Tugasan mempunyai elemen-elemen Rangsangan, Soalan Tugasan, dan Arahan Pentadbiran",
+          "Kapasiti Pedagogi Pembelajaran Bermakna (Merungkai Standard, Merangkai Standard, Backward Design, Pelan 6C, MPP, MRP, 3E & 3R)",
+          "Tugasan yang disediakan mencapai Kemahiran Berfikir Aras Tinggi (KBAT) seperti yang dinyatakan dalam HPK",
+          "Domain kognitif yang dinyatakan dalam HPK diuji dalam tugasan",
+          "Domain psikomotor yang dinyatakan dalam HPK diuji dalam tugasan (jika berkenaan)",
+          "Domain afektif yang dinyatakan dalam HPK diuji dalam tugasan (jika berkenaan)",
+          "Domain kemahiran insaniah yang dinyatakan dalam HPK diuji dalam tugasan (jika berkenaan)",
+          "Soalan tugasan telah disemak oleh Pakar Bidang / Penyelaras Kursus / Pensyarah Kanan",
+          "Rubrik pemarkahan secara holistik / analitik disediakan selari dengan Jadual Spesifikasi Tugasan (JST) dan tugasan",
+          "Skema pemarkahan dan Rubrik yang disediakan mengandungi kriteria / deskriptor untuk mengukur domain kognitif",
+          "Skema pemarkahan dan Rubrik yang disediakan mengandungi kriteria / deskriptor untuk mengukur domain psikomotor (jika berkenaan)",
+          "Skema pemarkahan dan Rubrik yang disediakan mengandungi kriteria / deskriptor untuk mengukur domain afektif (jika berkenaan)",
+          "Skema pemarkahan dan Rubrik yang disediakan mengandungi kriteria / deskriptor untuk mengukur domain kemahiran insaniah (jika berkenaan)"
+        ];
+
+        // TATASUSUNAN 12 ITEM FASA 2 (BERSIH DARI AKSARA KORUP)
+        const senaraiSemakFasa2 = [
+          "Pelajar menerima taklimat pentaksiran berterusan daripada pensyarah",
+          "Pemilihan sampel dan penyelarasan skema pemarkahan dan rubrik dilaksanakan (sekiranya 2 @lebih pemeriksa)",
+          "Tugasan disemak oleh pensyarah berdasarkan skema pemarkahan dan rubrik pemarkahan yang disediakan",
+          "Pemeriksa memberi komen/ ulasan dalam hasil tugasan pelajar",
+          "Borang penyelarasan markah sebelum pemeriksaan diisi dengan lengkap (jika berkenaan)",
+          "Pemeriksaan dan proses moderasi markah pentaksiran berterusan dijalankan mengikut prosedur",
+          "Borang Moderasi (LAM PT04-02) diisi oleh panel moderasi dan ditandatangani oleh Ketua Pemeriksa",
+          "Penentuan markah akhir dibuat berdasarkan prosedur (Rujuk Buku Panduan Pentaksiran)",
+          "Borang markah pentaksiran berterusan (LAM PT04-01) diisi dengan lengkap dan tepat serta disemak oleh Ketua Jabatan Akademik",
+          "Taburan markah pentaksiran berterusan mestilah sekurang-kurangnya terdiri daripada tiga gred merentasi dua kategori gred (Justifikasi LAM PT04-03 jika sebaliknya)",
+          "Laporan Panel Pemeriksa Pentaksiran Berterusan (LAM PT04-03) disediakan dengan lengkap",
+          "Laporan Kes Gagal (LAM PT04-04) disediakan (jika ada)"
+        ];
+
+        function padamLoader() {
+            const loader = document.getElementById('loader');
+            if (loader) {
+                loader.classList.add('hidden');
+            }
+        }
+
         window.addEventListener('load', () => {
-            document.getElementById('loader').style.opacity = '0';
-            setTimeout(() => document.getElementById('loader').style.display = 'none', 500);
             muatTarikData();
         });
 
@@ -313,10 +413,6 @@
             setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 4000);
         }
 
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyjvVuuxBEdEN-6AwxbNj5wnq8xpuA4qQs7aSa7ntnh607vd3ixim6GPa9oZT9mUMCA/exec";
-        let fasaAktif = 1;
-        let senaraiFasa1 = [], senaraiFasa2 = [];
-
         function tukarFasa(fasa) {
             fasaAktif = fasa;
             document.getElementById('btnTab1').classList.toggle('active', fasa === 1);
@@ -325,6 +421,102 @@
             document.getElementById('seksyenFasa2').style.display = (fasa === 2) ? 'block' : 'none';
             paparkanJadual(fasa === 1 ? senaraiFasa1 : senaraiFasa2);
         }
+
+        function bukaBorangChecklistPD(kod) {
+            kodSemasa = kod;
+            document.getElementById('checklistTitle').innerText = `Borang Senarai Semak Verifikasi PD : ${kod} (Fasa ${fasaAktif})`;
+            document.getElementById('pinInputPD').value = "";
+            document.getElementById('ulasanPDVal').value = "";
+            document.getElementById('cadanganPDVal').value = "";
+            
+            const tbody = document.getElementById('checklistTableBody');
+            tbody.innerHTML = "";
+            
+            const items = (fasaAktif === 1) ? senaraiSemakFasa1 : senaraiSemakFasa2;
+            items.forEach((perkara, idx) => {
+                tbody.innerHTML += `
+                    <tr id="row_item_${idx}">
+                        <td style="text-align: center; font-weight: bold;">${idx + 1}</td>
+                        <td>${perkara}</td>
+                        <td>
+                            <label style="display:inline-block; margin-right:8px;"><input type="radio" name="status_${idx}" value="Ya"> Ya</label>
+                            <label style="display:inline-block; margin-right:8px;"><input type="radio" name="status_${idx}" value="Tidak"> Tidak</label>
+                            <label style="display:inline-block;"><input type="radio" name="status_${idx}" value="Tidak Berkaitan"> T/B</label>
+                        </td>
+                        <td><input type="text" id="catatan_${idx}" placeholder="Catatan audit..." style="padding:4px 8px;"></td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById('checklistModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        document.getElementById('formChecklistPD').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const pin = document.getElementById('pinInputPD').value.trim();
+            if (!pin) return showToast("Sila masukkan Kunci Rahsia / PIN Kursus!", "error");
+
+            const items = (fasaAktif === 1) ? senaraiSemakFasa1 : senaraiSemakFasa2;
+            let itemBelumDitanda = [];
+
+            items.forEach((_, idx) => {
+                const checkedRadio = document.querySelector(`input[name="status_${idx}"]:checked`);
+                const rowElem = document.getElementById(`row_item_${idx}`);
+                
+                if (!checkedRadio) {
+                    itemBelumDitanda.push(idx + 1);
+                    if (rowElem) rowElem.classList.add('item-unselected');
+                } else {
+                    if (rowElem) rowElem.classList.remove('item-unselected');
+                }
+            });
+
+            if (itemBelumDitanda.length > 0) {
+                showToast(`Ralat: Sila tanda pilihan status untuk Bil: ${itemBelumDitanda.join(', ')}`, "error");
+                return;
+            }
+
+            const btnSimpan = document.getElementById('btnSimpanChecklist');
+            btnSimpan.innerText = "Menyimpan Verifikasi...";
+            btnSimpan.disabled = true;
+
+            const senaraiSemakData = [];
+            items.forEach((perkara, idx) => {
+                const statusVal = document.querySelector(`input[name="status_${idx}"]:checked`).value;
+                const catatanVal = document.getElementById(`catatan_${idx}`).value.trim();
+                senaraiSemakData.push({ perkara: perkara, status: statusVal, catatan: catatanVal });
+            });
+
+            const payload = {
+                action: "simpanVerifikasiPD",
+                fasa: fasaAktif,
+                kodKursus: kodSemasa,
+                kunciRahsia: pin,
+                senaraiSemak: senaraiSemakData,
+                ulasanKeseluruhan: document.getElementById('ulasanPDVal').value.trim(),
+                cadangan: document.getElementById('cadanganPDVal').value.trim(),
+                perakuanFinal: document.getElementById('perakuanPDVal').value
+            };
+
+            try {
+                const response = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
+                const result = await response.json();
+
+                if (result.status === "success") {
+                    showToast(result.mesej, "success");
+                    tutupModal('checklistModal');
+                    muatTarikData();
+                } else {
+                    showToast(result.mesej, "error");
+                }
+            } catch (err) {
+                showToast("Ralat pelayan: " + err.message, "error");
+            } finally {
+                btnSimpan.innerText = "Sahkan & Simpan Verifikasi PD";
+                btnSimpan.disabled = false;
+            }
+        });
 
         function bukaPromptKeselamatan(kodKursus) {
             document.getElementById('kodKursusSemasa').value = kodKursus;
@@ -339,8 +531,8 @@
             setTimeout(() => document.getElementById('inputSemakPIN').focus(), 100);
         }
 
-        function tutupModalLaporan() {
-            document.getElementById('reportModal').classList.remove('active');
+        function tutupModal(id) { 
+            document.getElementById(id).classList.remove('active'); 
             document.body.style.overflow = 'auto';
         }
 
@@ -504,7 +696,9 @@
                     tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Tiada rekod penyerahan ditemui.</td></tr>';
                 }
             } catch (error) {
-                tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--error);">Ralat: ${error.message}</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--error-text);">Gagal berhubung dengan pelayan. Sila semak pautan Apps Script atau muat semula. (${error.message})</td></tr>`;
+            } finally {
+                padamLoader();
             }
         }
 
@@ -520,18 +714,6 @@
             dataArray.forEach(row => {
                 const isDisahkan = row.status === "Disahkan PD" || row.status === "Selesai Disemak";
                 const badgeClass = isDisahkan ? "badge-success" : "badge-warning";
-                
-                let paparanAksesHTML = "";
-                if (isDisahkan) {
-                    paparanAksesHTML = `
-                        <div style="font-size: 0.85rem; color: var(--error-text); font-weight:600; margin-bottom: 5px;">Laporan Bersatus SULIT</div>
-                        <button class="btn-secure-read" onclick="bukaPromptKeselamatan('${row.kodKursus}')">
-                            🔐 Buka Laporan Selamat
-                        </button>
-                    `;
-                } else {
-                    paparanAksesHTML = `<span class="pending-text">Laporan masih dalam proses penjanaan atau menunggu kelulusan Pemeriksa Dalam (PD).</span>`;
-                }
 
                 tbody.innerHTML += `
                     <tr>
@@ -547,7 +729,10 @@
                             <span style="font-size: 0.9rem; font-weight: 500;">${row.namaPensyarah}</span><br>
                             <span style="font-size: 0.8rem; color: var(--text-secondary);">${row.jabatan}</span>
                         </td>
-                        <td>${paparanAksesHTML}</td>
+                        <td>
+                            <button class="btn-action" onclick="bukaBorangChecklistPD('${row.kodKursus}')">📝 Isi Verifikasi PD</button>
+                            ${isDisahkan ? `<button class="btn-action" onclick="bukaPromptKeselamatan('${row.kodKursus}')">🔐 Buka Laporan</button>` : ''}
+                        </td>
                     </tr>
                 `;
             });
