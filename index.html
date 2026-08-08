@@ -3,8 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Pemeriksa Dalam (PD)</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Portal Pemeriksa Dalam (PD) | Audit Akademik IPG</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Integrasi Pustaka Marked.js untuk menukar teks Markdown AI kepada Jadual HTML secara automatik -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
     <style>
         :root {
             --bg-color: #f8fafc;
@@ -18,7 +22,8 @@
             --success-text: #065f46;
             --warning-bg: #fef3c7;
             --warning-text: #92400e;
-            --error: #ef4444;
+            --error-bg: #fee2e2;
+            --error-text: #b91c1c;
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             --transition: all 0.3s ease;
         }
@@ -29,6 +34,12 @@
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
             --border-color: #334155;
+            --success-bg: rgba(6, 95, 70, 0.3);
+            --success-text: #34d399;
+            --warning-bg: rgba(146, 64, 14, 0.3);
+            --warning-text: #fbbf24;
+            --error-bg: rgba(153, 27, 27, 0.3);
+            --error-text: #f87171;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
@@ -40,8 +51,6 @@
         #loader { position: fixed; inset: 0; background: var(--bg-color); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s; }
         .spinner { width: 50px; height: 50px; border: 5px solid var(--border-color); border-top-color: var(--primary-color); border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
-
-        #progress-bar { position: fixed; top: 0; left: 0; height: 4px; background: var(--primary-color); width: 0%; z-index: 1000; }
 
         navbar { position: fixed; top: 0; width: 100%; padding: 1rem 8%; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); display: flex; justify-content: space-between; align-items: center; z-index: 900; border-bottom: 1px solid var(--border-color); }
         body.dark-mode navbar { background: rgba(30, 41, 59, 0.85); }
@@ -66,15 +75,84 @@
         .btn-refresh { background: var(--primary-color); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; }
 
         .table-container { background: var(--surface-color); border-radius: 12px; box-shadow: var(--shadow); overflow-x: auto; border: 1px solid var(--border-color); }
-        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.92rem; }
-        th, td { padding: 1rem 1.2rem; border-bottom: 1px solid var(--border-color); }
-        th { background-color: rgba(0,0,0,0.02); font-weight: 600; }
-
-        .badge-status { padding: 0.35rem 0.75rem; border-radius: 9999px; font-size: 0.78rem; font-weight: 600; display: inline-block; }
+        
+        /* Penggayaan Asas Jadual Luar */
+        table.main-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.92rem; }
+        table.main-table > thead > tr > th, table.main-table > tbody > tr > td { padding: 1.2rem; border-bottom: 1px solid var(--border-color); vertical-align: top; }
+        table.main-table > thead > tr > th { background-color: rgba(0,0,0,0.02); font-weight: 600; white-space: nowrap; }
+        
+        .badge-status { padding: 0.35rem 0.75rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 600; display: inline-block; white-space: nowrap; }
         .badge-success { background-color: var(--success-bg); color: var(--success-text); }
         .badge-warning { background-color: var(--warning-bg); color: var(--warning-text); }
         .pending-text { color: var(--text-secondary); font-style: italic; }
 
+        /* ==============================================================
+           PENGGAYAAN KAD LAPORAN AUDIT & JADUAL DALAMAN (INNER TABLES)
+           ============================================================== */
+        .audit-report-card {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 0.5rem;
+            min-width: 500px;
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: var(--text-primary);
+            overflow-x: auto; /* Membenarkan skrol mendatar jika jadual terlampau lebar */
+        }
+        
+        body.dark-mode .audit-report-card {
+            background-color: rgba(255,255,255,0.02);
+        }
+
+        /* Penggayaan khusus untuk elemen yang dijana oleh marked.js */
+        .audit-report-card h1, .audit-report-card h2, .audit-report-card h3 {
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.3rem;
+            font-size: 1.1rem;
+        }
+
+        .audit-report-card p { margin-bottom: 1rem; }
+        .audit-report-card ul, .audit-report-card ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+        .audit-report-card li { margin-bottom: 0.3rem; }
+        .audit-report-card strong { font-weight: 700; color: var(--text-primary); }
+
+        /* PENGGAYAAN JADUAL AUDIT (Dalaman) */
+        .audit-report-card table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+            background-color: var(--surface-color);
+            box-shadow: var(--shadow);
+        }
+        .audit-report-card th, .audit-report-card td {
+            border: 1px solid var(--border-color);
+            padding: 10px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+        .audit-report-card th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+        .audit-report-card tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+        body.dark-mode .audit-report-card tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Sistem Lencana Warna Khas dalam Laporan */
+        .audit-status-patuh { background: var(--success-bg); color: var(--success-text); font-weight: 700; padding: 3px 8px; border-radius: 4px; display: inline-block; font-size: 0.8rem;}
+        .audit-status-tdkpatuh { background: var(--error-bg); color: var(--error-text); font-weight: 700; padding: 3px 8px; border-radius: 4px; display: inline-block; font-size: 0.8rem;}
+        .audit-status-warning { background: var(--warning-bg); color: var(--warning-text); font-weight: 700; padding: 3px 8px; border-radius: 4px; display: inline-block; font-size: 0.8rem;}
+
+        /* Toast UI */
         #toast-container { position: fixed; bottom: 20px; left: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
         .toast { padding: 0.9rem 1.3rem; border-radius: 8px; color: white; font-weight: 600; box-shadow: var(--shadow); transform: translateX(-120%); opacity: 0; transition: all 0.4s ease; }
         .toast.show { transform: translateX(0); opacity: 1; }
@@ -85,7 +163,6 @@
 <body>
 
     <div id="loader"><div class="spinner"></div></div>
-    <div id="progress-bar"></div>
 
     <navbar>
         <div class="logo">Portal PD</div>
@@ -106,6 +183,7 @@
         </div>
     </section>
 
+    <!-- BORANG PENYERAHAN -->
     <section id="muatnaik" style="background-color: rgba(0,0,0,0.015);">
         <h2 style="text-align: center; margin-bottom: 1.8rem;">Penyerahan Bahan Pentaksiran</h2>
         <div class="form-container">
@@ -156,9 +234,10 @@
         </div>
     </section>
 
+    <!-- PAPAN PEMUKA AUDIT -->
     <section id="papanpemuka">
         <h2 style="text-align: center; margin-bottom: 0.5rem;">Papan Pemuka Status Semakan PD</h2>
-        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">Status semakan bahan dan ulasan rasmi Pemeriksa Dalam (PD).</p>
+        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">Status semakan bahan dan ulasan rasmi Laporan Audit Akademik IPG.</p>
 
         <div class="controls">
             <input type="text" id="searchInput" class="search-box" placeholder="Cari Kod Kursus, Nama Kursus atau Pensyarah..." onkeyup="tapisData()">
@@ -166,19 +245,17 @@
         </div>
 
         <div class="table-container">
-            <table>
+            <table class="main-table">
                 <thead>
                     <tr>
-                        <th>Kod Kursus</th>
-                        <th>Nama Kursus</th>
-                        <th>Pensyarah</th>
-                        <th>Jabatan</th>
-                        <th>Status Semakan</th>
-                        <th>Ulasan PD</th>
+                        <th style="width: 10%;">Status Audit</th>
+                        <th style="width: 15%;">Kod & Kursus</th>
+                        <th style="width: 15%;">Pensyarah / Jabatan</th>
+                        <th style="width: 60%;">Laporan Audit Akademik IPG</th>
                     </tr>
                 </thead>
                 <tbody id="jadualData">
-                    <tr><td colspan="6" style="text-align: center; color: var(--text-secondary);">Sedang memuatkan data...</td></tr>
+                    <tr><td colspan="4" style="text-align: center; color: var(--text-secondary);">Sedang memuatkan data...</td></tr>
                 </tbody>
             </table>
         </div>
@@ -187,6 +264,7 @@
     <div id="toast-container"></div>
 
     <script>
+        // INIT PENGGUNA
         window.addEventListener('load', () => {
             document.getElementById('loader').style.opacity = '0';
             setTimeout(() => document.getElementById('loader').style.display = 'none', 500);
@@ -209,6 +287,34 @@
             setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 4000);
         }
 
+        // ==============================================================
+        // LOGIK PENTERJEMAHAN MARKDOWN KE HTML BERSTRUKTUR (JADUAL)
+        // ==============================================================
+        function formatMarkdownToHTML(text) {
+            if (!text) return "Tiada maklumat laporan direkodkan.";
+
+            // Menterjemah keseluruhan sintaks Markdown AI (termasuk jadual) kepada HTML menggunakan Pustaka marked.js
+            let htmlOutput = marked.parse(text);
+
+            // Logik Penggantian Placeholder Berperingkat (Mengelakkan pertindihan gaya warna)
+            // 1. Kenal pasti perkataan
+            htmlOutput = htmlOutput.replace(/\bPATUH BERSYARAT\b/g, "##WARN##");
+            htmlOutput = htmlOutput.replace(/\bTIDAK PATUH\b/g, "##ERR1##");
+            htmlOutput = htmlOutput.replace(/\bTIDAK DINYATAKAN\b/g, "##ERR2##");
+            htmlOutput = htmlOutput.replace(/\bPATUH\b/g, "##SUCC##");
+
+            // 2. Suntik kelas lencana (badge CSS)
+            htmlOutput = htmlOutput.replace(/##WARN##/g, "<span class='audit-status-warning'>PATUH BERSYARAT</span>");
+            htmlOutput = htmlOutput.replace(/##ERR1##/g, "<span class='audit-status-tdkpatuh'>TIDAK PATUH</span>");
+            htmlOutput = htmlOutput.replace(/##ERR2##/g, "<span class='audit-status-tdkpatuh'>TIDAK DINYATAKAN</span>");
+            htmlOutput = htmlOutput.replace(/##SUCC##/g, "<span class='audit-status-patuh'>PATUH</span>");
+
+            return htmlOutput;
+        }
+
+        // ==============================================================
+        // INTEGRASI PELAYAN (BACKEND CALLS)
+        // ==============================================================
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyjvVuuxBEdEN-6AwxbNj5wnq8xpuA4qQs7aSa7ntnh607vd3ixim6GPa9oZT9mUMCA/exec";
         let senaraiRekod = [];
 
@@ -222,6 +328,7 @@
             });
         };
 
+        // MUAT NAIK BORANG (POST)
         document.getElementById('uploadForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btnHantar = document.getElementById('btnHantar');
@@ -266,52 +373,73 @@
             }
         });
 
+        // MUAT TARIK DATA PAPAN PEMUKA (GET)
         async function muatTarikData() {
             const tbody = document.getElementById('jadualData');
-            tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">Memuatkan data pelayan...</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Memuatkan data pangkalan pelayan...</td></tr>';
 
             try {
                 const response = await fetch(APPS_SCRIPT_URL);
                 const data = await response.json();
 
                 if (data.status === "success" && data.rekod && data.rekod.length > 0) {
-                    senaraiRekod = data.rekod;
+                    senaraiRekod = data.rekod.reverse(); // Susun dari paling baharu
                     paparkanJadual(senaraiRekod);
                 } else {
-                    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">Tiada rekod penyerahan ditemui.</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Tiada rekod penyerahan ditemui.</td></tr>';
                 }
             } catch (error) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--error);">Ralat: ${error.message}</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--error);">Ralat: ${error.message}</td></tr>`;
             }
         }
 
+        // PAPARAN JADUAL DAN KAD LAPORAN
         function paparkanJadual(dataArray) {
             const tbody = document.getElementById('jadualData');
             tbody.innerHTML = '';
 
             if (dataArray.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">Tiada padanan carian.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Tiada padanan carian.</td></tr>';
                 return;
             }
 
             dataArray.forEach(row => {
-                const isDisahkan = row.status === "Disahkan PD";
+                const isDisahkan = row.status === "Disahkan PD" || row.status === "Selesai Disemak";
                 const badgeClass = isDisahkan ? "badge-success" : "badge-warning";
-                const ulasanStyle = isDisahkan ? "" : "pending-text";
+                
+                let paparanLaporanHTML = "";
+                if (isDisahkan) {
+                    // Masukkan ke dalam div .audit-report-card
+                    paparanLaporanHTML = `
+                        <div class="audit-report-card">
+                            ${formatMarkdownToHTML(row.ulasanPD)}
+                        </div>
+                    `;
+                } else {
+                    paparanLaporanHTML = `<span class="pending-text">Laporan masih dalam proses semakan atau menunggu kelulusan Pemeriksa Dalam (PD).</span>`;
+                }
 
                 tbody.innerHTML += `
                     <tr>
-                        <td><strong>${row.kodKursus}</strong></td>
-                        <td>${row.namaKursus}</td>
-                        <td>${row.namaPensyarah}</td>
-                        <td>${row.jabatan}</td>
-                        <td><span class="badge-status ${badgeClass}">${row.status}</span></td>
-                        <td class="${ulasanStyle}">${row.ulasanPD}</td>
+                        <td>
+                            <span class="badge-status ${badgeClass}">${row.status}</span>
+                            <div style="margin-top: 10px; font-size: 0.8rem; color: var(--text-secondary);">${row.tarikh}</div>
+                        </td>
+                        <td>
+                            <strong>${row.kodKursus}</strong><br>
+                            <span style="font-size: 0.85rem;">${row.namaKursus}</span>
+                        </td>
+                        <td>
+                            <span style="font-size: 0.9rem; font-weight: 500;">${row.namaPensyarah}</span><br>
+                            <span style="font-size: 0.8rem; color: var(--text-secondary);">${row.jabatan}</span>
+                        </td>
+                        <td>${paparanLaporanHTML}</td>
                     </tr>
                 `;
             });
         }
 
+        // TAPISAN CARIAN DINAMIK
         function tapisData() {
             const kataKunci = document.getElementById('searchInput').value.toLowerCase();
             const hasilTapis = senaraiRekod.filter(r => 
