@@ -257,9 +257,9 @@
                 </div>
             </div>
             <div class="accordion-item">
-                <button class="accordion-header">Bagaimana jika kursus tiada peperiksaan akhir (JSU)? <span class="icon">+</span></button>
+                <button class="accordion-header">Bagaimana automasi semakan AI beroperasi? <span class="icon">+</span></button>
                 <div class="accordion-content">
-                    <p>Bagi kursus yang diuji 100% secara Kerja Kursus, anda boleh mengabaikan ruangan muat naik fail JSU (pilihan) tanpa menjejaskan operasi serahan form ini.</p>
+                    <p>Melalui penyepaduan GEMS API, bahan anda akan dijadualkan untuk imbasan automatik secara berkala. Status di dalam pangkalan data pusat akan dikemas kini serta-merta tanpa interaksi manual.</p>
                 </div>
             </div>
         </div>
@@ -291,20 +291,22 @@
          JAVASCRIPT & API LOGIC
          ========================================================================== -->
     <script>
-        // 1. Skrin Memuat
+        // 1. Skrin Memuat (Loader Logic)
         window.addEventListener('load', () => {
             const loader = document.getElementById('loader');
             loader.style.opacity = '0';
             setTimeout(() => loader.style.display = 'none', 500);
         });
 
-        // 2. Mod Gelap (Local Storage)
+        // 2. Logik Pengurusan Mod Gelap (Dark Mode State Management)
         const themeToggle = document.getElementById('themeToggle');
         const body = document.body;
+        
         if(localStorage.getItem('theme') === 'dark') {
             body.classList.add('dark-mode');
             themeToggle.innerText = '☀️';
         }
+        
         themeToggle.addEventListener('click', () => {
             body.classList.toggle('dark-mode');
             if (body.classList.contains('dark-mode')) {
@@ -316,42 +318,44 @@
             }
         });
 
-        // 3. Progres Skrol & Butang Tatal Atas
+        // 3. Sistem Palang Kemajuan Skrol & Butang Kembali ke Atas
         const progressBar = document.getElementById('progress-bar');
         const scrollTopBtn = document.getElementById('scrollTopBtn');
+        
         window.addEventListener('scroll', () => {
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             progressBar.style.width = ((winScroll / height) * 100) + '%';
             winScroll > 300 ? scrollTopBtn.classList.add('show') : scrollTopBtn.classList.remove('show');
         });
+        
         scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-        // 4. Animasi Intersection Observer (Reveal)
+        // 4. Logik Animasi 'Reveal' berasaskan Pencerapan Antaramuka (IntersectionObserver)
         const revealElements = document.querySelectorAll('.reveal');
         const observer = new IntersectionObserver((entries, obs) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    obs.unobserve(entry.target); // Hanya trigger sekali
+                    obs.unobserve(entry.target);
                 }
             });
         }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
         revealElements.forEach(el => observer.observe(el));
 
-        // 5. Accordion (FAQ)
+        // 5. Logik Komponen Accordion (FAQ Section)
         document.querySelectorAll('.accordion-header').forEach(header => {
             header.addEventListener('click', function() {
-                // Tutup tab lain yang aktif
                 document.querySelectorAll('.accordion-header').forEach(h => {
                     if (h !== this) {
                         h.nextElementSibling.style.maxHeight = null;
                         h.querySelector('.icon').innerText = '+';
                     }
                 });
-                // Toggle tab semasa
+                
                 const content = this.nextElementSibling;
                 const icon = this.querySelector('.icon');
+                
                 if (content.style.maxHeight) {
                     content.style.maxHeight = null;
                     icon.innerText = '+';
@@ -362,19 +366,20 @@
             });
         });
 
-        // 6. Logik Modal
+        // 6. Logik Paparan Tingkap Modal
         const modal = document.getElementById('infoModal');
         function openModal() { modal.classList.add('active'); }
         function closeModal() { modal.classList.remove('active'); }
         window.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
 
-        // 7. Notifikasi Toast
+        // 7. Pengendali Notifikasi UI (Toast System)
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
             toast.innerHTML = type === 'success' ? `✅ ${message}` : `❌ ${message}`;
             container.appendChild(toast);
+            
             setTimeout(() => toast.classList.add('show'), 10);
             setTimeout(() => {
                 toast.classList.remove('show');
@@ -382,17 +387,17 @@
             }, 4000);
         }
 
-        // 8. Logik Utama Borang (API Google Apps Script)
-        // URL API Endpoint Terbaharu
+        // 8. LOGIK TERAS APLIKASI (Sambungan ke Google Apps Script)
+        // Pembolehubah URL telah dikemas kini mengikut pautan WEB APP yang diarahkan
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyjvVuuxBEdEN-6AwxbNj5wnq8xpuA4qQs7aSa7ntnh607vd3ixim6GPa9oZT9mUMCA/exec";
 
         /**
-         * Fungsi Helper (Asynchronous) untuk membaca fail fizikal kepada Base64 menggunakan Promise.
-         * Menangani kes fail tidak wajib (pilihan) dengan memulangkan nilai null secara selamat.
+         * Mengembalikan satu fungsi penyelesaian (Promise) untuk FileReader.
+         * Menukarkan Blob Fail fizikal ke format format Base64 secara tak segerak (asynchronous).
          */
         const bacaFailSebagaiBase64 = (file, jenis) => {
             return new Promise((resolve, reject) => {
-                if (!file) { resolve(null); return; } // Edge case file optional
+                if (!file) { resolve(null); return; } // Edge Case: Ruangan opsyenal (Pilihan) jika dikosongkan tidak akan meletupkan aplikasi
                 const reader = new FileReader();
                 reader.onload = () => resolve({ jenis: jenis, namaFail: file.name, mimeType: file.type, failBase64: reader.result });
                 reader.onerror = error => reject(error);
@@ -400,12 +405,14 @@
             });
         };
 
+        // Memproses Borang Serahan Dokumen Pentaksiran
         document.getElementById('uploadForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            // Validasi Form Kustom
+            // Pengendalian Ralat Peringkat Antaramuka: Validasi Tersuai (Custom Input Validation)
             const requiredInputs = document.querySelectorAll('#uploadForm input[required]');
             let isValid = true;
+            
             requiredInputs.forEach(input => {
                 if (!input.value) {
                     isValid = false;
@@ -420,12 +427,13 @@
                 return;
             }
 
+            // Penukaran keadaan komponen semasa proses pemuatan sedang berlaku
             const btnHantar = document.getElementById('btnHantar');
             btnHantar.innerText = "Sistem Sedang Memproses... Sila Tunggu";
             btnHantar.disabled = true;
 
             try {
-                // Menukar semua fail secara asynchronous dengan logik berkelajuan tinggi
+                // Melaksanakan pemprosesan selari (Parallel execution) pada kesemua dokumen untuk mempercepat operasi Base64
                 const prosesFail = [
                     bacaFailSebagaiBase64(document.getElementById('failMK').files[0], "MK"),
                     bacaFailSebagaiBase64(document.getElementById('failJST').files[0], "JST"),
@@ -436,9 +444,10 @@
                 ];
 
                 const failArrayBelumTapis = await Promise.all(prosesFail);
+                // Membersihkan rentetan "null" yang terhasil dari fail tidak dihantar (opsyenal) 
                 const failArray = failArrayBelumTapis.filter(fail => fail !== null);
 
-                // Membina Objek Payload untuk dihantar ke Server (Apps Script)
+                // Merangkumkan maklumat entiti (Payload Structure)
                 const payload = {
                     jabatan: document.getElementById('jabatan').value.trim(),
                     namaPensyarah: document.getElementById('namaPensyarah').value.trim(),
@@ -447,7 +456,7 @@
                     failArray: failArray
                 };
 
-                // Panggilan API POST (Interaksi dengan Google Apps Script)
+                // Memanggil kaedah HTTP (POST)
                 const response = await fetch(APPS_SCRIPT_URL, {
                     method: "POST",
                     body: JSON.stringify(payload)
@@ -455,20 +464,20 @@
                 
                 const result = await response.json();
 
+                // Pemerhatian keputusan Pelayan Google
                 if (result.status === "success") {
                     showToast(result.mesej, "success");
                     document.getElementById('uploadForm').reset();
-                    // Reset warna border kembali kepada asal selepas berjaya
                     requiredInputs.forEach(input => input.style.borderColor = 'var(--border-color)');
                 } else {
                     showToast(result.mesej, "error");
                 }
 
             } catch (error) {
-                // Pengendalian Ralat Rangkaian / API (Edge Case Handling)
+                // Rangkaian Tamat Tempoh / Ralat Semasa Pemprosesan
                 showToast(`Ralat Sambungan: ${error.message}`, "error");
             } finally {
-                // Memulihkan antaramuka pengguna selepas proses tamat
+                // Pengembalian reka bentuk antaramuka butang serahan
                 btnHantar.innerText = "Sahkan & Muat Naik Bahan";
                 btnHantar.disabled = false;
             }
