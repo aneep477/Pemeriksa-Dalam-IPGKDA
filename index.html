@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Pemeriksa Dalam (PD) | IPGM</title>
+    <title>Portal Pemeriksa Dalam (PD) | IPGM (Kemaskini Ogos 2026)</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
@@ -105,7 +105,7 @@
 
         .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8); z-index: 10000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); backdrop-filter: blur(4px); }
         .modal-overlay.active { opacity: 1; visibility: visible; }
-        .modal-box { background: var(--bg-color); width: 95%; max-width: 1000px; height: 90vh; border-radius: 12px; display: flex; flex-direction: column; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); transform: translateY(20px); transition: var(--transition); border: 1px solid var(--border-color); }
+        .modal-box { background: var(--bg-color); width: 95%; max-width: 1050px; height: 92vh; border-radius: 12px; display: flex; flex-direction: column; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); transform: translateY(20px); transition: var(--transition); border: 1px solid var(--border-color); }
         .modal-overlay.active .modal-box { transform: translateY(0); }
         .modal-header { padding: 1.5rem 2rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background: var(--surface-color); border-radius: 12px 12px 0 0; }
         .modal-header h2 { font-size: 1.2rem; color: var(--primary-color); }
@@ -114,7 +114,7 @@
         .modal-body { padding: 2rem; overflow-y: auto; background-color: var(--bg-color); flex-grow: 1; position: relative;}
 
         .checklist-table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; background: var(--surface-color); border-radius: 8px; overflow: hidden; }
-        .checklist-table th, .checklist-table td { border: 1px solid var(--border-color); padding: 10px 12px; font-size: 0.88rem; vertical-align: middle; }
+        .checklist-table th, .checklist-table td { border: 1px solid var(--border-color); padding: 10px 12px; font-size: 0.88rem; vertical-align: top; }
         .checklist-table th { background: var(--primary-color); color: white; text-align: left; }
         .checklist-table tr.item-unselected { background-color: #fef2f2 !important; border: 1px solid #fca5a5; }
 
@@ -128,10 +128,6 @@
         .audit-report-content table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; background-color: var(--surface-color); box-shadow: var(--shadow); }
         .audit-report-content th, .audit-report-content td { border: 1px solid var(--border-color); padding: 12px 15px; text-align: left; vertical-align: top; }
         .audit-report-content th { background-color: var(--primary-color); color: white; font-weight: 600; }
-
-        .audit-status-patuh { background: var(--success-bg); color: var(--success-text); font-weight: 700; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem;}
-        .audit-status-tdkpatuh { background: var(--error-bg); color: var(--error-text); font-weight: 700; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem;}
-        .audit-status-warning { background: var(--warning-bg); color: var(--warning-text); font-weight: 700; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem;}
 
         .faq-container { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; }
         .faq-item { background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); transition: var(--transition); }
@@ -167,7 +163,7 @@
 
     <section class="hero" id="home">
         <h1>Sistem Verifikasi Pentaksiran Berterusan</h1>
-        <p>Pilih fasa di bawah untuk muat naik bahan atau borang verifikasi senarai semak PD:</p>
+        <p>Borang Verifikasi Penjaminan Kualiti IPGM (Kemaskini Ogos 2026):</p>
     </section>
 
     <!-- TAB SWITCHER -->
@@ -278,21 +274,21 @@
         <div class="faq-container">
             <div class="faq-item">
                 <button class="faq-question" onclick="toggleFAQ(this)">
-                    <span>Apakah Proses Kerja bagi Pemeriksa Dalam (PD)?</span>
+                    <span>Apakah kandungan Laporan Audit Akademik IPG?</span>
                     <span class="faq-icon">+</span>
                 </button>
                 <div class="faq-answer">
-                    <p>Pemeriksa Dalam (PD) bertanggungjawab menyemak dan memverifikasi bahan Pentaksiran Berterusan (PB) berasaskan Buku Panduan Pentaksiran IPG. Verifikasi dibahagikan kepada 2 Fasa: <strong>Fasa Perancangan (21 Item Senarai Semak)</strong> dan <strong>Fasa Selepas Moderasi (12 Item Senarai Semak)</strong>.</p>
+                    <p>Laporan Audit Akademik IPG mengandungi analisis menyeluruh terhadap dokumen pentaksiran berterusan yang dimuat naik (MK, JST, Soalan, Rubrik, dan SME). Ia memaparkan Ringkasan Eksekutif, Senarai Semak Verifikasi, Analisis Penjajaran Konstruktif, dan Perakuan Final Panel Audit.</p>
                 </div>
             </div>
 
             <div class="faq-item">
                 <button class="faq-question" onclick="toggleFAQ(this)">
-                    <span>Bilakah ulasan atau Laporan Audit PD boleh dilihat?</span>
+                    <span>Bagaimanakah cara membaca Laporan Audit SULIT?</span>
                     <span class="faq-icon">+</span>
                 </button>
                 <div class="faq-answer">
-                    <p>Laporan Audit diklasifikasikan sebagai <strong>SULIT</strong> demi memelihara kerahsiaan akademik. Laporan hanya boleh dibuka oleh Pensyarah/PD yang sah dengan menekan butang <code>🔐 Buka Laporan</code> dan memasukkan Kunci Rahsia (PIN/ID Staf) yang ditetapkan semasa muat naik.</p>
+                    <p>Laporan Audit diklasifikasikan sebagai <strong>SULIT</strong>. Untuk membacanya, tekan butang <code>🔐 Buka Laporan</code> pada Papan Pemuka dan masukkan Kunci Rahsia (PIN/ID Staf) yang anda tetapkan semasa muat naik bahan.</p>
                 </div>
             </div>
 
@@ -302,17 +298,7 @@
                     <span class="faq-icon">+</span>
                 </button>
                 <div class="faq-answer">
-                    <p>Butang ini digunakan khas oleh Pemeriksa Dalam (PD) untuk mengisi borang digital senarai semak verifikasi secara item-demi-item, memberikan ulasan keseluruhan, dan menetapkan Perakuan Final (PATUH / PATUH BERSYARAT / TIDAK PATUH).</p>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <button class="faq-question" onclick="toggleFAQ(this)">
-                    <span>Apakah format fail yang dibenarkan untuk muat naik?</span>
-                    <span class="faq-icon">+</span>
-                </button>
-                <div class="faq-answer">
-                    <p>Fail dokumen yang diterima adalah dalam format <strong>PDF (.pdf)</strong>, <strong>Microsoft Word (.doc, .docx)</strong>, dan <strong>Microsoft Excel (.xls, .xlsx)</strong> mengikut jenis instrumen yang ditetapkan.</p>
+                    <p>Butang ini digunakan khas oleh Pemeriksa Dalam (PD) untuk melengkapkan borang senarai semak verifikasi rasmi (Kemaskini Ogos 2026) secara item-demi-item mengikut ketetapan BPP IPGM.</p>
                 </div>
             </div>
         </div>
@@ -343,11 +329,11 @@
         </div>
     </div>
 
-    <!-- MODAL 2: BORANG DIGITAL SENARAI SEMAK VERIFIKASI PD -->
+    <!-- MODAL 2: BORANG DIGITAL SENARAI SEMAK VERIFIKASI PD (OGOS 2026) -->
     <div class="modal-overlay" id="checklistModal">
         <div class="modal-box">
             <div class="modal-header">
-                <h2 id="checklistTitle">Borang Senarai Semak Verifikasi PD</h2>
+                <h2 id="checklistTitle">Borang Verifikasi Penjaminan Kualiti PD (Ogos 2026)</h2>
                 <button class="close-btn" onclick="tutupModal('checklistModal')">&times;</button>
             </div>
             <div class="modal-body">
@@ -361,33 +347,42 @@
                         <thead>
                             <tr>
                                 <th style="width: 5%;">Bil</th>
-                                <th style="width: 45%;">Perkara / Item Senarai Semak</th>
-                                <th style="width: 25%;">Status (Wajib Tanda)</th>
-                                <th style="width: 25%;">Catatan Audit</th>
+                                <th style="width: 40%;">Perkara / Soalan Verifikasi</th>
+                                <th style="width: 35%;">Pilihan Jawapan (Wajib Pilih)</th>
+                                <th style="width: 20%;">Catatan Audit</th>
                             </tr>
                         </thead>
                         <tbody id="checklistTableBody">
-                            <!-- Senarai semak dinamik disuntik JS -->
+                            <!-- Soalan dan pilihan dropdown disuntik secara dinamik oleh JS -->
                         </tbody>
                     </table>
 
-                    <div class="form-group" style="margin-top: 1.5rem;">
-                        <label>Ulasan Keseluruhan Panel PD:</label>
-                        <textarea id="ulasanPDVal" rows="3" placeholder="Masukkan ulasan keseluruhan verifikasi..."></textarea>
-                    </div>
+                    <div style="background: var(--surface-color); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color); margin-top: 1.5rem;">
+                        <h3 style="color: var(--primary-color); margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">RUMUSAN PD</h3>
+                        
+                        <div class="form-group">
+                            <label>1. Kekuatan:</label>
+                            <textarea id="kekuatanPDVal" rows="3" placeholder="Nyatakan kekuatan pelaksanaan PB kursus ini..."></textarea>
+                        </div>
 
-                    <div class="form-group">
-                        <label>Cadangan Penambahbaikan:</label>
-                        <textarea id="cadanganPDVal" rows="2" placeholder="Masukkan cadangan penambahbaikan (jika ada)..."></textarea>
-                    </div>
+                        <div class="form-group">
+                            <label>2. Kelemahan:</label>
+                            <textarea id="kelemahanPDVal" rows="3" placeholder="Nyatakan kelemahan yang ditemui (jika ada)..."></textarea>
+                        </div>
 
-                    <div class="form-group" style="background: var(--warning-bg); padding: 15px; border-radius: 8px; border: 1px solid var(--warning-text);">
-                        <label style="color: var(--warning-text);">Perakuan Final Panel Audit:</label>
-                        <select id="perakuanPDVal" style="width: 100%; padding: 10px; margin-top: 5px; border-color: var(--warning-text);" required>
-                            <option value="[ / ] PATUH - Diluluskan tanpa syarat.">[ / ] PATUH - Diluluskan tanpa syarat.</option>
-                            <option value="[ / ] PATUH BERSYARAT - Diluluskan tertakluk pembetulan." selected>[ / ] PATUH BERSYARAT - Diluluskan tertakluk pembetulan.</option>
-                            <option value="[ / ] TIDAK PATUH - Perlu digubal semula dan diaudit semula.">[ / ] TIDAK PATUH - Perlu digubal semula dan diaudit semula.</option>
-                        </select>
+                        <div class="form-group">
+                            <label>3. Cadangan Penambahbaikan:</label>
+                            <textarea id="cadanganPDVal" rows="3" placeholder="Nyatakan cadangan penambahbaikan..."></textarea>
+                        </div>
+
+                        <div class="form-group" style="background: var(--warning-bg); padding: 15px; border-radius: 8px; border: 1px solid var(--warning-text); margin-top: 1rem;">
+                            <label style="color: var(--warning-text);">Perakuan Final Panel Audit:</label>
+                            <select id="perakuanPDVal" style="width: 100%; padding: 10px; margin-top: 5px; border-color: var(--warning-text);" required>
+                                <option value="[ / ] PATUH - Diluluskan tanpa syarat.">[ / ] PATUH - Diluluskan tanpa syarat.</option>
+                                <option value="[ / ] PATUH BERSYARAT - Diluluskan tertakluk pembetulan." selected>[ / ] PATUH BERSYARAT - Diluluskan tertakluk pembetulan.</option>
+                                <option value="[ / ] TIDAK PATUH - Perlu digubal semula dan diaudit semula.">[ / ] TIDAK PATUH - Perlu digubal semula dan diaudit semula.</option>
+                            </select>
+                        </div>
                     </div>
 
                     <button type="submit" class="btn btn-primary" style="margin-top: 1.5rem; padding: 1rem;" id="btnSimpanChecklist">Sahkan & Simpan Verifikasi PD</button>
@@ -404,45 +399,59 @@
         let senaraiFasa1 = [], senaraiFasa2 = [];
         let kodSemasa = "";
 
-        // TATASUSUNAN 21 ITEM FASA 1
-        const senaraiSemakFasa1 = [
-          "Pensyarah menerima arahan yang jelas pelaksanaan pentaksiran berterusan daripada Ketua Jabatan Akademik / Penyelaras Pentaksiran Berterusan",
-          "JST yang disediakan mengikut format yang ditetapkan",
-          "Tempoh pelaksanaan pentaksiran berterusan sesuai dengan bentuk tugasan dan selaras dengan RMK/MK",
-          "Jam pembelajaran pelajar (JPP) sejajar dengan matriks hasil pembelajaran kursus dalam RMK/MK",
-          "Hasil pembelajaran kursus (HPK) sejajar dengan matriks hasil pembelajaran kursus dalam RMK/MK",
-          "Objektif tugasan memenuhi hasil pembelajaran kursus (HPK) yang telah ditetapkan dalam RMK/MK",
-          "Wajaran markah tugasan mengikut wajaran dalam RMK/MK",
-          "Aspek/ Kriteria penilaian dinyatakan dengan jelas untuk mentaksir tugasan yang diberikan",
-          "Tugasan mempunyai elemen-elemen Rangsangan, Soalan Tugasan, dan Arahan Pentadbiran",
-          "Kapasiti Pedagogi Pembelajaran Bermakna (Merungkai Standard, Merangkai Standard, Backward Design, Pelan 6C, MPP, MRP, 3E & 3R)",
-          "Tugasan yang disediakan mencapai Kemahiran Berfikir Aras Tinggi (KBAT) seperti yang dinyatakan dalam HPK",
-          "Domain kognitif yang dinyatakan dalam HPK diuji dalam tugasan",
-          "Domain psikomotor yang dinyatakan dalam HPK diuji dalam tugasan (jika berkenaan)",
-          "Domain afektif yang dinyatakan dalam HPK diuji dalam tugasan (jika berkenaan)",
-          "Domain kemahiran insaniah yang dinyatakan dalam HPK diuji dalam tugasan (jika berkenaan)",
-          "Soalan tugasan telah disemak oleh Pakar Bidang / Penyelaras Kursus / Pensyarah Kanan",
-          "Rubrik pemarkahan secara holistik / analitik disediakan selari dengan Jadual Spesifikasi Tugasan (JST) dan tugasan",
-          "Skema pemarkahan dan Rubrik yang disediakan mengandungi kriteria / deskriptor untuk mengukur domain kognitif",
-          "Skema pemarkahan dan Rubrik yang disediakan mengandungi kriteria / deskriptor untuk mengukur domain psikomotor (jika berkenaan)",
-          "Skema pemarkahan dan Rubrik yang disediakan mengandungi kriteria / deskriptor untuk mengukur domain afektif (jika berkenaan)",
-          "Skema pemarkahan dan Rubrik yang disediakan mengandungi kriteria / deskriptor untuk mengukur domain kemahiran insaniah (jika berkenaan)"
+        // STRUKTUR 31 SOALAN RASMI FASA PERANCANGAN (OGOS 2026)
+        const soalanFasa1 = [
+            { id: 1, soalan: "Adakah pensyarah menerima arahan tentang pelaksanaan PB daripada KJA / JK Kecemerlangan Akademik / KU / Penyelaras PB?", opsi: ["Menerima arahan yang sangat jelas tentang pelaksanaan PB", "Menerima arahan yang jelas tentang pelaksanaan PB", "Menerima arahan yang agak jelas tentang pelaksanaan PB", "Menerima arahan yang kurang jelas tentang pelaksanaan PB", "Tidak menerima arahan tentang pelaksanaan PB"] },
+            { id: 2, soalan: "Adakah pensyarah menggunakan MK yang terkini?", opsi: ["Ya", "Tidak"] },
+            { id: 3, soalan: "Adakah Jadual Spesifikasi Tugasan (JST) disediakan dengan sempurna?", opsi: ["JST disediakan mengikut format yang ditetapkan sepenuhnya.", "JST yang disediakan kurang menepati format yang ditetapkan.", "JST yang disediakan tidak menepati format yang ditetapkan.", "Tidak menyediakan JST."] },
+            { id: 4, soalan: "Adakah tempoh pelaksanaan PB selaras dengan MK?", opsi: ["Pengiraan dan penetapan tempoh pelaksanaan PB adalah selaras dengan MK terkini.", "Pengiraan dan penetapan tempoh pelaksanaan PB tidak mengikut formula yang betul.", "Kesilapan pengiraan dan penetapan tempoh pelaksanaan PB kerana mengambil kira cuti semester semasa.", "Kesilapan pengiraan dan penetapan tempoh pelaksanaan PB kerana mengambil kira cuti hari Ahad/Jumaat."] },
+            { id: 5, soalan: "Adakah penetapan tempoh menjawab soalan PB telah mengambil kira jenis soalan dan anggaran peruntukan masa BPP terkini?", opsi: ["YA", "TIDAK"] },
+            { id: 6, soalan: "Adakah Jam Pembelajaran Pelajar (JPP) sejajar dengan pemetaan Hasil Pembelajaran Kursus (HPK) dalam MK?", opsi: ["YA", "Tidak"] },
+            { id: 7, soalan: "Adakah Hasil Pembelajaran Kursus (HPK) sejajar dengan pemetaan hasil pembelajaran program (HPP/HP) dan pentaksiran dalam MK?", opsi: ["YA", "TIDAK"] },
+            { id: 8, soalan: "Adakah Objektif PB menepati HPK yang ditetapkan dalam MK?", opsi: ["Objektif PB menepati HPK yang telah ditetapkan dalam MK.", "Objektif PB sukar diukur.", "Objektif PB sukar dicapai.", "Objektif PB adalah tidak relevan.", "Objektif PB tidak mencatat had masa.", "Objektif PB disalin semula daripada HPK.", "Objektif PB yang dinyatakan adalah terlalu umum.", "Objektif PB tidak menepati aras domain yang tercatat dalam HPK."] },
+            { id: 9, soalan: "Adakah wajaran markah tugasan selaras dengan wajaran yang ditetapkan dalam MK?", opsi: ["Wajaran markah tugasan adalah selaras dengan wajaran yang ditetapkan dalam MK.", "Wajaran markah adalah berbeza dengan wajaran yang ditetapkan dalam MK.", "Wajaran markah tidak diasingkan mengikut HPP/HP (satu HPK yang menilai lebih dari satu HPP/HP)."] },
+            { id: 10, soalan: "Adakah aspek/kriteria penilaian dinyatakan dengan jelas untuk mentaksir tugasan yang diberikan?", opsi: ["Aspek/ Kriteria penilaian dinyatakan dengan jelas untuk mentaksir tugasan yang diberikan.", "Aspek/Kriteria penilaian dinyatakan secara umum.", "Aspek/Kriteria penilaian yang dinyatakan tidak selaras dengan rubrik pemarkahan.", "Aspek/Kriteria penilaian yang dinyatakan tidak sejajar dengan domain pembelajaran/ hasil pembelajaran/ kemahiran insaniah."] },
+            { id: 11, soalan: "Adakah elemen rangsangan/stimulus yang digunakan dalam tugasan PB adalah sesuai?", opsi: ["Rangsangan/stimulus yang digunakan adalah sangat sesuai dengan soalan tugasan PB.", "Rangsangan/ stimulus tidak berfungsi.", "Rangsangan/ stimulus tidak jelas dan mengelirukan.", "Rangsangan/stimulus tidak sesuai dengan soalan tugasan PB.", "Rangsangan/stimulus tidak disediakan bagi soalan tugasan PB.", "Tidak Berkenaan"] },
+            { id: 12, soalan: "Adakah elemen rangsangan/stimulus yang digunakan dalam tugasan PB adalah terkini?", opsi: ["Elemen rangsangan/stimulus yang digunakan adalah terkini (kurang dari 5 tahun).", "Elemen rangsangan/stimulus yang digunakan adalah lama (melebihi dari 5 tahun).", "Tidak Berkenaan"] },
+            { id: 13, soalan: "Adakah aras soalan tugasan PB menepati dengan keperluan HPK yang dinyatakan dalam MK?", opsi: ["Aras soalan tugasan PB menepati dengan keperluan HPK yang dinyatakan dalam MK.", "Penggunaan dua kata kerja eksplisit dalam satu soalan tugasan PB.", "Penggunaan kata kerja eksplisit yang tidak menepati dengan aras soalan tugasan PB.", "Aras soalan tugasan PB adalah rendah berbanding keperluan HPK yang dinyatakan dalam MK.", "Aras soalan tugasan PB adalah tinggi berbanding keperluan HPK yang dinyatakan dalam MK."] },
+            { id: 14, soalan: "Adakah soalan tugasan mempunyai Arahan Pelaksanaan yang jelas?", opsi: ["Secara keseluruhan arahan pelaksanaan tugasan dinyatakan dengan jelas.", "Secara keseluruhan arahan pelaksanaan tugasan tidak jelas/ mengelirukan."] },
+            { id: 15, soalan: "Adakah amaran plagiat dinyatakan dalam arahan pelaksanaan soalan tugasan?", opsi: ["Amaran plagiat dinyatakan dengan jelas.", "Amaran plagiat tidak dinyatakan."] },
+            { id: 16, soalan: "Adakah format penulisan sumber rujukan dinyatakan dalam arahan pelaksanaan soalan tugasan?", opsi: ["Arahan penulisan sumber rujukan mengikut format terkini dinyatakan dengan jelas.", "Tiada arahan penulisan sumber rujukan mengikut format terkini dinyatakan."] },
+            { id: 17, soalan: "Adakah garis panduan/cara menghantar tugasan PB dinyatakan dalam arahan pelaksanaan soalan tugasan?", opsi: ["Garis panduan/cara menghantar tugasan PB dinyatakan dengan jelas.", "Tiada garis panduan/cara menghantar tugasan PB dinyatakan dengan jelas.", "Garis panduan/cara menghantar tugasan PB yang dinyatakan adalah kurang jelas/ mengelirukan"] },
+            { id: 18, soalan: "Adakah Soalan tugasan mempunyai unsur KPPB (The Big Idea, EQ, 6C, 3E & 3R)?", opsi: ["Ya", "Tidak"] },
+            { id: 19, soalan: "Adakah tugasan yang disediakan mencapai KBAT seperti yang dinyatakan dalam HPK (C3 dan ke atas)?", opsi: ["Ya", "Tidak"] },
+            { id: 20, soalan: "Adakah domain kognitif yang dinyatakan dalam HPK diuji dalam tugasan?", opsi: ["Ya", "Tidak", "Tidak Berkenaan"] },
+            { id: 21, soalan: "Adakah domain afektif yang dinyatakan dalam HPK diuji dalam tugasan?", opsi: ["Ya", "Tidak", "Tidak Berkenaan"] },
+            { id: 22, soalan: "Adakah domain psikomotor yang dinyatakan dalam HPK diuji dalam tugasan?", opsi: ["Ya", "Tidak", "Tidak Berkenaan"] },
+            { id: 23, soalan: "Adakah kemahiran insaniah yang dinyatakan dalam HPK diuji dalam tugasan?", opsi: ["Ya", "Tidak", "Tidak Berkenaan"] },
+            { id: 24, soalan: "Adakah soalan tugasan telah disemak oleh Pakar Bidang (SME) menggunakan Borang Senarai Semak SME?", opsi: ["Ya", "Tidak"] },
+            { id: 25, soalan: "Adakah Ketua Jabatan telah menandatangani Borang Laporan Pelaksanaan Pembentangan dan Pemurnian PB?", opsi: ["Ya", "Tidak"] },
+            { id: 26, soalan: "Adakah Rubrik pemarkahan holistik/analitik yang disediakan selari dengan JST dan soalan tugasan?", opsi: ["Rubrik pemarkahan holistik / analitik yang disediakan adalah selari dengan JST dan soalan tugasan.", "Julat skor yang disediakan tidak tepat.", "Wajaran markah tidak selari dengan MK.", "Bullet library tidak digunakan dalam deskriptor.", "Pembahagian markah tidak selari dengan HPP/HP.", "Kesalahan dalam melabel tahap rubrik pemarkahan.", "Elemen KPPB tidak dijelmakan dalam rubrik pemarkahan.", "Aspek/Kriteria penilaian JST tidak selari dengan rubrik pemarkahan."] },
+            { id: 27, soalan: "Adakah skema pemarkahan/rubrik yang disediakan dengan kriteria/deskriptor dapat mengukur domain kognitif?", opsi: ["Kriteria/deskriptor dapat menilai aras domain kognitif dengan tepat.", "Tidak Berkenaan.", "Kriteria/deskriptor terlalu umum.", "Kriteria/deskriptor tidak disediakan.", "Kriteria/deskriptor tidak menjurus kepada soalan tugasan PB.", "Kriteria/deskriptor tidak menilai aras domain kognitif dengan tepat."] },
+            { id: 28, soalan: "Adakah skema pemarkahan/rubrik yang disediakan dengan kriteria/deskriptor dapat mengukur domain psikomotor?", opsi: ["Kriteria/deskriptor dapat menilai aras domain psikomotor dengan tepat.", "Tidak Berkenaan.", "Kriteria/deskriptor terlalu umum.", "Kriteria/deskriptor tidak disediakan.", "Kriteria/deskriptor tidak menjurus kepada soalan tugasan PB.", "Kriteria/deskriptor tidak menilai aras domain psikomotor dengan tepat."] },
+            { id: 29, soalan: "Adakah skema pemarkahan/rubrik yang disediakan dengan kriteria/deskriptor dapat mengukur domain afektif?", opsi: ["Kriteria/deskriptor dapat menilai aras domain afektif dengan tepat.", "Tidak Berkenaan.", "Kriteria/deskriptor terlalu umum.", "Kriteria/deskriptor tidak disediakan.", "Kriteria/deskriptor tidak menjurus kepada soalan tugasan PB.", "Kriteria/deskriptor tidak menilai aras domain afektif dengan tepat."] },
+            { id: 30, soalan: "Adakah skema pemarkahan/rubrik yang disediakan dengan kriteria/deskriptor dapat mengukur Kemahiran insaniah?", opsi: ["Kriteria/deskriptor dapat menilai aras kemahiran insaniah dengan tepat.", "Tidak Berkenaan.", "Kriteria/deskriptor terlalu umum.", "Kriteria/deskriptor tidak disediakan.", "Kriteria/deskriptor tidak menjurus kepada soalan tugasan PB.", "Kriteria/deskriptor tidak menilai aras kemahiran insaniah dengan tepat."] },
+            { id: 31, soalan: "Adakah skema pemarkahan/rubrik yang disediakan dengan kriteria/deskriptor dapat mengukur Value Based Education (VBE)?", opsi: ["Kriteria/deskriptor dapat menilai aras kemahiran insaniah dengan tepat.", "Tidak Berkenaan.", "Kriteria/deskriptor terlalu umum.", "Kriteria/deskriptor tidak disediakan.", "Kriteria/deskriptor tidak menjurus kepada soalan tugasan PB.", "Kriteria/deskriptor tidak menilai aras kemahiran insaniah dengan tepat."] }
         ];
 
-        // TATASUSUNAN 12 ITEM FASA 2
-        const senaraiSemakFasa2 = [
-          "Pelajar menerima taklimat pentaksiran berterusan daripada pensyarah",
-          "Pemilihan sampel dan penyelarasan skema pemarkahan dan rubrik dilaksanakan (sekiranya 2 @lebih pemeriksa)",
-          "Tugasan disemak oleh pensyarah berdasarkan skema pemarkahan dan rubrik pemarkahan yang disediakan",
-          "Pemeriksa memberi komen/ ulasan dalam hasil tugasan pelajar",
-          "Borang penyelarasan markah sebelum pemeriksaan diisi dengan lengkap (jika berkenaan)",
-          "Pemeriksaan dan proses moderasi markah pentaksiran berterusan dijalankan mengikut prosedur",
-          "Borang Moderasi (LAM PT04-02) diisi oleh panel moderasi dan ditandatangani oleh Ketua Pemeriksa",
-          "Penentuan markah akhir dibuat berdasarkan prosedur (Rujuk Buku Panduan Pentaksiran)",
-          "Borang markah pentaksiran berterusan (LAM PT04-01) diisi dengan lengkap dan tepat serta disemak oleh Ketua Jabatan Akademik",
-          "Taburan markah pentaksiran berterusan mestilah sekurang-kurangnya terdiri daripada tiga gred merentasi dua kategori gred (Justifikasi LAM PT04-03 jika sebaliknya)",
-          "Laporan Panel Pemeriksa Pentaksiran Berterusan (LAM PT04-03) disediakan dengan lengkap",
-          "Laporan Kes Gagal (LAM PT04-04) disediakan (jika ada)"
+        // STRUKTUR 16 SOALAN RASMI FASA SELEPAS MODERASI (OGOS 2026)
+        const soalanFasa2 = [
+            { id: 1, soalan: "Adakah pelajar menerima arahan tentang pentaksiran berterusan (PB) daripada pensyarah.", opsi: ["Ya", "Tidak"] },
+            { id: 2, soalan: "Adakah pemilihan sampel dan penyelarasan skema pemarkahan dan rubrik telah dilaksanakan? (sekiranya 2 atau lebih pemeriksa).", opsi: ["Telah dilaksanakan.", "Tidak dilaksanakan.", "Tidak berkenaan (hanya seorang pemeriksa)."] },
+            { id: 3, soalan: "Adakah tugasan PB disemak oleh pensyarah berdasarkan skema pemarkahan dan rubrik yang disediakan?", opsi: ["YA", "TIDAK"] },
+            { id: 4, soalan: "Adakah pemeriksa memberi maklum balas dalam hasil tugasan pelajar?", opsi: ["Memberi maklum balas yang konstruktif dalam hasil tugasan pelajar.", "Maklum balas diberikan pada beberapa muka surat sahaja.", "Tiada maklum balas pada hasil tugasan pelajar.", "Memberi maklum balas yang tidak konstruktif", "Maklum balas tidak menepati rubrik pemarkahan.", "Memberi maklum balas yang terlalu ringkas secara berulang kali."] },
+            { id: 5, soalan: "Adakah terdapat bukti pemeriksa memberi maklum balas kepada pelajar secara individu/kumpulan?", opsi: ["Terdapat tandatangan pelajar pada ruang/borang yang disediakan sebagai bukti pelajar menerima maklum balas daripada pemeriksa.", "Tiada bukti pemeriksa memberi maklum balas kepada pelajar."] },
+            { id: 6, soalan: "Adakah Borang Rekod Penyelarasan Markah Pentaksiran Berterusan (BRPMPB) sebelum pemeriksaan diisi dengan lengkap?", opsi: ["YA", "Tidak", "Tidak Berkenaan"] },
+            { id: 7, soalan: "Adakah pemilihan sampel hasil tugasan mengikut bilangan pemeriksa yang ditetapkan dalam BPP IPGM terkini?", opsi: ["Pemilihan sampel hasil tugasan adalah mengikut bilangan pemeriksa seperti yang ditetapkan dalam BPP IPGM yang terkini.", "Tidak memilih sampel hasil tugasan dari setiap pemeriksa.", "Tidak Berkenaan"] },
+            { id: 8, soalan: "Adakah pemeriksa menggunakan warna pen yang BETUL semasa proses moderasi markah PB dilaksanakan?", opsi: ["Ya", "Tidak", "Tidak Berkenaan"] },
+            { id: 9, soalan: "Adakah Ketua Pemeriksa mengisi markah sampel dalam Borang Moderasi (LAM-PT-04-02) selepas tamat proses moderasi?", opsi: ["Borang Moderasi Pentaksiran Berterusan telah diisi dengan lengkap.", "Tidak mengisi markah sampel dalam Borang Moderasi Pentaksiran Berterusan.", "Borang Moderasi Pentaksiran Berterusan tidak diisi dengan lengkap.", "Borang Moderasi Pentaksiran Berterusan telah diisi dengan lengkap. Pemindahan markah dalam Borang LAM-PT-04-02 tidak tepat.", "Tidak Berkenaan."] },
+            { id: 10, soalan: "Adakah KP telah memilih 9 tugasan (3 tinggi, 3 sederhana, 3 rendah) ATAU 1 sampel/pemeriksa sekiranya >9 pemeriksa?", opsi: ["Ketua Pemeriksa telah memilih sampel tugasan seperti ketetapan dalam BPP terkini.", "Pemilihan bilangan tugasan adalah tidak tepat.", "Sampel yang dipilih tidak mewakili semua pemeriksa/Ketua Pemeriksa."] },
+            { id: 11, soalan: "Adakah markah persetujuan skrip amat cemerlang dinyatakan dengan jelas?", opsi: ["Markah persetujuan skrip amat cemerlang dinyatakan dengan jelas di muka hadapan dengan menggunakan pen hijau.", "Markah persetujuan bagi skrip amat cemerlang tidak dinyatakan dengan jelas.", "Tidak berkenaan."] },
+            { id: 12, soalan: "Adakah Borang Markah PB (LAM-PT-04-01) diisi lengkap dan tepat oleh KP/pemeriksa dan disemak oleh KJA?", opsi: ["Borang LAM-PT-04-01 telah diisi oleh KP/pemeriksa dan disahkan oleh KJA.", "Borang LAM-PT-04-01 telah diisi oleh KP/pemeriksa tetapi tidak disahkan oleh KJA.", "Borang LAM-PT-04-01 tiada pembahagian HPP/HP mengikut MK.", "Markah dalam Borang LAM-PT-04-01 tidak diisi kepada satu tempat perpuluhan."] },
+            { id: 13, soalan: "Adakah Borang Moderasi (LAM-PT-04-02) diisi oleh panel moderasi dan disahkan oleh Ketua Pemeriksa?", opsi: ["Borang Moderasi (LAM-PT-04-02) telah diisi oleh panel moderasi dan disahkan oleh Ketua Pemeriksa.", "Panel Moderasi tidak mengisi Borang Moderasi (LAM-PT-04-02).", "Tidak Berkenaan."] },
+            { id: 14, soalan: "Adakah pemeriksa memberi justifikasi dalam Borang Laporan Panel Pemeriksa PB (LAM PT-04-03) bagi taburan markah PB?", opsi: ["Ya", "Tidak"] },
+            { id: 15, soalan: "Adakah Borang Laporan Kes Gagal/Amat Cemerlang (LAM-PT-04-04) diisi oleh pemeriksa dan disahkan oleh KP?", opsi: ["Borang LAM-PT-04-04 telah diisi oleh pemeriksa dan disahkan oleh KP.", "Borang LAM-PT-04-04 telah diisi oleh pemeriksa tetapi tidak disahkan oleh KP.", "Borang LAM-PT-04-04 tidak disediakan.", "Tidak berkenaan."] },
+            { id: 16, soalan: "Adakah taburan markah PB merentasi tiga gred dan dua kategori gred (Cth: A, A- dan B) dan tidak terlalu pencong?", opsi: ["Ya", "Tidak"] }
         ];
 
         function padamLoader() {
@@ -475,12 +484,8 @@
         function toggleFAQ(button) {
             const faqItem = button.parentElement;
             const isActive = faqItem.classList.contains('active');
-            
             document.querySelectorAll('.faq-item').forEach(item => item.classList.remove('active'));
-            
-            if (!isActive) {
-                faqItem.classList.add('active');
-            }
+            if (!isActive) faqItem.classList.add('active');
         }
 
         function tukarFasa(fasa) {
@@ -494,26 +499,32 @@
 
         function bukaBorangChecklistPD(kod) {
             kodSemasa = kod;
-            document.getElementById('checklistTitle').innerText = `Borang Senarai Semak Verifikasi PD : ${kod} (Fasa ${fasaAktif})`;
+            document.getElementById('checklistTitle').innerText = `Borang Verifikasi Penjaminan Kualiti PD : ${kod} (Fasa ${fasaAktif})`;
             document.getElementById('pinInputPD').value = "";
-            document.getElementById('ulasanPDVal').value = "";
+            document.getElementById('kekuatanPDVal').value = "";
+            document.getElementById('kelemahanPDVal').value = "";
             document.getElementById('cadanganPDVal').value = "";
             
             const tbody = document.getElementById('checklistTableBody');
             tbody.innerHTML = "";
             
-            const items = (fasaAktif === 1) ? senaraiSemakFasa1 : senaraiSemakFasa2;
-            items.forEach((perkara, idx) => {
+            const listSoalan = (fasaAktif === 1) ? soalanFasa1 : soalanFasa2;
+            listSoalan.forEach((item, idx) => {
+                let optionsHTML = `<option value="">-- Sila Pilih Status --</option>`;
+                item.opsi.forEach(opt => {
+                    optionsHTML += `<option value="${opt}">${opt}</option>`;
+                });
+
                 tbody.innerHTML += `
                     <tr id="row_item_${idx}">
-                        <td style="text-align: center; font-weight: bold;">${idx + 1}</td>
-                        <td>${perkara}</td>
+                        <td style="text-align: center; font-weight: bold;">${item.id}</td>
+                        <td><strong>${item.soalan}</strong></td>
                         <td>
-                            <label style="display:inline-block; margin-right:8px;"><input type="radio" name="status_${idx}" value="Ya"> Ya</label>
-                            <label style="display:inline-block; margin-right:8px;"><input type="radio" name="status_${idx}" value="Tidak"> Tidak</label>
-                            <label style="display:inline-block;"><input type="radio" name="status_${idx}" value="Tidak Berkaitan"> T/B</label>
+                            <select id="select_status_${idx}" style="padding:6px; font-size:0.85rem;">
+                                ${optionsHTML}
+                            </select>
                         </td>
-                        <td><input type="text" id="catatan_${idx}" placeholder="Catatan audit..." style="padding:4px 8px;"></td>
+                        <td><input type="text" id="catatan_${idx}" placeholder="Catatan audit..." style="padding:6px;"></td>
                     </tr>
                 `;
             });
@@ -527,15 +538,15 @@
             const pin = document.getElementById('pinInputPD').value.trim();
             if (!pin) return showToast("Sila masukkan Kunci Rahsia / PIN Kursus!", "error");
 
-            const items = (fasaAktif === 1) ? senaraiSemakFasa1 : senaraiSemakFasa2;
+            const listSoalan = (fasaAktif === 1) ? soalanFasa1 : soalanFasa2;
             let itemBelumDitanda = [];
 
-            items.forEach((_, idx) => {
-                const checkedRadio = document.querySelector(`input[name="status_${idx}"]:checked`);
+            listSoalan.forEach((item, idx) => {
+                const selectElem = document.getElementById(`select_status_${idx}`);
                 const rowElem = document.getElementById(`row_item_${idx}`);
                 
-                if (!checkedRadio) {
-                    itemBelumDitanda.push(idx + 1);
+                if (!selectElem || !selectElem.value) {
+                    itemBelumDitanda.push(item.id);
                     if (rowElem) rowElem.classList.add('item-unselected');
                 } else {
                     if (rowElem) rowElem.classList.remove('item-unselected');
@@ -543,7 +554,7 @@
             });
 
             if (itemBelumDitanda.length > 0) {
-                showToast(`Ralat: Sila tanda pilihan status untuk Bil: ${itemBelumDitanda.join(', ')}`, "error");
+                showToast(`Ralat: Sila pilih jawapan bagi Soalan Bil: ${itemBelumDitanda.join(', ')}`, "error");
                 return;
             }
 
@@ -552,10 +563,10 @@
             btnSimpan.disabled = true;
 
             const senaraiSemakData = [];
-            items.forEach((perkara, idx) => {
-                const statusVal = document.querySelector(`input[name="status_${idx}"]:checked`).value;
+            listSoalan.forEach((item, idx) => {
+                const statusVal = document.getElementById(`select_status_${idx}`).value;
                 const catatanVal = document.getElementById(`catatan_${idx}`).value.trim();
-                senaraiSemakData.push({ perkara: perkara, status: statusVal, catatan: catatanVal });
+                senaraiSemakData.push({ perkara: item.soalan, status: statusVal, catatan: catatanVal });
             });
 
             const payload = {
@@ -564,7 +575,8 @@
                 kodKursus: kodSemasa,
                 kunciRahsia: pin,
                 senaraiSemak: senaraiSemakData,
-                ulasanKeseluruhan: document.getElementById('ulasanPDVal').value.trim(),
+                kekuatan: document.getElementById('kekuatanPDVal').value.trim(),
+                kelemahan: document.getElementById('kelemahanPDVal').value.trim(),
                 cadangan: document.getElementById('cadanganPDVal').value.trim(),
                 perakuanFinal: document.getElementById('perakuanPDVal').value
             };
