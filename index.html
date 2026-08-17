@@ -70,10 +70,6 @@
         .hero { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; min-height: 25vh; padding-top: 100px; padding-bottom: 1rem; }
         .hero h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
         .hero p { font-size: 1.1rem; color: var(--text-secondary); max-width: 650px; margin-bottom: 1.5rem; }
-        
-        .tab-container { display: flex; justify-content: center; gap: 1rem; margin-bottom: 1.5rem; }
-        .tab-btn { padding: 0.8rem 1.8rem; border-radius: 8px; font-weight: 600; cursor: pointer; border: 1px solid var(--border-color); background: var(--surface-color); color: var(--text-secondary); transition: var(--transition); }
-        .tab-btn.active { background: var(--primary-color); color: white; border-color: var(--primary-color); box-shadow: var(--shadow); }
 
         .btn { padding: 0.8rem 1.8rem; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; font-size: 0.95rem; transition: var(--transition); }
         .btn-primary { background: var(--primary-color); color: white; }
@@ -94,22 +90,27 @@
 
         .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8); z-index: 10000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); backdrop-filter: blur(4px); }
         .modal-overlay.active { opacity: 1; visibility: visible; }
-        .modal-box { background: var(--bg-color); width: 95%; max-width: 1100px; height: 92vh; border-radius: 12px; display: flex; flex-direction: column; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); transform: translateY(20px); transition: var(--transition); border: 1px solid var(--border-color); }
-        .modal-overlay.active .modal-box { transform: translateY(0); }
-        .modal-header { padding: 1.2rem 2rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background: var(--surface-color); border-radius: 12px 12px 0 0; }
+        
+        /* SKRIN DIBESARKAN KE TAHAP MAKSIMUM (FULLSCREEN 98VW x 96VH) */
+        .modal-box.fullscreen { width: 98vw !important; height: 96vh !important; max-width: none !important; border-radius: 8px; display: flex; flex-direction: column; background: var(--bg-color); border: 1px solid var(--border-color); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        .modal-header { padding: 1.2rem 2rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background: var(--surface-color); border-radius: 8px 8px 0 0; }
         .modal-header h2 { font-size: 1.2rem; color: var(--primary-color); }
         .close-btn { background: var(--error-bg); color: var(--error-text); border: none; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-weight: bold; font-size: 1.2rem; display: flex; justify-content: center; align-items: center; }
         .close-btn:hover { background: var(--error-text); color: white; }
         .modal-body { padding: 1.5rem; overflow-y: auto; background-color: var(--bg-color); flex-grow: 1; position: relative;}
 
-        /* MODAL KAWALAN TANDA DOKUMEN (ANOTASI) */
-        .toolbar-anotasi { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; background: var(--surface-color); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); align-items: center;}
+        /* TOOLBAR & BEKAS KANVAS ANOTASI BERSAMA BEKAS PUSAT ALL-PAGES */
+        .toolbar-anotasi { display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; background: var(--surface-color); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); align-items: center;}
         .tool-btn { padding: 8px 14px; border-radius: 6px; font-weight: 600; cursor: pointer; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-primary); transition: 0.2s; font-size: 0.85rem;}
         .tool-btn.active { background: var(--primary-color); color: white; border-color: var(--primary-color);}
-        .canvas-wrapper { position: relative; border: 1px solid var(--border-color); background: #525659; overflow: auto; text-align: center; padding: 20px; border-radius: 8px; max-height: 65vh;}
-        .canvas-container-inner { position: relative; display: inline-block; box-shadow: 0 10px 25px rgba(0,0,0,0.3);}
-        #pdfCanvas { display: block;}
-        #drawCanvas { position: absolute; inset: 0; cursor: crosshair;}
+        
+        .canvas-wrapper { position: relative; border: 1px solid var(--border-color); background: #323639; overflow-y: auto; text-align: center; padding: 25px; border-radius: 8px; height: 60vh;}
+        .page-container { position: relative; display: inline-block; box-shadow: 0 10px 25px rgba(0,0,0,0.4); background: white; margin-bottom: 25px; border-radius: 4px; overflow: hidden;}
+        .page-label { background: #1e293b; color: #f8fafc; padding: 6px 14px; font-size: 0.82rem; font-weight: 600; text-align: left; border-radius: 4px 4px 0 0;}
+
+        .pin-overlay { position: absolute; inset: 0; background: var(--bg-color); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; padding: 2rem; text-align: center;}
+        .pin-box { background: var(--surface-color); padding: 2rem; border-radius: 12px; box-shadow: var(--shadow); border: 1px solid var(--border-color); max-width: 400px; width: 100%;}
+        .pin-box input { margin: 1rem 0; font-size: 1.2rem; text-align: center; letter-spacing: 2px;}
 
         #toast-container { position: fixed; bottom: 20px; left: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
         .toast { padding: 0.9rem 1.3rem; border-radius: 8px; color: white; font-weight: 600; box-shadow: var(--shadow); transform: translateX(-120%); opacity: 0; transition: all 0.4s ease; }
@@ -163,33 +164,11 @@
         </div>
     </section>
 
-    <!-- MODAL 1: LAPORAN PD -->
-    <div class="modal-overlay" id="reportModal">
-        <div class="modal-box">
-            <div class="modal-header">
-                <h2 id="modalTitle">Kunci Rahsia Diperlukan</h2>
-                <button class="close-btn" onclick="tutupModal('reportModal')">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="pin-overlay" id="pinOverlay">
-                    <div class="pin-box">
-                        <h3 style="color: var(--primary-color); margin-bottom: 10px;">🔐 Akses Laporan PD SULIT</h3>
-                        <p style="font-size: 0.9rem; color: var(--text-secondary);">Sila masukkan Kunci Rahsia (PIN Kursus) yang ditetapkan.</p>
-                        <input type="password" id="inputSemakPIN" placeholder="Masukkan PIN Kursus" onkeypress="if(event.key === 'Enter') mintaAksesLaporan()">
-                        <input type="hidden" id="kodKursusSemasa">
-                        <button class="btn btn-primary" style="width:100%" onclick="mintaAksesLaporan()" id="btnSemakPIN">Sahkan Identiti</button>
-                    </div>
-                </div>
-                <div class="audit-report-content" id="modalReportBody"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL 2: TANDA DOKUMEN (ANOTASI KANVAS LENGKAP BERSERTA PEMADAM) -->
+    <!-- MODAL: TANDA DOKUMEN (ANOTASI FULLSCREEN ALL-PAGES BERSERTA NOTA PEMBETULAN) -->
     <div class="modal-overlay" id="anotasiModal">
-        <div class="modal-box">
+        <div class="modal-box fullscreen">
             <div class="modal-header">
-                <h2 id="anotasiModalTitle">🖋️ Tanda Dokumen PD</h2>
+                <h2 id="anotasiModalTitle">🖋️ Tanda Dokumen PD (Mod Skrin Maksimum)</h2>
                 <button class="close-btn" onclick="tutupModal('anotasiModal')">&times;</button>
             </div>
             <div class="modal-body">
@@ -203,10 +182,10 @@
                     </div>
                 </div>
 
-                <div id="anotasiMainBody" style="display: none;">
+                <div id="anotasiMainBody" style="display: none; height: 100%; flex-direction: column;">
                     <div class="toolbar-anotasi">
                         <label>Pilih Dokumen:</label>
-                        <select id="selectDokumenAnotasi" onchange="tukarDokumenAnotasi()" style="padding: 6px; width: auto; max-width: 200px;">
+                        <select id="selectDokumenAnotasi" onchange="tukarDokumenAnotasi()" style="padding: 6px; width: auto; max-width: 220px;">
                             <option value="MK">Maklumat Kursus (MK)</option>
                             <option value="JST">JST</option>
                             <option value="Tugasan">Soalan Tugasan</option>
@@ -215,22 +194,27 @@
 
                         <div style="height: 20px; width: 1px; background: var(--border-color); margin: 0 5px;"></div>
 
-                        <!-- ALATAN KAWALAN LUKISAN DAN PEMADAM -->
                         <button class="tool-btn active" id="btnToolPen" onclick="setModAnotasi('pen')">✏️ Pen (Tanda Merah)</button>
                         <button class="tool-btn" id="btnToolEraser" onclick="setModAnotasi('eraser')">🧹 Pemadam (Padam Tanda)</button>
                         <button class="tool-btn" onclick="batalTandaTerakhir()">↩️ Undo</button>
                         <button class="tool-btn" style="background: var(--error-bg); color: var(--error-text);" onclick="padamSemuaTanda()">🗑️ Padam Semua Tanda</button>
 
                         <div style="margin-left: auto; display: flex; gap: 8px;">
-                            <button class="btn btn-primary" style="padding: 6px 14px; font-size: 0.85rem;" onclick="simpanAnotasiKePelayan()">💾 Simpan Anotasi</button>
+                            <button class="btn btn-primary" style="padding: 6px 16px; font-size: 0.88rem;" onclick="simpanAnotasiKePelayan()">💾 Simpan Anotasi & Nota</button>
                         </div>
                     </div>
 
-                    <div class="canvas-wrapper">
-                        <div class="canvas-container-inner" id="canvasContainerInner">
-                            <canvas id="pdfCanvas"></canvas>
-                            <canvas id="drawCanvas"></canvas>
-                        </div>
+                    <!-- BEKAS MENAMPILKAN SEMUA MUKA SURAT PDF SEGARAN MENEGAK -->
+                    <div class="canvas-wrapper" id="canvasWrapperScroll">
+                        <div id="pagesContainer"></div>
+                    </div>
+
+                    <!-- SEKSYEN NOTA PEMBETULAN DI BAHAGIAN BAWAH DOKUMEN -->
+                    <div style="margin-top: 15px; background: var(--surface-color); padding: 15px; border-radius: 8px; border: 1px solid var(--border-color);">
+                        <label style="font-weight: bold; color: var(--primary-color); display: block; margin-bottom: 5px;">
+                            📝 Nota Pembetulan / Catatan Teguran PD (Bagi Dokumen Ini):
+                        </label>
+                        <textarea id="txtNotaPembetulanAnotasi" rows="3" placeholder="Masukkan ulasan pembetulan atau teguran spesifik bagi dokumen ini..." style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); font-family: inherit;"></textarea>
                     </div>
                 </div>
 
@@ -248,8 +232,8 @@
         let kodSemasa = "", pinSemasa = "";
         let dataDokumenUrl = {}, dataAnotasiFull = {};
         let modSemasa = "pen"; // 'pen' atau 'eraser'
-        let strokeHistory = [];
-        let isDrawing = false, lastX = 0, lastY = 0;
+        let pageStrokesMap = {}; // { 1: [strokes], 2: [strokes] }
+        let pdfDocCurrent = null;
 
         function padamLoader() {
             const loader = document.getElementById('loader');
@@ -297,9 +281,8 @@
                     dataAnotasiFull = result.anotasi ? JSON.parse(result.anotasi) : {};
                     
                     document.getElementById('pinOverlayAnotasi').style.display = "none";
-                    document.getElementById('anotasiMainBody').style.display = "block";
+                    document.getElementById('anotasiMainBody').style.display = "flex";
                     
-                    initCanvasEvents();
                     tukarDokumenAnotasi();
                 } else {
                     showToast(result.mesej, "error");
@@ -317,8 +300,13 @@
             const urlPdf = dataDokumenUrl[jenis];
             if (!urlPdf) return showToast("Dokumen " + jenis + " tidak ditemui.", "error");
 
-            showToast("Membuka PDF " + jenis + "...", "success");
-            
+            showToast("Membuka semua muka surat PDF " + jenis + "...", "success");
+
+            // MUAT STRUKTUR ANOTASI BERSERTA NOTA PEMBETULAN
+            const savedDataDoc = dataAnotasiFull[jenis] || { strokes: {}, nota: "" };
+            pageStrokesMap = savedDataDoc.strokes || {};
+            document.getElementById('txtNotaPembetulanAnotasi').value = savedDataDoc.nota || "";
+
             try {
                 const proxyUrl = APPS_SCRIPT_URL + "?action=fetchPdfProxy&url=" + encodeURIComponent(urlPdf);
                 const res = await fetch(proxyUrl);
@@ -328,61 +316,100 @@
                 const pdfData = new Uint8Array(rawPdf.length);
                 for (let i = 0; i < rawPdf.length; i++) pdfData[i] = rawPdf.charCodeAt(i);
 
-                const pdf = await pdfjsLib.getDocument({ data: pdfData }).promise;
-                const page = await pdf.getPage(1);
-                
-                const viewport = page.getViewport({ scale: 1.3 });
-                const pdfCanvas = document.getElementById('pdfCanvas');
-                const drawCanvas = document.getElementById('drawCanvas');
-                const ctxPdf = pdfCanvas.getContext('2d');
+                pdfDocCurrent = await pdfjsLib.getDocument({ data: pdfData }).promise;
+                const container = document.getElementById('pagesContainer');
+                container.innerHTML = "";
 
-                pdfCanvas.width = viewport.width;
-                pdfCanvas.height = viewport.height;
-                drawCanvas.width = viewport.width;
-                drawCanvas.height = viewport.height;
+                // MELESATKAN SEMUA MUKA SURAT KE DALAM BEKAS
+                for (let pageNum = 1; pageNum <= pdfDocCurrent.numPages; pageNum++) {
+                    await renderPageCanvas(pdfDocCurrent, pageNum, container);
+                }
 
-                await page.render({ canvasContext: ctxPdf, viewport: viewport }).promise;
-
-                // MUAT KANVAS ANOTASI
-                strokeHistory = dataAnotasiFull[jenis] || [];
-                lukisSemuaAnotasi();
+                showToast("Kesemua " + pdfDocCurrent.numPages + " muka surat berjaya dimuatkan!", "success");
 
             } catch (e) {
                 showToast("Gagal memuatkan PDF: " + e.message, "error");
             }
         }
 
-        function initCanvasEvents() {
-            const drawCanvas = document.getElementById('drawCanvas');
-            
+        async function renderPageCanvas(pdfDoc, pageNum, container) {
+            const page = await pdfDoc.getPage(pageNum);
+            const viewport = page.getViewport({ scale: 1.35 });
+
+            const outerWrapper = document.createElement('div');
+            outerWrapper.style.marginBottom = '25px';
+
+            const pageBadge = document.createElement('div');
+            pageBadge.className = 'page-label';
+            pageBadge.innerText = `Muka Surat ${pageNum} daripada ${pdfDoc.numPages}`;
+
+            const pageBox = document.createElement('div');
+            pageBox.className = 'page-container';
+            pageBox.style.width = viewport.width + 'px';
+            pageBox.style.height = viewport.height + 'px';
+
+            const pdfCanvas = document.createElement('canvas');
+            pdfCanvas.width = viewport.width;
+            pdfCanvas.height = viewport.height;
+            const ctxPdf = pdfCanvas.getContext('2d');
+
+            const drawCanvas = document.createElement('canvas');
+            drawCanvas.id = `drawCanvas_page_${pageNum}`;
+            drawCanvas.width = viewport.width;
+            drawCanvas.height = viewport.height;
+            drawCanvas.style.position = 'absolute';
+            drawCanvas.style.top = '0';
+            drawCanvas.style.left = '0';
+            drawCanvas.style.cursor = 'crosshair';
+
+            pageBox.appendChild(pdfCanvas);
+            pageBox.appendChild(drawCanvas);
+            outerWrapper.appendChild(pageBadge);
+            outerWrapper.appendChild(pageBox);
+            container.appendChild(outerWrapper);
+
+            await page.render({ canvasContext: ctxPdf, viewport: viewport }).promise;
+
+            if (!pageStrokesMap[pageNum]) pageStrokesMap[pageNum] = [];
+
+            redrawPageStrokes(pageNum);
+            initPageCanvasEvents(drawCanvas, pageNum);
+        }
+
+        function initPageCanvasEvents(drawCanvas, pageNum) {
+            let isDrawingPage = false;
+            let pLastX = 0, pLastY = 0;
+
             drawCanvas.onmousedown = (e) => {
-                isDrawing = true;
+                isDrawingPage = true;
                 const rect = drawCanvas.getBoundingClientRect();
-                lastX = e.clientX - rect.left;
-                lastY = e.clientY - rect.top;
-                
-                strokeHistory.push({
+                pLastX = e.clientX - rect.left;
+                pLastY = e.clientY - rect.top;
+
+                if (!pageStrokesMap[pageNum]) pageStrokesMap[pageNum] = [];
+                pageStrokesMap[pageNum].push({
                     mode: modSemasa,
-                    points: [{ x: lastX, y: lastY }]
+                    points: [{ x: pLastX, y: pLastY }]
                 });
             };
 
             drawCanvas.onmousemove = (e) => {
-                if (!isDrawing) return;
+                if (!isDrawingPage) return;
                 const rect = drawCanvas.getBoundingClientRect();
                 const currentX = e.clientX - rect.left;
                 const currentY = e.clientY - rect.top;
 
-                const currentStroke = strokeHistory[strokeHistory.length - 1];
+                const pageStrokes = pageStrokesMap[pageNum];
+                const currentStroke = pageStrokes[pageStrokes.length - 1];
                 currentStroke.points.push({ x: currentX, y: currentY });
 
-                lukisGarisanSeketika(lastX, lastY, currentX, currentY, modSemasa);
-                lastX = currentX;
-                lastY = currentY;
+                lukisGarisanSeketikaOnCanvas(drawCanvas, pLastX, pLastY, currentX, currentY, modSemasa);
+                pLastX = currentX;
+                pLastY = currentY;
             };
 
-            drawCanvas.onmouseup = () => { isDrawing = false; };
-            drawCanvas.onmouseleave = () => { isDrawing = false; };
+            drawCanvas.onmouseup = () => { isDrawingPage = false; };
+            drawCanvas.onmouseleave = () => { isDrawingPage = false; };
         }
 
         function setModAnotasi(mode) {
@@ -391,36 +418,37 @@
             document.getElementById('btnToolEraser').classList.toggle('active', mode === 'eraser');
         }
 
-        function lukisGarisanSeketika(x1, y1, x2, y2, mode) {
-            const drawCanvas = document.getElementById('drawCanvas');
-            const ctx = drawCanvas.getContext('2d');
+        function lukisGarisanSeketikaOnCanvas(canvas, x1, y1, x2, y2, mode) {
+            const ctx = canvas.getContext('2d');
             ctx.beginPath();
             ctx.moveTo(x1, y1);
             ctx.lineTo(x2, y2);
-            
+
             if (mode === 'pen') {
                 ctx.globalCompositeOperation = 'source-over';
                 ctx.strokeStyle = '#dc2626'; // Warna merah pen audit
                 ctx.lineWidth = 2.5;
                 ctx.lineCap = 'round';
             } else if (mode === 'eraser') {
-                // MOD PEMADAM: Hapus garisan yang disentuh
                 ctx.globalCompositeOperation = 'destination-out';
-                ctx.lineWidth = 18;
+                ctx.lineWidth = 22;
                 ctx.lineCap = 'round';
             }
             ctx.stroke();
         }
 
-        function lukisSemuaAnotasi() {
-            const drawCanvas = document.getElementById('drawCanvas');
+        function redrawPageStrokes(pageNum) {
+            const drawCanvas = document.getElementById(`drawCanvas_page_${pageNum}`);
+            if (!drawCanvas) return;
             const ctx = drawCanvas.getContext('2d');
             ctx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
 
-            strokeHistory.forEach(stroke => {
+            const strokes = pageStrokesMap[pageNum] || [];
+            strokes.forEach(stroke => {
                 if (stroke.points.length < 2) return;
                 for (let i = 0; i < stroke.points.length - 1; i++) {
-                    lukisGarisanSeketika(
+                    lukisGarisanSeketikaOnCanvas(
+                        drawCanvas,
                         stroke.points[i].x, stroke.points[i].y,
                         stroke.points[i+1].x, stroke.points[i+1].y,
                         stroke.mode
@@ -429,24 +457,39 @@
             });
         }
 
-        // FUNGSI MEMADAM TANDA LENGKAP
         function batalTandaTerakhir() {
-            strokeHistory.pop();
-            lukisSemuaAnotasi();
-            showToast("Batal tanda terakhir.", "success");
+            let lastModifiedPage = null;
+            for (let pageNum in pageStrokesMap) {
+                if (pageStrokesMap[pageNum] && pageStrokesMap[pageNum].length > 0) {
+                    lastModifiedPage = pageNum;
+                }
+            }
+            if (lastModifiedPage && pageStrokesMap[lastModifiedPage].length > 0) {
+                pageStrokesMap[lastModifiedPage].pop();
+                redrawPageStrokes(lastModifiedPage);
+                showToast("Batal tanda terakhir pada Muka Surat " + lastModifiedPage, "success");
+            } else {
+                showToast("Tiada tanda untuk dibatalkan.", "error");
+            }
         }
 
         function padamSemuaTanda() {
-            strokeHistory = [];
-            const drawCanvas = document.getElementById('drawCanvas');
-            const ctx = drawCanvas.getContext('2d');
-            ctx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
-            showToast("Semua tanda pada dokumen dipadamkan.", "success");
+            for (let pageNum in pageStrokesMap) {
+                pageStrokesMap[pageNum] = [];
+                redrawPageStrokes(pageNum);
+            }
+            document.getElementById('txtNotaPembetulanAnotasi').value = "";
+            showToast("Semua tanda dan nota pembetulan pada kesemua muka surat telah dipadamkan.", "success");
         }
 
         async function simpanAnotasiKePelayan() {
             const jenis = document.getElementById('selectDokumenAnotasi').value;
-            dataAnotasiFull[jenis] = strokeHistory;
+            const nota = document.getElementById('txtNotaPembetulanAnotasi').value.trim();
+
+            dataAnotasiFull[jenis] = {
+                strokes: pageStrokesMap,
+                nota: nota
+            };
 
             const payload = {
                 action: "simpanAnotasi",
@@ -456,10 +499,10 @@
             };
 
             try {
-                showToast("Menyimpan tanda dokumen...", "success");
+                showToast("Menyimpan tanda & nota pembetulan...", "success");
                 const res = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
                 const result = await res.json();
-                
+
                 if (result.status === "success") {
                     showToast(result.mesej, "success");
                 } else {
