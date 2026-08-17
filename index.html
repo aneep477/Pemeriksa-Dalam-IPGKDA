@@ -6,7 +6,7 @@
     <title>Portal Pemeriksa Dalam (PD) | IPGM (Kemaskini Ogos 2026)</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 
     <style>
         :root {
@@ -50,11 +50,11 @@
         a { text-decoration: none; color: inherit; }
         ul { list-style: none; }
         section { padding: 2.5rem 8%; }
-
-        #loader {
-            position: fixed; inset: 0; background: var(--bg-color); z-index: 9999;
-            display: flex; justify-content: center; align-items: center;
-            transition: opacity 0.4s ease, visibility 0.4s ease;
+        
+        #loader { 
+            position: fixed; inset: 0; background: var(--bg-color); z-index: 9999; 
+            display: flex; justify-content: center; align-items: center; 
+            transition: opacity 0.4s ease, visibility 0.4s ease; 
         }
         #loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
         .spinner { width: 50px; height: 50px; border: 5px solid var(--border-color); border-top-color: var(--primary-color); border-radius: 50%; animation: spin 1s linear infinite; }
@@ -70,7 +70,7 @@
         .hero { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; min-height: 25vh; padding-top: 100px; padding-bottom: 1rem; }
         .hero h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
         .hero p { font-size: 1.1rem; color: var(--text-secondary); max-width: 650px; margin-bottom: 1.5rem; }
-
+        
         .tab-container { display: flex; justify-content: center; gap: 1rem; margin-bottom: 1.5rem; }
         .tab-btn { padding: 0.8rem 1.8rem; border-radius: 8px; font-weight: 600; cursor: pointer; border: 1px solid var(--border-color); background: var(--surface-color); color: var(--text-secondary); transition: var(--transition); }
         .tab-btn.active { background: var(--primary-color); color: white; border-color: var(--primary-color); box-shadow: var(--shadow); }
@@ -79,28 +79,11 @@
         .btn-primary { background: var(--primary-color); color: white; }
         .btn-primary:hover { background: var(--primary-hover); }
 
-        .form-container { max-width: 1000px; margin: 0 auto; background: var(--surface-color); padding: 2rem; border-radius: 12px; box-shadow: var(--shadow); border: 1px solid var(--border-color); }
-        .form-grid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
-        .column-title { font-size: 1.1rem; color: var(--primary-color); margin-bottom: 1.5rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; }
-
-        @media (max-width: 768px) {
-            .form-grid-layout { grid-template-columns: 1fr; gap: 1.5rem; }
-        }
-
-        .form-group { margin-bottom: 1.2rem; }
-        label { display: block; margin-bottom: 0.4rem; font-weight: 600; font-size: 0.95rem; }
-        input[type="text"], input[type="email"], input[type="date"], input[type="file"], input[type="password"], textarea, select { width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-color); color: var(--text-primary); transition: var(--transition); font-family: inherit;}
-        input:focus, textarea:focus, select:focus { outline: none; border-color: var(--primary-color); }
-
-        .controls { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
-        .search-box { flex: 1; min-width: 250px; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--surface-color); color: var(--text-primary); }
-        .btn-refresh { background: var(--primary-color); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: var(--transition); }
-
         .table-container { background: var(--surface-color); border-radius: 12px; box-shadow: var(--shadow); overflow-x: auto; border: 1px solid var(--border-color); }
         table.main-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.92rem; }
         table.main-table > thead > tr > th, table.main-table > tbody > tr > td { padding: 1.2rem; border-bottom: 1px solid var(--border-color); vertical-align: top; }
         table.main-table > thead > tr > th { background-color: rgba(0,0,0,0.02); font-weight: 600; white-space: nowrap; }
-
+        
         .badge-status { padding: 0.35rem 0.75rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 600; display: inline-block; white-space: nowrap; }
         .badge-success { background-color: var(--success-bg); color: var(--success-text); }
         .badge-warning { background-color: var(--warning-bg); color: var(--warning-text); }
@@ -111,180 +94,28 @@
 
         .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8); z-index: 10000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); backdrop-filter: blur(4px); }
         .modal-overlay.active { opacity: 1; visibility: visible; }
-        .modal-box { background: var(--bg-color); width: 95%; max-width: 1050px; height: 92vh; border-radius: 12px; display: flex; flex-direction: column; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); transform: translateY(20px); transition: var(--transition); border: 1px solid var(--border-color); }
+        .modal-box { background: var(--bg-color); width: 95%; max-width: 1100px; height: 92vh; border-radius: 12px; display: flex; flex-direction: column; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); transform: translateY(20px); transition: var(--transition); border: 1px solid var(--border-color); }
         .modal-overlay.active .modal-box { transform: translateY(0); }
-        .modal-header { padding: 1.5rem 2rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background: var(--surface-color); border-radius: 12px 12px 0 0; }
+        .modal-header { padding: 1.2rem 2rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background: var(--surface-color); border-radius: 12px 12px 0 0; }
         .modal-header h2 { font-size: 1.2rem; color: var(--primary-color); }
-        .modal-header-actions { display: flex; gap: 0.5rem; align-items: center; }
-        .close-btn { background: var(--error-bg); color: var(--error-text); border: none; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-weight: bold; font-size: 1.2rem; transition: 0.2s; display: flex; justify-content: center; align-items: center; }
-        .close-btn:hover { background: var(--error); color: white; }
-        .modal-body { padding: 2rem; overflow-y: auto; background-color: var(--bg-color); flex-grow: 1; position: relative;}
+        .close-btn { background: var(--error-bg); color: var(--error-text); border: none; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-weight: bold; font-size: 1.2rem; display: flex; justify-content: center; align-items: center; }
+        .close-btn:hover { background: var(--error-text); color: white; }
+        .modal-body { padding: 1.5rem; overflow-y: auto; background-color: var(--bg-color); flex-grow: 1; position: relative;}
 
-        .checklist-table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; background: var(--surface-color); border-radius: 8px; overflow: hidden; }
-        .checklist-table th, .checklist-table td { border: 1px solid var(--border-color); padding: 10px 12px; font-size: 0.88rem; vertical-align: top; }
-        .checklist-table th { background: var(--primary-color); color: white; text-align: left; }
-        .checklist-table tr.item-unselected { background-color: #fef2f2 !important; border: 1px solid #fca5a5; }
-
-        .pin-overlay { position: absolute; inset: 0; background: var(--bg-color); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; padding: 2rem; text-align: center;}
-        .pin-box { background: var(--surface-color); padding: 2rem; border-radius: 12px; box-shadow: var(--shadow); border: 1px solid var(--border-color); max-width: 400px; width: 100%;}
-        .pin-box input { margin: 1rem 0; font-size: 1.2rem; text-align: center; letter-spacing: 2px;}
-
-        /* ====== SAIZ BESAR UNTUK MODAL TANDA DOKUMEN ====== */
-        #markModal .modal-box {
-            max-width: 96vw;
-            width: 96vw;
-            height: 96vh;
-        }
-        #markCanvas {
-            max-width: 100%;
-        }
-        .mark-comment-box {
-            margin-top: 1rem;
-            background: var(--surface-color);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1rem;
-        }
-        .mark-comment-box .komen-label-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-        .mark-comment-box textarea {
-            resize: vertical;
-        }
-
-        /* ====== LAPORAN WEB: NEUTRAL (TIADA BOLD / WARNA) ====== */
-        .audit-report-content { font-size: 0.95rem; line-height: 1.7; color: var(--text-primary); display: none;}
-        .audit-report-content h1, .audit-report-content h2, .audit-report-content h3 {
-            margin-top: 1.5rem; margin-bottom: 0.8rem;
-            color: var(--text-primary);
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 0.3rem;
-            font-size: 1.15rem;
-            font-weight: normal;
-        }
-        .audit-report-content p { margin-bottom: 1rem; }
-        .audit-report-content strong,
-        .audit-report-content b {
-            font-weight: normal;
-            color: inherit;
-        }
-        .audit-report-content table {
-            width: 100%; border-collapse: collapse; margin-bottom: 1.5rem;
-            background-color: var(--surface-color);
-            box-shadow: none;
-        }
-        .audit-report-content th, .audit-report-content td {
-            border: 1px solid var(--border-color);
-            padding: 12px 15px; text-align: left; vertical-align: top;
-        }
-        .audit-report-content th {
-            background-color: var(--surface-color);
-            color: var(--text-primary);
-            font-weight: normal;
-        }
-        .audit-report-content .audit-status-warning,
-        .audit-report-content .audit-status-tdkpatuh,
-        .audit-report-content .audit-status-patuh {
-            color: inherit;
-            font-weight: normal;
-            background: none;
-        }
-
-        .faq-container { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; }
-        .faq-item { background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); transition: var(--transition); }
-        .faq-question { width: 100%; padding: 1.2rem 1.5rem; text-align: left; background: none; border: none; font-size: 1rem; font-weight: 600; color: var(--text-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: inherit; }
-        .faq-question:hover { background: rgba(0,0,0,0.015); }
-        .faq-icon { font-size: 1.3rem; font-weight: bold; color: var(--primary-color); transition: transform 0.3s ease; }
-        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease; padding: 0 1.5rem; background: var(--bg-color); font-size: 0.93rem; color: var(--text-secondary); line-height: 1.7; }
-        .faq-item.active { border-color: var(--primary-color); }
-        .faq-item.active .faq-answer { max-height: 300px; padding: 1rem 1.5rem 1.2rem 1.5rem; border-top: 1px solid var(--border-color); }
-        .faq-item.active .faq-icon { transform: rotate(45deg); color: var(--error-text); }
+        /* MODAL KAWALAN TANDA DOKUMEN (ANOTASI) */
+        .toolbar-anotasi { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; background: var(--surface-color); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); align-items: center;}
+        .tool-btn { padding: 8px 14px; border-radius: 6px; font-weight: 600; cursor: pointer; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-primary); transition: 0.2s; font-size: 0.85rem;}
+        .tool-btn.active { background: var(--primary-color); color: white; border-color: var(--primary-color);}
+        .canvas-wrapper { position: relative; border: 1px solid var(--border-color); background: #525659; overflow: auto; text-align: center; padding: 20px; border-radius: 8px; max-height: 65vh;}
+        .canvas-container-inner { position: relative; display: inline-block; box-shadow: 0 10px 25px rgba(0,0,0,0.3);}
+        #pdfCanvas { display: block;}
+        #drawCanvas { position: absolute; inset: 0; cursor: crosshair;}
 
         #toast-container { position: fixed; bottom: 20px; left: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
         .toast { padding: 0.9rem 1.3rem; border-radius: 8px; color: white; font-weight: 600; box-shadow: var(--shadow); transform: translateX(-120%); opacity: 0; transition: all 0.4s ease; }
         .toast.show { transform: translateX(0); opacity: 1; }
         .toast.success { background-color: var(--success-text); }
         .toast.error { background-color: var(--error-text); }
-
-        /* ====== FUNGSI TANDA DOKUMEN ====== */
-        #markDocSelector button.doc-aktif {
-            background: var(--primary-color) !important;
-            color: white !important;
-        }
-
-        /* ====== FORMAT KHAS UNTUK CETAK / SIMPAN PDF (LAPORAN PD & BORANG VERIFIKASI) ====== */
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-            #checklistModal, #checklistModal *,
-            #reportModal.active, #reportModal.active * {
-                visibility: visible;
-            }
-            #checklistModal, #reportModal.active {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                background: white !important;
-            }
-            #checklistModal .modal-box, #reportModal.active .modal-box {
-                width: 100%;
-                max-width: 100%;
-                height: auto;
-                box-shadow: none;
-                border: none;
-            }
-            #checklistModal .modal-body, #reportModal.active .modal-body {
-                overflow: visible;
-                padding: 1rem;
-            }
-            #checklistModal .close-btn,
-            #reportModal .close-btn,
-            #checklistModal #pinInputAdminPD,
-            #reportModal #pinOverlay,
-            #checklistModal .modal-header p,
-            #checklistModal button[type="submit"],
-            #checklistModal .btn-cetak,
-            #reportModal .btn-cetak-laporan,
-            #markModal {
-                display: none !important;
-            }
-            #checklistModal .modal-header, #reportModal .modal-header {
-                border-bottom: 2px solid #000;
-                background: white !important;
-            }
-            #checklistModal .modal-header h2, #reportModal .modal-header h2 {
-                color: #000 !important;
-            }
-            .checklist-table th, .audit-report-content th {
-                background: #e5e7eb !important;
-                color: #000 !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-            .checklist-table, .checklist-table th, .checklist-table td,
-            .audit-report-content table, .audit-report-content th, .audit-report-content td {
-                border: 1px solid #000 !important;
-            }
-            select, textarea, input {
-                border: none !important;
-                background: none !important;
-                -webkit-appearance: none;
-                appearance: none;
-                color: #000 !important;
-            }
-            textarea {
-                resize: none;
-                height: auto !important;
-                overflow: visible;
-            }
-        }
     </style>
 </head>
 <body>
@@ -295,95 +126,20 @@
         <div class="logo">Portal PD IPG</div>
         <ul class="nav-links">
             <li><a href="#home">Utama</a></li>
-            <li><a href="#muatnaik">Muat Naik</a></li>
             <li><a href="#papanpemuka">Papan Pemuka</a></li>
-            <li><a href="#faq">FAQ</a></li>
             <li><button class="theme-toggle" id="themeToggle">🌙</button></li>
         </ul>
     </navbar>
 
     <section class="hero" id="home">
         <h1>Sistem Verifikasi Pentaksiran Berterusan</h1>
-        <p>Borang Verifikasi Penjaminan Kualiti IPGM (Kemaskini Ogos 2026):</p>
-    </section>
-
-    <!-- TAB SWITCHER -->
-    <div class="tab-container">
-        <button class="tab-btn active" id="btnTab1" onclick="tukarFasa(1)">Fasa 1: Perancangan</button>
-        <button class="tab-btn" id="btnTab2" onclick="tukarFasa(2)">Fasa 2: Selepas Moderasi</button>
-    </div>
-
-    <!-- BORANG FASA 1 (PERANCANGAN) -->
-    <section id="seksyenFasa1">
-        <div class="form-container">
-            <h2 style="text-align: center; margin-bottom: 1.5rem; color: var(--primary-color);">Penyerahan Bahan (Fasa Perancangan)</h2>
-            <form id="formFasa1" novalidate>
-                <div class="form-grid-layout">
-                    <div class="form-column">
-                        <h3 class="column-title">A. Maklumat Asas Kursus</h3>
-                        <div class="form-group"><label>Jabatan:</label><input type="text" id="jabatan1" required placeholder="Cth: Jabatan Pengajian Melayu"></div>
-                        <div class="form-group"><label>Nama Pensyarah:</label><input type="text" id="pensyarah1" required placeholder="Cth: Dr. Ahmad Hakimi"></div>
-                        <div class="form-group"><label>Kod Kursus:</label><input type="text" id="kod1" required placeholder="Cth: BMMB3013" style="text-transform: uppercase;"></div>
-                        <div class="form-group"><label>Nama Kursus:</label><input type="text" id="namaKursus1" required placeholder="Cth: Kesusasteraan Melayu"></div>
-                        <div class="form-group" style="background: var(--warning-bg); padding: 15px; border-radius: 8px; border: 1px solid var(--warning-text); margin-top: 1rem;">
-                            <label style="color: var(--warning-text);">🔐 Kunci Rahsia (PIN / ID Staf):</label>
-                            <input type="password" id="pin1" required placeholder="Cth: 123456" style="border-color: var(--warning-text);">
-                            <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 5px;">* PIN ini diperlukan untuk membaca Laporan PD SULIT dan menanda dokumen.</p>
-                        </div>
-                    </div>
-                    <div class="form-column">
-                        <h3 class="column-title">B. Muat Naik Instrumen</h3>
-                        <div class="form-group"><label>1. Maklumat Kursus (MK):</label><input type="file" id="failMK" required accept=".pdf,.doc,.docx"></div>
-                        <div class="form-group"><label>2. Jadual Spesifikasi Tugasan (JST):</label><input type="file" id="failJST" required accept=".pdf,.doc,.docx,.xls,.xlsx"></div>
-                        <div class="form-group"><label>3. Soalan Tugasan:</label><input type="file" id="failTugasan" required accept=".pdf,.doc,.docx"></div>
-                        <div class="form-group"><label>4. Rubrik Pemarkahan:</label><input type="file" id="failRubrik" required accept=".pdf,.doc,.docx,.xls,.xlsx"></div>
-                        <div class="form-group"><label>5. Borang Semakan SME:</label><input type="file" id="failSME" required accept=".pdf,.doc,.docx"></div>
-                        <div class="form-group"><label>6. JSU (Pilihan):</label><input type="file" id="failJSU" accept=".pdf,.doc,.docx,.xls,.xlsx"></div>
-                    </div>
-                </div>
-                <button type="submit" id="btnHantar1" class="btn btn-primary" style="width: 100%; padding: 1rem;">Sahkan & Muat Naik Bahan Fasa 1</button>
-            </form>
-        </div>
-    </section>
-
-    <!-- BORANG FASA 2 (SELEPAS MODERASI) -->
-    <section id="seksyenFasa2" style="display: none;">
-        <div class="form-container">
-            <h2 style="text-align: center; margin-bottom: 1.5rem; color: #059669;">Penyerahan Bahan (Fasa Selepas Moderasi)</h2>
-            <form id="formFasa2" novalidate>
-                <div class="form-grid-layout">
-                    <div class="form-column">
-                        <h3 class="column-title" style="color: #059669;">A. Maklumat Asas & Kawalan</h3>
-                        <div class="form-group"><label>Jabatan:</label><input type="text" id="jabatan2" required placeholder="Cth: Jabatan Pengajian Melayu"></div>
-                        <div class="form-group"><label>Nama Pensyarah:</label><input type="text" id="pensyarah2" required placeholder="Cth: Dr. Ahmad Hakimi"></div>
-                        <div class="form-group"><label>Emel Pensyarah:</label><input type="email" id="emel2" required placeholder="pensyarah@ipg.edu.my"></div>
-                        <div class="form-group"><label>Kod Kursus:</label><input type="text" id="kod2" required placeholder="Cth: BMMB3013" style="text-transform: uppercase;"></div>
-                        <div class="form-group"><label>Nama Kursus:</label><input type="text" id="namaKursus2" required placeholder="Cth: Kesusasteraan Melayu"></div>
-                        <div class="form-group"><label>Tarikh Taklimat PB Pelajar:</label><input type="date" id="taklimat2" required></div>
-                        <div class="form-group"><label>Tarikh Akhir Verifikasi PD:</label><input type="date" id="tarikhAkhir2" required></div>
-                        <div class="form-group" style="background: var(--warning-bg); padding: 15px; border-radius: 8px; border: 1px solid var(--warning-text);">
-                            <label style="color: var(--warning-text);">🔐 Kunci Rahsia (PIN / ID Staf):</label>
-                            <input type="password" id="pin2" required placeholder="Cth: 123456" style="border-color: var(--warning-text);">
-                        </div>
-                    </div>
-                    <div class="form-column">
-                        <h3 class="column-title" style="color: #059669;">B. Muat Naik Instrumen</h3>
-                        <div class="form-group"><label>1. Sampel Tugasan & Komen Pensyarah:</label><input type="file" id="failSampel" required accept=".pdf,.doc,.docx"></div>
-                        <div class="form-group"><label>2. Borang Markah PB (LAM PT04-01):</label><input type="file" id="failLAM1" required accept=".pdf,.doc,.docx,.xls,.xlsx"></div>
-                        <div class="form-group"><label>3. Borang Moderasi (LAM PT04-02):</label><input type="file" id="failLAM2" required accept=".pdf,.doc,.docx"></div>
-                        <div class="form-group"><label>4. Laporan Panel (LAM PT04-03):</label><input type="file" id="failLAM3" required accept=".pdf,.doc,.docx"></div>
-                        <div class="form-group"><label>5. Laporan Kes Gagal (LAM PT04-04) (Pilihan):</label><input type="file" id="failLAM4" accept=".pdf,.doc,.docx"></div>
-                    </div>
-                </div>
-                <button type="submit" id="btnHantar2" class="btn btn-primary" style="background: #059669; width: 100%; padding: 1rem;">Sahkan & Muat Naik Bahan Fasa 2</button>
-            </form>
-        </div>
+        <p>Portal Semakan Dokumen & Modul Tanda Dokumen PD IPG:</p>
     </section>
 
     <!-- PAPAN PEMUKA AUDIT -->
     <section id="papanpemuka">
         <h2 style="text-align: center; margin-bottom: 0.5rem;">Papan Pemuka Status Semakan PD</h2>
-        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">Laporan PD diklasifikasikan sebagai <strong>SULIT</strong>.</p>
+        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">Laporan PD & Anotasi Dokumen diklasifikasikan sebagai <strong>SULIT</strong>.</p>
 
         <div class="controls">
             <input type="text" id="searchInput" class="search-box" placeholder="Cari Kod Kursus, Nama Kursus atau Pensyarah..." onkeyup="tapisData()">
@@ -396,8 +152,8 @@
                     <tr>
                         <th style="width: 15%;">Status Audit</th>
                         <th style="width: 18%;">Kod & Kursus</th>
-                        <th style="width: 18%;">Pensyarah / Jabatan</th>
-                        <th style="width: 49%;">Akses Laporan PD</th>
+                        <th style="width: 20%;">Pensyarah / Jabatan</th>
+                        <th style="width: 47%;">Akses Laporan & Anotasi</th>
                     </tr>
                 </thead>
                 <tbody id="jadualData">
@@ -407,196 +163,77 @@
         </div>
     </section>
 
-    <!-- SEKSYEN FAQ ACCORDION -->
-    <section id="faq" style="background-color: rgba(0,0,0,0.015); border-top: 1px solid var(--border-color);">
-        <h2 style="text-align: center; margin-bottom: 0.5rem;">Soalan Lazim (FAQ)</h2>
-        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">Panduan serta jawapan umum berkaitan penggunaan Portal Verifikasi PD IPG.</p>
-
-        <div class="faq-container">
-            <div class="faq-item">
-                <button class="faq-question" onclick="toggleFAQ(this)">
-                    <span>Daripada manakah Laporan PD dibaca?</span>
-                    <span class="faq-icon">+</span>
-                </button>
-                <div class="faq-answer">
-                    <p>Laporan PD dibaca secara terus daripada <strong>Cell M (Lajur 13)</strong> untuk Fasa 1 atau <strong>Lajur O (Lajur 15)</strong> untuk Fasa 2 di dalam pangkalan data Google Sheets anda.</p>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <button class="faq-question" onclick="toggleFAQ(this)">
-                    <span>Bagaimanakah cara membaca Laporan PD SULIT?</span>
-                    <span class="faq-icon">+</span>
-                </button>
-                <div class="faq-answer">
-                    <p>Laporan PD diklasifikasikan sebagai <strong>SULIT</strong>. Untuk membacanya, tekan butang <code>📄 Laporan PD</code> pada Papan Pemuka selepas status bertukar ke 'Disahkan PD'.</p>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <button class="faq-question" onclick="toggleFAQ(this)">
-                    <span>Siapakah yang boleh mengisi Borang Verifikasi Admin?</span>
-                    <span class="faq-icon">+</span>
-                </button>
-                <div class="faq-answer">
-                    <p>Borang Verifikasi PD dikhasikan **EXKLUSIF HANYA UNTUK PENTADBIR / PD**. Pensyarah yang memuat naik bahan disekat daripada membaca borang ini. Ia memerlukan Kunci Pentadbiran (Admin Master PIN) khas untuk diakses.</p>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <button class="faq-question" onclick="toggleFAQ(this)">
-                    <span>Bolehkah Laporan PD dan Borang Verifikasi dicetak atau disimpan?</span>
-                    <span class="faq-icon">+</span>
-                </button>
-                <div class="faq-answer">
-                    <p>Ya. Kedua-dua dokumen mempunyai butang <code>🖨️ Cetak / Simpan PDF</code> selepas dibuka. Tetingkap cetak pelayar akan terbuka — pilih "Save as PDF" untuk simpan sebagai fail PDF, atau pilih pencetak fizikal untuk cetak terus.</p>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <button class="faq-question" onclick="toggleFAQ(this)">
-                    <span>Bagaimana cara guna fungsi Tanda Dokumen?</span>
-                    <span class="faq-icon">+</span>
-                </button>
-                <div class="faq-answer">
-                    <p>Tekan butang <code>✏️ Tanda Dokumen</code> pada Papan Pemuka, masukkan PIN Kursus (sama seperti PIN untuk baca Laporan PD), pilih dokumen (MK/JST/Tugasan/Rubrik/SME/JSU) yang ingin ditanda, dan lukis terus di atas paparan PDF menggunakan pen (warna merah tetap). Tekan "💾 Simpan Tanda" untuk menyimpan lakaran anda pada setiap muka surat.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- MODAL 1: BACA LAPORAN PD TERUS DARI PANGKALAN DATA -->
+    <!-- MODAL 1: LAPORAN PD -->
     <div class="modal-overlay" id="reportModal">
         <div class="modal-box">
             <div class="modal-header">
                 <h2 id="modalTitle">Kunci Rahsia Diperlukan</h2>
-                <div class="modal-header-actions">
-                    <button class="btn-action btn-cetak-laporan" id="btnCetakLaporan" style="display:none; background: rgba(100,116,139,0.15); color:#475569; border-color:#475569;" onclick="cetakLaporanPD()">🖨️ Cetak / Simpan PDF</button>
-                    <button class="close-btn" onclick="tutupModal('reportModal')">&times;</button>
-                </div>
+                <button class="close-btn" onclick="tutupModal('reportModal')">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="pin-overlay" id="pinOverlay">
                     <div class="pin-box">
                         <h3 style="color: var(--primary-color); margin-bottom: 10px;">🔐 Akses Laporan PD SULIT</h3>
-                        <p style="font-size: 0.9rem; color: var(--text-secondary);">Sila masukkan Kunci Rahsia (PIN Kursus) yang anda tetapkan semasa memuat naik bahan ini.</p>
+                        <p style="font-size: 0.9rem; color: var(--text-secondary);">Sila masukkan Kunci Rahsia (PIN Kursus) yang ditetapkan.</p>
                         <input type="password" id="inputSemakPIN" placeholder="Masukkan PIN Kursus" onkeypress="if(event.key === 'Enter') mintaAksesLaporan()">
                         <input type="hidden" id="kodKursusSemasa">
                         <button class="btn btn-primary" style="width:100%" onclick="mintaAksesLaporan()" id="btnSemakPIN">Sahkan Identiti</button>
                     </div>
                 </div>
-
-                <div class="audit-report-content" id="modalReportBody">
-                    <!-- Teks Laporan PD disuntik di sini -->
-                </div>
+                <div class="audit-report-content" id="modalReportBody"></div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL 2: BORANG DIGITAL SENARAI SEMAK VERIFIKASI PD (ADMIN ONLY) -->
-    <div class="modal-overlay" id="checklistModal">
+    <!-- MODAL 2: TANDA DOKUMEN (ANOTASI KANVAS LENGKAP BERSERTA PEMADAM) -->
+    <div class="modal-overlay" id="anotasiModal">
         <div class="modal-box">
             <div class="modal-header">
-                <h2 id="checklistTitle">Borang Verifikasi Penjaminan Kualiti PD (Admin Only)</h2>
-                <button class="close-btn" onclick="tutupModal('checklistModal')">&times;</button>
+                <h2 id="anotasiModalTitle">🖋️ Tanda Dokumen PD</h2>
+                <button class="close-btn" onclick="tutupModal('anotasiModal')">&times;</button>
             </div>
             <div class="modal-body">
-
-                <div style="background: var(--warning-bg); padding: 1.2rem; border-radius: 8px; border: 1px solid var(--warning-text); margin-bottom: 1.5rem;">
-                    <label style="color: var(--warning-text); font-weight: bold;">🛡️ Kawalan Akses Pentadbiran: Sila Masukkan Kunci Pentadbiran (Admin Master PIN):</label>
-                    <input type="password" id="pinInputAdminPD" placeholder="Masukkan Admin Master PIN (Cth: ADMIN2026)..." style="margin-top: 5px; border-color: var(--warning-text);">
-                    <p style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 4px;">* Borang ini disekat daripada pensyarah dan disimpan di lajur berasingan.</p>
-                </div>
-
-                <form id="formChecklistPD" novalidate>
-                    <table class="checklist-table">
-                        <thead>
-                            <tr>
-                                <th style="width: 5%;">Bil</th>
-                                <th style="width: 40%;">Perkara / Soalan Verifikasi</th>
-                                <th style="width: 35%;">Pilihan Jawapan (Wajib Pilih)</th>
-                                <th style="width: 20%;">Catatan Audit</th>
-                            </tr>
-                        </thead>
-                        <tbody id="checklistTableBody">
-                            <!-- Soalan dan pilihan dropdown disuntik secara dinamik oleh JS -->
-                        </tbody>
-                    </table>
-
-                    <div style="background: var(--surface-color); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color); margin-top: 1.5rem;">
-                        <h3 style="color: var(--primary-color); margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">RUMUSAN PD PENTADBIRAN</h3>
-
-                        <div class="form-group">
-                            <label>1. Kekuatan:</label>
-                            <textarea id="kekuatanPDVal" rows="3" placeholder="Nyatakan kekuatan pelaksanaan PB kursus ini..."></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label>2. Kelemahan:</label>
-                            <textarea id="kelemahanPDVal" rows="3" placeholder="Nyatakan kelemahan yang ditemui (jika ada)..."></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label>3. Cadangan Penambahbaikan:</label>
-                            <textarea id="cadanganPDVal" rows="3" placeholder="Nyatakan cadangan penambahbaikan..."></textarea>
-                        </div>
-
-                        <div class="form-group" style="background: var(--warning-bg); padding: 15px; border-radius: 8px; border: 1px solid var(--warning-text); margin-top: 1rem;">
-                            <label style="color: var(--warning-text);">Perakuan Final Panel Audit:</label>
-                            <select id="perakuanPDVal" style="width: 100%; padding: 10px; margin-top: 5px; border-color: var(--warning-text);" required>
-                                <option value="[ / ] PATUH - Diluluskan tanpa syarat.">[ / ] PATUH - Diluluskan tanpa syarat.</option>
-                                <option value="[ / ] PATUH BERSYARAT - Diluluskan tertakluk pembetulan." selected>[ / ] PATUH BERSYARAT - Diluluskan tertakluk pembetulan.</option>
-                                <option value="[ / ] TIDAK PATUH - Perlu digubal semula dan diaudit semula.">[ / ] TIDAK PATUH - Perlu digubal semula dan diaudit semula.</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <button type="button" class="btn btn-cetak" style="margin-top: 1.5rem; padding: 1rem; width: 100%; background: #64748b; color: white; margin-bottom: 0.8rem;" onclick="cetakBorangVerifikasi()">🖨️ Cetak / Simpan sebagai PDF</button>
-
-                    <button type="submit" class="btn btn-primary" style="margin-top: 0; padding: 1rem;" id="btnSimpanChecklist">Sahkan & Simpan Verifikasi Pentadbiran</button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL 3: TANDA DOKUMEN (ANOTASI PDF SATU WARNA) -->
-    <div class="modal-overlay" id="markModal">
-        <div class="modal-box" style="max-width: 1100px;">
-            <div class="modal-header">
-                <h2 id="markModalTitle">Tanda Dokumen</h2>
-                <button class="close-btn" onclick="tutupModal('markModal')">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="pin-overlay" id="markPinOverlay">
+                
+                <div class="pin-overlay" id="pinOverlayAnotasi">
                     <div class="pin-box">
                         <h3 style="color: var(--primary-color); margin-bottom: 10px;">🔐 Akses Tanda Dokumen</h3>
-                        <p style="font-size: 0.9rem; color: var(--text-secondary);">Sila masukkan Kunci Rahsia (PIN Kursus) yang sama seperti akses Laporan PD untuk membuka dokumen bagi ditanda.</p>
-                        <input type="password" id="markInputPIN" placeholder="Masukkan PIN Kursus" onkeypress="if(event.key === 'Enter') mintaAksesTanda()">
-                        <input type="hidden" id="markKodKursusSemasa">
-                        <button class="btn btn-primary" style="width:100%" onclick="mintaAksesTanda()" id="btnMarkSemakPIN">Sahkan Identiti</button>
+                        <p style="font-size: 0.9rem; color: var(--text-secondary);">Sila masukkan Kunci Rahsia (PIN Kursus) untuk membuka dan menanda dokumen ini.</p>
+                        <input type="password" id="inputSemakPINAnotasi" placeholder="Masukkan PIN Kursus" onkeypress="if(event.key === 'Enter') mintaAksesAnotasi()">
+                        <button class="btn btn-primary" style="width:100%" onclick="mintaAksesAnotasi()" id="btnSemakPINAnotasi">Sahkan Identiti</button>
                     </div>
                 </div>
 
-                <div id="markContentArea" style="display:none;">
-                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.8rem;">Pilih dokumen yang ingin ditanda:</p>
-                    <div id="markDocSelector" style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1.2rem;"></div>
+                <div id="anotasiMainBody" style="display: none;">
+                    <div class="toolbar-anotasi">
+                        <label>Pilih Dokumen:</label>
+                        <select id="selectDokumenAnotasi" onchange="tukarDokumenAnotasi()" style="padding: 6px; width: auto; max-width: 200px;">
+                            <option value="MK">Maklumat Kursus (MK)</option>
+                            <option value="JST">JST</option>
+                            <option value="Tugasan">Soalan Tugasan</option>
+                            <option value="Rubrik">Rubrik Pemarkahan</option>
+                        </select>
 
-                    <div id="markViewerArea" style="display:none;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; background:var(--surface-color); padding:0.8rem 1rem; border-radius:8px; border:1px solid var(--border-color); margin-bottom:0.8rem; flex-wrap:wrap; gap:0.5rem;">
-                            <button class="btn-action" onclick="tukarHalamanTanda(-1)">← Sebelum</button>
-                            <span style="font-size:0.85rem; font-weight:600;">Muka Surat <span id="markHalamanSemasa">-</span> / <span id="markJumlahHalaman">-</span></span>
-                            <button class="btn-action" onclick="tukarHalamanTanda(1)">Seterusnya →</button>
+                        <div style="height: 20px; width: 1px; background: var(--border-color); margin: 0 5px;"></div>
+
+                        <!-- ALATAN KAWALAN LUKISAN DAN PEMADAM -->
+                        <button class="tool-btn active" id="btnToolPen" onclick="setModAnotasi('pen')">✏️ Pen (Tanda Merah)</button>
+                        <button class="tool-btn" id="btnToolEraser" onclick="setModAnotasi('eraser')">🧹 Pemadam (Padam Tanda)</button>
+                        <button class="tool-btn" onclick="batalTandaTerakhir()">↩️ Undo</button>
+                        <button class="tool-btn" style="background: var(--error-bg); color: var(--error-text);" onclick="padamSemuaTanda()">🗑️ Padam Semua Tanda</button>
+
+                        <div style="margin-left: auto; display: flex; gap: 8px;">
+                            <button class="btn btn-primary" style="padding: 6px 14px; font-size: 0.85rem;" onclick="simpanAnotasiKePelayan()">💾 Simpan Anotasi</button>
                         </div>
-                        <div style="display:flex; gap:0.6rem; margin-bottom:0.8rem; flex-wrap:wrap; align-items:center;">
-                            <button class="btn-action" onclick="padamLakaranHalamanTanda()">🧹 Padam Lakaran Halaman Ini</button>
-                            <button class="btn btn-primary" style="padding:0.5rem 1.2rem;" onclick="simpanAnotasiTanda()" id="btnSimpanTanda">💾 Simpan Tanda</button>
-                            <span style="font-size:0.75rem; color:var(--text-secondary); display:flex; align-items:center; gap:4px;">Pen: <span style="display:inline-block;width:12px;height:12px;background:#dc2626;border-radius:50%;"></span> Merah (tetap)</span>
-                        </div>
-                        <div style="width:100%; overflow:auto; text-align:center; background:#e5e7eb; border-radius:8px; padding:1rem;">
-                            <canvas id="markCanvas" style="background:white; box-shadow:var(--shadow); cursor:crosshair; max-width:100%;"></canvas>
+                    </div>
+
+                    <div class="canvas-wrapper">
+                        <div class="canvas-container-inner" id="canvasContainerInner">
+                            <canvas id="pdfCanvas"></canvas>
+                            <canvas id="drawCanvas"></canvas>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -604,80 +241,22 @@
     <div id="toast-container"></div>
 
     <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyjvVuuxBEdEN-6AwxbNj5wnq8xpuA4qQs7aSa7ntnh607vd3ixim6GPa9oZT9mUMCA/exec";
-        let fasaAktif = 1;
-        let senaraiFasa1 = [], senaraiFasa2 = [];
-        let kodSemasa = "";
-
-        const soalanFasa1 = [
-            { id: 1, soalan: "Adakah pensyarah menerima arahan tentang pelaksanaan PB daripada KJA / JK Kecemerlangan Akademik / KU / Penyelaras PB?", opsi: ["Menerima arahan yang sangat jelas tentang pelaksanaan PB", "Menerima arahan yang jelas tentang pelaksanaan PB", "Menerima arahan yang agak jelas tentang pelaksanaan PB", "Menerima arahan yang kurang jelas tentang pelaksanaan PB", "Tidak menerima arahan tentang pelaksanaan PB"] },
-            { id: 2, soalan: "Adakah pensyarah menggunakan MK yang terkini?", opsi: ["Ya", "Tidak"] },
-            { id: 3, soalan: "Adakah Jadual Spesifikasi Tugasan (JST) disediakan dengan sempurna?", opsi: ["JST disediakan mengikut format yang ditetapkan sepenuhnya.", "JST yang disediakan kurang menepati format yang ditetapkan.", "JST yang disediakan tidak menepati format yang ditetapkan.", "Tidak menyediakan JST."] },
-            { id: 4, soalan: "Adakah tempoh pelaksanaan PB selaras dengan MK?", opsi: ["Pengiraan dan penetapan tempoh pelaksanaan PB adalah selaras dengan MK terkini.", "Pengiraan dan penetapan tempoh pelaksanaan PB tidak mengikut formula yang betul.", "Kesilapan pengiraan dan penetapan tempoh pelaksanaan PB kerana mengambil kira cuti semester semasa.", "Kesilapan pengiraan dan penetapan tempoh pelaksanaan PB kerana mengambil kira cuti hari Ahad/Jumaat."] },
-            { id: 5, soalan: "Adakah penetapan tempoh menjawab soalan PB telah mengambil kira jenis soalan dan anggaran peruntukan masa BPP terkini?", opsi: ["YA", "TIDAK"] },
-            { id: 6, soalan: "Adakah Jam Pembelajaran Pelajar (JPP) sejajar dengan pemetaan Hasil Pembelajaran Kursus (HPK) dalam MK?", opsi: ["YA", "Tidak"] },
-            { id: 7, soalan: "Adakah Hasil Pembelajaran Kursus (HPK) sejajar dengan pemetaan hasil pembelajaran program (HPP/HP) dan pentaksiran dalam MK?", opsi: ["YA", "TIDAK"] },
-            { id: 8, soalan: "Adakah Objektif PB menepati HPK yang ditetapkan dalam MK?", opsi: ["Objektif PB menepati HPK yang telah ditetapkan dalam MK.", "Objektif PB sukar diukur.", "Objektif PB sukar dicapai.", "Objektif PB adalah tidak relevan.", "Objektif PB tidak mencatat had masa.", "Objektif PB disalin semula daripada HPK.", "Objektif PB yang dinyatakan adalah terlalu umum.", "Objektif PB tidak menepati aras domain yang tercatat dalam HPK."] },
-            { id: 9, soalan: "Adakah wajaran markah tugasan selaras dengan wajaran yang ditetapkan dalam MK?", opsi: ["Wajaran markah tugasan adalah selaras dengan wajaran yang ditetapkan dalam MK.", "Wajaran markah adalah berbeza dengan wajaran yang ditetapkan dalam MK.", "Wajaran markah tidak diasingkan mengikut HPP/HP (satu HPK yang menilai lebih dari satu HPP/HP)."] },
-            { id: 10, soalan: "Adakah aspek/kriteria penilaian dinyatakan dengan jelas untuk mentaksir tugasan yang diberikan?", opsi: ["Aspek/ Kriteria penilaian dinyatakan dengan jelas untuk mentaksir tugasan yang diberikan.", "Aspek/Kriteria penilaian dinyatakan secara umum.", "Aspek/Kriteria penilaian yang dinyatakan tidak selaras dengan rubrik pemarkahan.", "Aspek/Kriteria penilaian yang dinyatakan tidak sejajar dengan domain pembelajaran/ hasil pembelajaran/ kemahiran insaniah."] },
-            { id: 11, soalan: "Adakah elemen rangsangan/stimulus yang digunakan dalam tugasan PB adalah sesuai?", opsi: ["Rangsangan/stimulus yang digunakan adalah sangat sesuai dengan soalan tugasan PB.", "Rangsangan/ stimulus tidak berfungsi.", "Rangsangan/ stimulus tidak jelas dan mengelirukan.", "Rangsangan/stimulus tidak sesuai dengan soalan tugasan PB.", "Rangsangan/stimulus tidak disediakan bagi soalan tugasan PB.", "Tidak Berkenaan"] },
-            { id: 12, soalan: "Adakah elemen rangsangan/stimulus yang digunakan dalam tugasan PB adalah terkini?", opsi: ["Elemen rangsangan/stimulus yang digunakan adalah terkini (kurang dari 5 tahun).", "Elemen rangsangan/stimulus yang digunakan adalah lama (melebihi dari 5 tahun).", "Tidak Berkenaan"] },
-            { id: 13, soalan: "Adakah aras soalan tugasan PB menepati dengan keperluan HPK yang dinyatakan dalam MK?", opsi: ["Aras soalan tugasan PB menepati dengan keperluan HPK yang dinyatakan dalam MK.", "Penggunaan dua kata kerja eksplisit dalam satu soalan tugasan PB.", "Penggunaan kata kerja eksplisit yang tidak menepati dengan aras soalan tugasan PB.", "Aras soalan tugasan PB adalah rendah berbanding keperluan HPK yang dinyatakan dalam MK.", "Aras soalan tugasan PB adalah tinggi berbanding keperluan HPK yang dinyatakan dalam MK."] },
-            { id: 14, soalan: "Adakah soalan tugasan mempunyai Arahan Pelaksanaan yang jelas?", opsi: ["Secara keseluruhan arahan pelaksanaan tugasan dinyatakan dengan jelas.", "Secara keseluruhan arahan pelaksanaan tugasan tidak jelas/ mengelirukan."] },
-            { id: 15, soalan: "Adakah amaran plagiat dinyatakan dalam arahan pelaksanaan soalan tugasan?", opsi: ["Amaran plagiat dinyatakan dengan jelas.", "Amaran plagiat tidak dinyatakan."] },
-            { id: 16, soalan: "Adakah format penulisan sumber rujukan dinyatakan dalam arahan pelaksanaan soalan tugasan?", opsi: ["Arahan penulisan sumber rujukan mengikut format terkini dinyatakan dengan jelas.", "Tiada arahan penulisan sumber rujukan mengikut format terkini dinyatakan."] },
-            { id: 17, soalan: "Adakah garis panduan/cara menghantar tugasan PB dinyatakan dalam arahan pelaksanaan soalan tugasan?", opsi: ["Garis panduan/cara menghantar tugasan PB dinyatakan dengan jelas.", "Tiada garis panduan/cara menghantar tugasan PB dinyatakan dengan jelas.", "Garis panduan/cara menghantar tugasan PB yang dinyatakan adalah kurang jelas/ mengelirukan"] },
-            { id: 18, soalan: "Adakah Soalan tugasan mempunyai unsur KPPB (The Big Idea, EQ, 6C, 3E & 3R)?", opsi: ["Ya", "Tidak"] },
-            { id: 19, soalan: "Adakah tugasan yang disediakan mencapai KBAT seperti yang dinyatakan dalam HPK (C3 dan ke atas)?", opsi: ["Ya", "Tidak"] },
-            { id: 20, soalan: "Adakah domain kognitif yang dinyatakan dalam HPK diuji dalam tugasan?", opsi: ["Ya", "Tidak", "Tidak Berkenaan"] },
-            { id: 21, soalan: "Adakah domain afektif yang dinyatakan dalam HPK diuji dalam tugasan?", opsi: ["Ya", "Tidak", "Tidak Berkenaan"] },
-            { id: 22, soalan: "Adakah domain psikomotor yang dinyatakan dalam HPK diuji dalam tugasan?", opsi: ["Ya", "Tidak", "Tidak Berkenaan"] },
-            { id: 23, soalan: "Adakah kemahiran insaniah yang dinyatakan dalam HPK diuji dalam tugasan?", opsi: ["Ya", "Tidak", "Tidak Berkenaan"] },
-            { id: 24, soalan: "Adakah soalan tugasan telah disemak oleh Pakar Bidang (SME) menggunakan Borang Senarai Semak SME?", opsi: ["Ya", "Tidak"] },
-            { id: 25, soalan: "Adakah Ketua Jabatan telah menandatangani Borang Laporan Pelaksanaan Pembentangan dan Pemurnian PB?", opsi: ["Ya", "Tidak"] },
-            { id: 26, soalan: "Adakah Rubrik pemarkahan holistik/analitik yang disediakan selari dengan JST dan soalan tugasan?", opsi: ["Rubrik pemarkahan holistik / analitik yang disediakan adalah selari dengan JST dan soalan tugasan.", "Julat skor yang disediakan tidak tepat.", "Wajaran markah tidak selari dengan MK.", "Bullet library tidak digunakan dalam deskriptor.", "Pembahagian markah tidak selari dengan HPP/HP.", "Kesalahan dalam melabel tahap rubrik pemarkahan.", "Elemen KPPB tidak dijelmakan dalam rubrik pemarkahan.", "Aspek/Kriteria penilaian JST tidak selari dengan rubrik pemarkahan."] },
-            { id: 27, soalan: "Adakah skema pemarkahan/rubrik yang disediakan dengan kriteria/deskriptor dapat mengukur domain kognitif?", opsi: ["Kriteria/deskriptor dapat menilai aras domain kognitif dengan tepat.", "Tidak Berkenaan.", "Kriteria/deskriptor terlalu umum.", "Kriteria/deskriptor tidak disediakan.", "Kriteria/deskriptor tidak menjurus kepada soalan tugasan PB.", "Kriteria/deskriptor tidak menilai aras domain kognitif dengan tepat."] },
-            { id: 28, soalan: "Adakah skema pemarkahan/rubrik yang disediakan dengan kriteria/deskriptor dapat mengukur domain psikomotor?", opsi: ["Kriteria/deskriptor dapat menilai aras domain psikomotor dengan tepat.", "Tidak Berkenaan.", "Kriteria/deskriptor terlalu umum.", "Kriteria/deskriptor tidak disediakan.", "Kriteria/deskriptor tidak menjurus kepada soalan tugasan PB.", "Kriteria/deskriptor tidak menilai aras domain psikomotor dengan tepat."] },
-            { id: 29, soalan: "Adakah skema pemarkahan/rubrik yang disediakan dengan kriteria/deskriptor dapat mengukur domain afektif?", opsi: ["Kriteria/deskriptor dapat menilai aras domain afektif dengan tepat.", "Tidak Berkenaan.", "Kriteria/deskriptor terlalu umum.", "Kriteria/deskriptor tidak disediakan.", "Kriteria/deskriptor tidak menjurus kepada soalan tugasan PB.", "Kriteria/deskriptor tidak menilai aras domain afektif dengan tepat."] },
-            { id: 30, soalan: "Adakah skema pemarkahan/rubrik yang disediakan dengan kriteria/deskriptor dapat mengukur Kemahiran insaniah?", opsi: ["Kriteria/deskriptor dapat menilai aras kemahiran insaniah dengan tepat.", "Tidak Berkenaan.", "Kriteria/deskriptor terlalu umum.", "Kriteria/deskriptor tidak disediakan.", "Kriteria/deskriptor tidak menjurus kepada soalan tugasan PB.", "Kriteria/deskriptor tidak menilai aras kemahiran insaniah dengan tepat."] },
-            { id: 31, soalan: "Adakah skema pemarkahan/rubrik yang disediakan dengan kriteria/deskriptor dapat mengukur Value Based Education (VBE)?", opsi: ["Kriteria/deskriptor dapat menilai aras kemahiran insaniah dengan tepat.", "Tidak Berkenaan.", "Kriteria/deskriptor terlalu umum.", "Kriteria/deskriptor tidak disediakan.", "Kriteria/deskriptor tidak menjurus kepada soalan tugasan PB.", "Kriteria/deskriptor tidak menilai aras kemahiran insaniah dengan tepat."] }
-        ];
-
-        const soalanFasa2 = [
-            { id: 1, soalan: "Adakah pelajar menerima arahan tentang pentaksiran berterusan (PB) daripada pensyarah.", opsi: ["Ya", "Tidak"] },
-            { id: 2, soalan: "Adakah pemilihan sampel dan penyelarasan skema pemarkahan dan rubrik telah dilaksanakan? (sekiranya 2 atau lebih pemeriksa).", opsi: ["Telah dilaksanakan.", "Tidak dilaksanakan.", "Tidak berkenaan (hanya seorang pemeriksa)."] },
-            { id: 3, soalan: "Adakah tugasan PB disemak oleh pensyarah berdasarkan skema pemarkahan dan rubrik yang disediakan?", opsi: ["YA", "TIDAK"] },
-            { id: 4, soalan: "Adakah pemeriksa memberi maklum balas dalam hasil tugasan pelajar?", opsi: ["Memberi maklum balas yang konstruktif dalam hasil tugasan pelajar.", "Maklum balas diberikan pada beberapa muka surat sahaja.", "Tiada maklum balas pada hasil tugasan pelajar.", "Memberi maklum balas yang tidak konstruktif", "Maklum balas tidak menepati rubrik pemarkahan.", "Memberi maklum balas yang terlalu ringkas secara berulang kali."] },
-            { id: 5, soalan: "Adakah terdapat bukti pemeriksa memberi maklum balas kepada pelajar secara individu/kumpulan?", opsi: ["Terdapat tandatangan pelajar pada ruang/borang yang disediakan sebagai bukti pelajar menerima maklum balas daripada pemeriksa.", "Tiada bukti pemeriksa memberi maklum balas kepada pelajar."] },
-            { id: 6, soalan: "Adakah Borang Rekod Penyelarasan Markah Pentaksiran Berterusan (BRPMPB) sebelum pemeriksaan diisi dengan lengkap?", opsi: ["YA", "Tidak", "Tidak Berkenaan"] },
-            { id: 7, soalan: "Adakah pemilihan sampel hasil tugasan mengikut bilangan pemeriksa yang ditetapkan dalam BPP IPGM terkini?", opsi: ["Pemilihan sampel hasil tugasan adalah mengikut bilangan pemeriksa seperti yang ditetapkan dalam BPP IPGM yang terkini.", "Tidak memilih sampel hasil tugasan dari setiap pemeriksa.", "Tidak Berkenaan"] },
-            { id: 8, soalan: "Adakah pemeriksa menggunakan warna pen yang BETUL semasa proses moderasi markah PB dilaksanakan?", opsi: ["Ya", "Tidak", "Tidak Berkenaan"] },
-            { id: 9, soalan: "Adakah Ketua Pemeriksa mengisi markah sampel dalam Borang Moderasi (LAM-PT-04-02) selepas tamat proses moderasi?", opsi: ["Borang Moderasi Pentaksiran Berterusan telah diisi dengan lengkap.", "Tidak mengisi markah sampel dalam Borang Moderasi Pentaksiran Berterusan.", "Borang Moderasi Pentaksiran Berterusan tidak diisi dengan lengkap.", "Borang Moderasi Pentaksiran Berterusan telah diisi dengan lengkap. Pemindahan markah dalam Borang LAM-PT-04-02 tidak tepat.", "Tidak Berkenaan."] },
-            { id: 10, soalan: "Adakah KP telah memilih 9 tugasan (3 tinggi, 3 sederhana, 3 rendah) ATAU 1 sampel/pemeriksa sekiranya >9 pemeriksa?", opsi: ["Ketua Pemeriksa telah memilih sampel tugasan seperti ketetapan dalam BPP terkini.", "Pemilihan bilangan tugasan adalah tidak tepat.", "Sampel yang dipilih tidak mewakili semua pemeriksa/Ketua Pemeriksa."] },
-            { id: 11, soalan: "Adakah markah persetujuan skrip amat cemerlang dinyatakan dengan jelas?", opsi: ["Markah persetujuan skrip amat cemerlang dinyatakan dengan jelas di muka hadapan dengan menggunakan pen hijau.", "Markah persetujuan bagi skrip amat cemerlang tidak dinyatakan dengan jelas.", "Tidak berkenaan."] },
-            { id: 12, soalan: "Adakah Borang Markah PB (LAM-PT-04-01) diisi lengkap dan tepat oleh KP/pemeriksa dan disemak oleh KJA?", opsi: ["Borang LAM-PT-04-01 telah diisi oleh KP/pemeriksa dan disahkan oleh KJA.", "Borang LAM-PT-04-01 telah diisi oleh KP/pemeriksa tetapi tidak disahkan oleh KJA.", "Borang LAM-PT-04-01 tiada pembahagian HPP/HP mengikut MK.", "Markah dalam Borang LAM-PT-04-01 tidak diisi kepada satu tempat perpuluhan."] },
-            { id: 13, soalan: "Adakah Borang Moderasi (LAM-PT-04-02) diisi oleh panel moderasi dan disahkan oleh Ketua Pemeriksa?", opsi: ["Borang Moderasi (LAM-PT-04-02) telah diisi oleh panel moderasi dan disahkan oleh Ketua Pemeriksa.", "Panel Moderasi tidak mengisi Borang Moderasi (LAM-PT-04-02).", "Tidak Berkenaan."] },
-            { id: 14, soalan: "Adakah pemeriksa memberi justifikasi dalam Borang Laporan Panel Pemeriksa PB (LAM PT-04-03) bagi taburan markah PB?", opsi: ["Ya", "Tidak"] },
-            { id: 15, soalan: "Adakah Borang Laporan Kes Gagal/Amat Cemerlang (LAM-PT-04-04) diisi oleh pemeriksa dan disahkan oleh KP?", opsi: ["Borang LAM-PT-04-04 telah diisi oleh pemeriksa dan disahkan oleh KP.", "Borang LAM-PT-04-04 telah diisi oleh pemeriksa tetapi tidak disahkan oleh KP.", "Borang LAM-PT-04-04 tidak disediakan.", "Tidak berkenaan."] },
-            { id: 16, soalan: "Adakah taburan markah PB merentasi tiga gred dan dua kategori gred (Cth: A, A- dan B) dan tidak terlalu pencong?", opsi: ["Ya", "Tidak"] }
-        ];
+        let senaraiRekod = [];
+        let kodSemasa = "", pinSemasa = "";
+        let dataDokumenUrl = {}, dataAnotasiFull = {};
+        let modSemasa = "pen"; // 'pen' atau 'eraser'
+        let strokeHistory = [];
+        let isDrawing = false, lastX = 0, lastY = 0;
 
         function padamLoader() {
             const loader = document.getElementById('loader');
-            if (loader) {
-                loader.classList.add('hidden');
-            }
+            if (loader) loader.classList.add('hidden');
         }
 
-        window.addEventListener('load', () => {
-            muatTarikData();
-        });
-
-        const themeToggle = document.getElementById('themeToggle');
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            themeToggle.innerText = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
-        });
+        window.addEventListener('load', () => { muatTarikData(); });
 
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
@@ -689,297 +268,212 @@
             setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 4000);
         }
 
-        function toggleFAQ(button) {
-            const faqItem = button.parentElement;
-            const isActive = faqItem.classList.contains('active');
-            document.querySelectorAll('.faq-item').forEach(item => item.classList.remove('active'));
-            if (!isActive) faqItem.classList.add('active');
-        }
-
-        function tukarFasa(fasa) {
-            fasaAktif = fasa;
-            document.getElementById('btnTab1').classList.toggle('active', fasa === 1);
-            document.getElementById('btnTab2').classList.toggle('active', fasa === 2);
-            document.getElementById('seksyenFasa1').style.display = (fasa === 1) ? 'block' : 'none';
-            document.getElementById('seksyenFasa2').style.display = (fasa === 2) ? 'block' : 'none';
-            paparkanJadual(fasa === 1 ? senaraiFasa1 : senaraiFasa2);
-        }
-
-        function bukaBorangChecklistPD(kod) {
+        function bukaPromptAnotasi(kod) {
             kodSemasa = kod;
-            document.getElementById('checklistTitle').innerText = `Borang Verifikasi Penjaminan Kualiti PD (Admin) : ${kod} (Fasa ${fasaAktif})`;
-            document.getElementById('pinInputAdminPD').value = "";
-            document.getElementById('kekuatanPDVal').value = "";
-            document.getElementById('kelemahanPDVal').value = "";
-            document.getElementById('cadanganPDVal').value = "";
-
-            const tbody = document.getElementById('checklistTableBody');
-            tbody.innerHTML = "";
-
-            const listSoalan = (fasaAktif === 1) ? soalanFasa1 : soalanFasa2;
-            listSoalan.forEach((item, idx) => {
-                let optionsHTML = `<option value="">-- Sila Pilih Status --</option>`;
-                item.opsi.forEach(opt => {
-                    optionsHTML += `<option value="${opt}">${opt}</option>`;
-                });
-
-                tbody.innerHTML += `
-                    <tr id="row_item_${idx}">
-                        <td style="text-align: center; font-weight: bold;">${item.id}</td>
-                        <td><strong>${item.soalan}</strong></td>
-                        <td>
-                            <select id="select_status_${idx}" style="padding:6px; font-size:0.85rem;">
-                                ${optionsHTML}
-                            </select>
-                        </td>
-                        <td><input type="text" id="catatan_${idx}" placeholder="Catatan audit..." style="padding:6px;"></td>
-                    </tr>
-                `;
-            });
-
-            document.getElementById('checklistModal').classList.add('active');
+            document.getElementById('anotasiModalTitle').innerText = `🖋️ Tanda Dokumen PD : ${kod}`;
+            document.getElementById('inputSemakPINAnotasi').value = "";
+            document.getElementById('pinOverlayAnotasi').style.display = "flex";
+            document.getElementById('anotasiMainBody').style.display = "none";
+            document.getElementById('anotasiModal').classList.add('active');
             document.body.style.overflow = 'hidden';
         }
 
-        document.getElementById('formChecklistPD').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const adminPin = document.getElementById('pinInputAdminPD').value.trim();
-            if (!adminPin) return showToast("Sila masukkan Kunci Pentadbiran (Admin Master PIN)!", "error");
+        async function mintaAksesAnotasi() {
+            const pin = document.getElementById('inputSemakPINAnotasi').value.trim();
+            if (!pin) return showToast("Sila masukkan PIN Kursus.", "error");
 
-            const listSoalan = (fasaAktif === 1) ? soalanFasa1 : soalanFasa2;
-            let itemBelumDitanda = [];
-
-            listSoalan.forEach((item, idx) => {
-                const selectElem = document.getElementById(`select_status_${idx}`);
-                const rowElem = document.getElementById(`row_item_${idx}`);
-
-                if (!selectElem || !selectElem.value) {
-                    itemBelumDitanda.push(item.id);
-                    if (rowElem) rowElem.classList.add('item-unselected');
-                } else {
-                    if (rowElem) rowElem.classList.remove('item-unselected');
-                }
-            });
-
-            if (itemBelumDitanda.length > 0) {
-                showToast(`Ralat: Sila pilih jawapan bagi Soalan Bil: ${itemBelumDitanda.join(', ')}`, "error");
-                return;
-            }
-
-            const btnSimpan = document.getElementById('btnSimpanChecklist');
-            btnSimpan.innerText = "Menyimpan Verifikasi Pentadbiran...";
-            btnSimpan.disabled = true;
-
-            const senaraiSemakData = [];
-            listSoalan.forEach((item, idx) => {
-                const statusVal = document.getElementById(`select_status_${idx}`).value;
-                const catatanVal = document.getElementById(`catatan_${idx}`).value.trim();
-                senaraiSemakData.push({ perkara: item.soalan, status: statusVal, catatan: catatanVal });
-            });
-
-            const payload = {
-                action: "simpanVerifikasiPD",
-                fasa: fasaAktif,
-                kodKursus: kodSemasa,
-                adminPin: adminPin,
-                senaraiSemak: senaraiSemakData,
-                kekuatan: document.getElementById('kekuatanPDVal').value.trim(),
-                kelemahan: document.getElementById('kelemahanPDVal').value.trim(),
-                cadangan: document.getElementById('cadanganPDVal').value.trim(),
-                perakuanFinal: document.getElementById('perakuanPDVal').value
-            };
+            pinSemasa = pin;
+            const btn = document.getElementById('btnSemakPINAnotasi');
+            btn.innerText = "Memuatkan Dokumen...";
+            btn.disabled = true;
 
             try {
+                const payload = { action: "bacaAnotasi", fasa: 1, kodKursus: kodSemasa, kunciRahsia: pinSemasa };
                 const response = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
                 const result = await response.json();
 
                 if (result.status === "success") {
-                    showToast(result.mesej, "success");
-                    tutupModal('checklistModal');
-                    muatTarikData();
+                    dataDokumenUrl = result.dokumen;
+                    dataAnotasiFull = result.anotasi ? JSON.parse(result.anotasi) : {};
+                    
+                    document.getElementById('pinOverlayAnotasi').style.display = "none";
+                    document.getElementById('anotasiMainBody').style.display = "block";
+                    
+                    initCanvasEvents();
+                    tukarDokumenAnotasi();
                 } else {
                     showToast(result.mesej, "error");
                 }
             } catch (err) {
-                showToast("Ralat pelayan: " + err.message, "error");
-            } finally {
-                btnSimpan.innerText = "Sahkan & Simpan Verifikasi Pentadbiran";
-                btnSimpan.disabled = false;
-            }
-        });
-
-        // ====== FUNGSI CETAK / SIMPAN PDF ======
-        function cetakBorangVerifikasi() {
-            window.print();
-        }
-
-        function cetakLaporanPD() {
-            window.print();
-        }
-
-        function bukaPromptKeselamatan(kodKursus) {
-            document.getElementById('kodKursusSemasa').value = kodKursus;
-            document.getElementById('inputSemakPIN').value = "";
-            document.getElementById('modalTitle').innerText = "Akses Keselamatan Laporan PD (Cell M): " + kodKursus;
-
-            document.getElementById('btnCetakLaporan').style.display = "none";
-            document.getElementById('pinOverlay').style.display = "flex";
-            document.getElementById('modalReportBody').style.display = "none";
-            document.getElementById('reportModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
-
-            setTimeout(() => document.getElementById('inputSemakPIN').focus(), 100);
-        }
-
-        function tutupModal(id) {
-            document.getElementById(id).classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        async function mintaAksesLaporan() {
-            const kod = document.getElementById('kodKursusSemasa').value;
-            const pin = document.getElementById('inputSemakPIN').value;
-            const btn = document.getElementById('btnSemakPIN');
-
-            if (!pin) return showToast("Sila masukkan Kunci Rahsia.", "error");
-
-            btn.innerText = "Mengesahkan...";
-            btn.disabled = true;
-
-            try {
-                const payload = { action: "bacaLaporan", fasa: fasaAktif, kodKursus: kod, kunciRahsia: pin };
-                const response = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
-                const result = await response.json();
-
-                if (result.status === "success") {
-                    showToast("Akses Dibenarkan. Memaparkan Laporan PD SULIT.", "success");
-
-                    let htmlOutput = marked.parse(result.laporanPenuh);
-                    htmlOutput = htmlOutput.replace(/\bPATUH BERSYARAT\b/g, "##WARN##").replace(/\bTIDAK PATUH\b/g, "##ERR1##").replace(/\bTIDAK DINYATAKAN\b/g, "##ERR2##").replace(/\bPATUH\b/g, "##SUCC##");
-                    htmlOutput = htmlOutput.replace(/##WARN##/g, "<span class='audit-status-warning'>PATUH BERSYARAT</span>").replace(/##ERR1##/g, "<span class='audit-status-tdkpatuh'>TIDAK PATUH</span>").replace(/##ERR2##/g, "<span class='audit-status-tdkpatuh'>TIDAK DINYATAKAN</span>").replace(/##SUCC##/g, "<span class='audit-status-patuh'>PATUH</span>");
-
-                    document.getElementById('modalTitle').innerText = "Laporan PD (SULIT): " + kod;
-                    document.getElementById('modalReportBody').innerHTML = htmlOutput;
-
-                    document.getElementById('pinOverlay').style.display = "none";
-                    document.getElementById('modalReportBody').style.display = "block";
-                    document.getElementById('btnCetakLaporan').style.display = "inline-block";
-                } else {
-                    showToast(result.mesej, "error");
-                }
-            } catch (error) {
-                showToast("Ralat pelayan: " + error.message, "error");
+                showToast("Ralat: " + err.message, "error");
             } finally {
                 btn.innerText = "Sahkan Identiti";
                 btn.disabled = false;
             }
         }
 
-        const bacaFailSebagaiBase64 = (file, jenis) => {
-            return new Promise((resolve, reject) => {
-                if (!file) { resolve(null); return; }
-                const reader = new FileReader();
-                reader.onload = () => resolve({ jenis: jenis, namaFail: file.name, mimeType: file.type, failBase64: reader.result });
-                reader.onerror = error => reject(error);
-                reader.readAsDataURL(file);
+        async function tukarDokumenAnotasi() {
+            const jenis = document.getElementById('selectDokumenAnotasi').value;
+            const urlPdf = dataDokumenUrl[jenis];
+            if (!urlPdf) return showToast("Dokumen " + jenis + " tidak ditemui.", "error");
+
+            showToast("Membuka PDF " + jenis + "...", "success");
+            
+            try {
+                const proxyUrl = APPS_SCRIPT_URL + "?action=fetchPdfProxy&url=" + encodeURIComponent(urlPdf);
+                const res = await fetch(proxyUrl);
+                const base64Pdf = await res.text();
+                
+                const rawPdf = atob(base64Pdf);
+                const pdfData = new Uint8Array(rawPdf.length);
+                for (let i = 0; i < rawPdf.length; i++) pdfData[i] = rawPdf.charCodeAt(i);
+
+                const pdf = await pdfjsLib.getDocument({ data: pdfData }).promise;
+                const page = await pdf.getPage(1);
+                
+                const viewport = page.getViewport({ scale: 1.3 });
+                const pdfCanvas = document.getElementById('pdfCanvas');
+                const drawCanvas = document.getElementById('drawCanvas');
+                const ctxPdf = pdfCanvas.getContext('2d');
+
+                pdfCanvas.width = viewport.width;
+                pdfCanvas.height = viewport.height;
+                drawCanvas.width = viewport.width;
+                drawCanvas.height = viewport.height;
+
+                await page.render({ canvasContext: ctxPdf, viewport: viewport }).promise;
+
+                // MUAT KANVAS ANOTASI
+                strokeHistory = dataAnotasiFull[jenis] || [];
+                lukisSemuaAnotasi();
+
+            } catch (e) {
+                showToast("Gagal memuatkan PDF: " + e.message, "error");
+            }
+        }
+
+        function initCanvasEvents() {
+            const drawCanvas = document.getElementById('drawCanvas');
+            
+            drawCanvas.onmousedown = (e) => {
+                isDrawing = true;
+                const rect = drawCanvas.getBoundingClientRect();
+                lastX = e.clientX - rect.left;
+                lastY = e.clientY - rect.top;
+                
+                strokeHistory.push({
+                    mode: modSemasa,
+                    points: [{ x: lastX, y: lastY }]
+                });
+            };
+
+            drawCanvas.onmousemove = (e) => {
+                if (!isDrawing) return;
+                const rect = drawCanvas.getBoundingClientRect();
+                const currentX = e.clientX - rect.left;
+                const currentY = e.clientY - rect.top;
+
+                const currentStroke = strokeHistory[strokeHistory.length - 1];
+                currentStroke.points.push({ x: currentX, y: currentY });
+
+                lukisGarisanSeketika(lastX, lastY, currentX, currentY, modSemasa);
+                lastX = currentX;
+                lastY = currentY;
+            };
+
+            drawCanvas.onmouseup = () => { isDrawing = false; };
+            drawCanvas.onmouseleave = () => { isDrawing = false; };
+        }
+
+        function setModAnotasi(mode) {
+            modSemasa = mode;
+            document.getElementById('btnToolPen').classList.toggle('active', mode === 'pen');
+            document.getElementById('btnToolEraser').classList.toggle('active', mode === 'eraser');
+        }
+
+        function lukisGarisanSeketika(x1, y1, x2, y2, mode) {
+            const drawCanvas = document.getElementById('drawCanvas');
+            const ctx = drawCanvas.getContext('2d');
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            
+            if (mode === 'pen') {
+                ctx.globalCompositeOperation = 'source-over';
+                ctx.strokeStyle = '#dc2626'; // Warna merah pen audit
+                ctx.lineWidth = 2.5;
+                ctx.lineCap = 'round';
+            } else if (mode === 'eraser') {
+                // MOD PEMADAM: Hapus garisan yang disentuh
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.lineWidth = 18;
+                ctx.lineCap = 'round';
+            }
+            ctx.stroke();
+        }
+
+        function lukisSemuaAnotasi() {
+            const drawCanvas = document.getElementById('drawCanvas');
+            const ctx = drawCanvas.getContext('2d');
+            ctx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
+
+            strokeHistory.forEach(stroke => {
+                if (stroke.points.length < 2) return;
+                for (let i = 0; i < stroke.points.length - 1; i++) {
+                    lukisGarisanSeketika(
+                        stroke.points[i].x, stroke.points[i].y,
+                        stroke.points[i+1].x, stroke.points[i+1].y,
+                        stroke.mode
+                    );
+                }
             });
-        };
+        }
 
-        // MUAT NAIK FORM FASA 1
-        document.getElementById('formFasa1').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btnHantar = document.getElementById('btnHantar1');
-            btnHantar.innerText = "Memproses...";
-            btnHantar.disabled = true;
+        // FUNGSI MEMADAM TANDA LENGKAP
+        function batalTandaTerakhir() {
+            strokeHistory.pop();
+            lukisSemuaAnotasi();
+            showToast("Batal tanda terakhir.", "success");
+        }
+
+        function padamSemuaTanda() {
+            strokeHistory = [];
+            const drawCanvas = document.getElementById('drawCanvas');
+            const ctx = drawCanvas.getContext('2d');
+            ctx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
+            showToast("Semua tanda pada dokumen dipadamkan.", "success");
+        }
+
+        async function simpanAnotasiKePelayan() {
+            const jenis = document.getElementById('selectDokumenAnotasi').value;
+            dataAnotasiFull[jenis] = strokeHistory;
+
+            const payload = {
+                action: "simpanAnotasi",
+                kodKursus: kodSemasa,
+                kunciRahsia: pinSemasa,
+                dataAnotasi: JSON.stringify(dataAnotasiFull)
+            };
 
             try {
-                const prosesFail = [
-                    bacaFailSebagaiBase64(document.getElementById('failMK').files[0], "MK"),
-                    bacaFailSebagaiBase64(document.getElementById('failJST').files[0], "JST"),
-                    bacaFailSebagaiBase64(document.getElementById('failTugasan').files[0], "Tugasan"),
-                    bacaFailSebagaiBase64(document.getElementById('failRubrik').files[0], "Rubrik"),
-                    bacaFailSebagaiBase64(document.getElementById('failSME').files[0], "SME"),
-                    bacaFailSebagaiBase64(document.getElementById('failJSU').files[0], "JSU")
-                ];
-
-                const failArray = (await Promise.all(prosesFail)).filter(f => f !== null);
-
-                const payload = {
-                    action: "upload",
-                    jabatan: document.getElementById('jabatan1').value.trim(),
-                    namaPensyarah: document.getElementById('pensyarah1').value.trim(),
-                    kodKursus: document.getElementById('kod1').value.trim().toUpperCase(),
-                    namaKursus: document.getElementById('namaKursus1').value.trim(),
-                    kunciRahsia: document.getElementById('pin1').value.trim(),
-                    failArray: failArray
-                };
-
-                const response = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
-                const result = await response.json();
-
+                showToast("Menyimpan tanda dokumen...", "success");
+                const res = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
+                const result = await res.json();
+                
                 if (result.status === "success") {
                     showToast(result.mesej, "success");
-                    document.getElementById('formFasa1').reset();
-                    muatTarikData();
                 } else {
                     showToast(result.mesej, "error");
                 }
-            } catch (error) {
-                showToast(`Ralat: ${error.message}`, "error");
-            } finally {
-                btnHantar.innerText = "Sahkan & Muat Naik Bahan Fasa 1";
-                btnHantar.disabled = false;
+            } catch (err) {
+                showToast("Ralat simpan: " + err.message, "error");
             }
-        });
+        }
 
-        // MUAT NAIK FORM FASA 2
-        document.getElementById('formFasa2').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btnHantar = document.getElementById('btnHantar2');
-            btnHantar.innerText = "Memproses...";
-            btnHantar.disabled = true;
-
-            try {
-                const prosesFail = [
-                    bacaFailSebagaiBase64(document.getElementById('failSampel').files[0], "Sampel"),
-                    bacaFailSebagaiBase64(document.getElementById('failLAM1').files[0], "LAM1"),
-                    bacaFailSebagaiBase64(document.getElementById('failLAM2').files[0], "LAM2"),
-                    bacaFailSebagaiBase64(document.getElementById('failLAM3').files[0], "LAM3"),
-                    bacaFailSebagaiBase64(document.getElementById('failLAM4').files[0], "LAM4")
-                ];
-
-                const failArray = (await Promise.all(prosesFail)).filter(f => f !== null);
-
-                const payload = {
-                    action: "uploadFasa2",
-                    jabatan: document.getElementById('jabatan2').value.trim(),
-                    namaPensyarah: document.getElementById('pensyarah2').value.trim(),
-                    emelPensyarah: document.getElementById('emel2').value.trim(),
-                    kodKursus: document.getElementById('kod2').value.trim().toUpperCase(),
-                    namaKursus: document.getElementById('namaKursus2').value.trim(),
-                    tarikhTaklimat: document.getElementById('taklimat2').value,
-                    tarikhAkhir: document.getElementById('tarikhAkhir2').value,
-                    kunciRahsia: document.getElementById('pin2').value.trim(),
-                    failArray: failArray
-                };
-
-                const response = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
-                const result = await response.json();
-
-                if (result.status === "success") {
-                    showToast(result.mesej, "success");
-                    document.getElementById('formFasa2').reset();
-                    muatTarikData();
-                } else {
-                    showToast(result.mesej, "error");
-                }
-            } catch (error) {
-                showToast(`Ralat: ${error.message}`, "error");
-            } finally {
-                btnHantar.innerText = "Sahkan & Muat Naik Bahan Fasa 2";
-                btnHantar.disabled = false;
-            }
-        });
+        function tutupModal(id) {
+            document.getElementById(id).classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
 
         async function muatTarikData() {
             const tbody = document.getElementById('jadualData');
@@ -990,49 +484,35 @@
                 const data = await response.json();
 
                 if (data.status === "success") {
-                    senaraiFasa1 = data.fasa1 ? data.fasa1.reverse() : [];
-                    senaraiFasa2 = data.fasa2 ? data.fasa2.reverse() : [];
-                    paparkanJadual(fasaAktif === 1 ? senaraiFasa1 : senaraiFasa2);
+                    senaraiRekod = data.fasa1 ? data.fasa1.reverse() : [];
+                    paparkanJadual(senaraiRekod);
                 } else {
                     tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Tiada rekod penyerahan ditemui.</td></tr>';
                 }
             } catch (error) {
-                tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--error-text);">Gagal berhubung dengan pelayan. Sila semak pautan Apps Script atau muat semula. (${error.message})</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--error-text);">Gagal berhubung dengan pelayan: ${error.message}</td></tr>`;
             } finally {
                 padamLoader();
             }
         }
 
-        // KAWALAN DIPERKUAT: BUTANG LAPORAN PD HANYA MUNCUL APABILA STATUS 'DISAHKAN PD'
         function paparkanJadual(dataArray) {
             const tbody = document.getElementById('jadualData');
             tbody.innerHTML = '';
 
             if (!dataArray || dataArray.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Tiada rekod penyerahan bagi fasa ini.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Tiada rekod penyerahan.</td></tr>';
                 return;
             }
 
             dataArray.forEach(row => {
                 const isDisahkan = row.status === "Disahkan PD" || row.status === "Selesai Disemak";
-
-                let badgeClass = "badge-warning";
-                let statusTextText = row.status;
-                let butangLaporanHTML = "";
-
-                if (isDisahkan) {
-                    badgeClass = "badge-success";
-                    statusTextText = "Disahkan PD";
-                    butangLaporanHTML = `<button class="btn-action" style="background: rgba(16, 185, 129, 0.1); color: #059669; border-color: #059669;" onclick="bukaPromptKeselamatan('${row.kodKursus}')">📄 Laporan PD</button>`;
-                } else {
-                    badgeClass = "badge-info";
-                    statusTextText = "🔵 Menunggu Pengesahan PD";
-                    butangLaporanHTML = `<span class="pending-text" style="font-size:0.82rem; margin-right:8px; display:inline-block; color:var(--text-secondary); font-style:italic;">(Laporan Belum Boleh Dibuka - Menunggu Pengesahan PD)</span>`;
-                }
-
-                const butangTandaHTML = (fasaAktif === 1)
-                    ? `<button class="btn-action" style="background: rgba(220, 38, 38, 0.1); color: #dc2626; border-color: #dc2626;" onclick="bukaPromptTanda('${row.kodKursus}')">✏️ Tanda Dokumen</button>`
-                    : "";
+                let badgeClass = isDisahkan ? "badge-success" : "badge-info";
+                let statusTextText = isDisahkan ? "Disahkan PD" : "🔵 Menunggu Pengesahan PD";
+                
+                let butangLaporanHTML = isDisahkan 
+                    ? `<button class="btn-action" style="background: rgba(16, 185, 129, 0.1); color: #059669; border-color: #059669;" onclick="bukaPromptKeselamatan('${row.kodKursus}')">📄 Laporan PD</button>`
+                    : `<span style="font-size:0.82rem; margin-right:8px; color:var(--text-secondary); font-style:italic;">(Laporan Belum Boleh Dibuka)</span>`;
 
                 tbody.innerHTML += `
                     <tr>
@@ -1050,273 +530,12 @@
                         </td>
                         <td>
                             ${butangLaporanHTML}
+                            <button class="btn-action" style="background: rgba(37, 99, 235, 0.1); color: var(--primary-color); border-color: var(--primary-color);" onclick="bukaPromptAnotasi('${row.kodKursus}')">🖋️ Tanda Dokumen</button>
                             <button class="btn-action" style="background: rgba(239, 68, 68, 0.1); color: var(--error-text); border-color: var(--error-text);" onclick="bukaBorangChecklistPD('${row.kodKursus}')">🛡️ Borang Verifikasi (Admin)</button>
-                            ${butangTandaHTML}
                         </td>
                     </tr>
                 `;
             });
-        }
-
-        function tapisData() {
-            const kataKunci = document.getElementById('searchInput').value.toLowerCase();
-            const sumber = fasaAktif === 1 ? senaraiFasa1 : senaraiFasa2;
-            const hasilTapis = sumber.filter(r =>
-                r.kodKursus.toLowerCase().includes(kataKunci) ||
-                r.namaKursus.toLowerCase().includes(kataKunci) ||
-                r.namaPensyarah.toLowerCase().includes(kataKunci) ||
-                r.jabatan.toLowerCase().includes(kataKunci)
-            );
-            paparkanJadual(hasilTapis);
-        }
-
-        // ============================================================
-        // FUNGSI TANDA DOKUMEN (ANOTASI PDF SATU WARNA - MERAH TETAP)
-        // ============================================================
-        let markKodKursus = "";
-        let markKunciSah = "";
-        let markDataAnotasiSemua = {};   // { MK: { 1: strokes[], 2: strokes[] }, JST: {...}, ... }
-        let markDokumenAktif = "";
-        let markPdfDoc = null;
-        let markHalamanSemasaNum = 1;
-        let markJumlahHalamanNum = 0;
-        let markIsDrawing = false;
-        let markPageStrokes = [];
-        const WARNA_PEN_TANDA = "#dc2626";
-
-        function bukaPromptTanda(kodKursus) {
-            markDataAnotasiSemua = {};
-            markDokumenAktif = "";
-            markPdfDoc = null;
-            markPageStrokes = [];
-
-            document.getElementById('markKodKursusSemasa').value = kodKursus;
-            document.getElementById('markInputPIN').value = "";
-            document.getElementById('markModalTitle').innerText = "Tanda Dokumen: " + kodKursus;
-            document.getElementById('markPinOverlay').style.display = "flex";
-            document.getElementById('markContentArea').style.display = "none";
-            document.getElementById('markViewerArea').style.display = "none";
-            document.getElementById('markModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
-            setTimeout(() => document.getElementById('markInputPIN').focus(), 100);
-        }
-
-        async function mintaAksesTanda() {
-            const kod = document.getElementById('markKodKursusSemasa').value;
-            const pin = document.getElementById('markInputPIN').value;
-            const btn = document.getElementById('btnMarkSemakPIN');
-            if (!pin) return showToast("Sila masukkan Kunci Rahsia.", "error");
-
-            btn.innerText = "Mengesahkan...";
-            btn.disabled = true;
-
-            try {
-                const payload = { action: "bacaAnotasi", kodKursus: kod, kunciRahsia: pin };
-                const response = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
-                const result = await response.json();
-
-                if (result.status === "success") {
-                    markKodKursus = kod;
-                    markKunciSah = pin;
-                    try {
-                        markDataAnotasiSemua = result.anotasi ? JSON.parse(result.anotasi) : {};
-                    } catch (e) {
-                        markDataAnotasiSemua = {};
-                    }
-
-                    const jenisDokumen = [
-                        { key: "MK", label: "📄 Maklumat Kursus (MK)" },
-                        { key: "JST", label: "📄 JST" },
-                        { key: "Tugasan", label: "📄 Soalan Tugasan" },
-                        { key: "Rubrik", label: "📄 Rubrik" },
-                        { key: "SME", label: "📄 Borang SME" },
-                        { key: "JSU", label: "📄 JSU" }
-                    ];
-
-                    const selector = document.getElementById('markDocSelector');
-                    selector.innerHTML = "";
-                    jenisDokumen.forEach(j => {
-                        const url = result.dokumen ? result.dokumen[j.key] : "";
-                        const ada = url && url.toString().trim() !== "";
-                        const btnDoc = document.createElement('button');
-                        btnDoc.className = "btn-action";
-                        btnDoc.id = "markDocBtn_" + j.key;
-                        btnDoc.style.cssText = ada ? "" : "opacity:0.4; cursor:not-allowed;";
-                        btnDoc.innerText = j.label + (ada ? "" : " (Tiada Fail)");
-                        if (ada) {
-                            btnDoc.onclick = () => pilihDokumenTanda(j.key, url);
-                        }
-                        selector.appendChild(btnDoc);
-                    });
-
-                    document.getElementById('markPinOverlay').style.display = "none";
-                    document.getElementById('markContentArea').style.display = "block";
-                    showToast("Akses dibenarkan. Sila pilih dokumen untuk ditanda.", "success");
-                } else {
-                    showToast(result.mesej, "error");
-                }
-            } catch (error) {
-                showToast("Ralat pelayan: " + error.message, "error");
-            } finally {
-                btn.innerText = "Sahkan Identiti";
-                btn.disabled = false;
-            }
-        }
-
-        async function pilihDokumenTanda(jenis, urlDrive) {
-            markDokumenAktif = jenis;
-
-            document.querySelectorAll('#markDocSelector button').forEach(b => b.classList.remove('doc-aktif'));
-            const btnAktif = document.getElementById('markDocBtn_' + jenis);
-            if (btnAktif) btnAktif.classList.add('doc-aktif');
-
-            document.getElementById('markViewerArea').style.display = "block";
-            document.getElementById('markCanvas').style.display = "none";
-            showToast("Membuka dokumen, sila tunggu...", "success");
-
-            try {
-                const proxyUrl = APPS_SCRIPT_URL + "?action=fetchPdfProxy&url=" + encodeURIComponent(urlDrive);
-                const res = await fetch(proxyUrl);
-                const b64 = await res.text();
-                if (b64.startsWith("ERROR")) throw new Error(b64);
-
-                const raw = atob(b64);
-                const arr = new Uint8Array(raw.length);
-                for (let i = 0; i < raw.length; i++) arr[i] = raw.charCodeAt(i);
-
-                const pdf = await pdfjsLib.getDocument({ data: arr }).promise;
-                markPdfDoc = pdf;
-                markJumlahHalamanNum = pdf.numPages;
-                markHalamanSemasaNum = 1;
-                document.getElementById('markJumlahHalaman').innerText = markJumlahHalamanNum;
-                renderHalamanTanda();
-            } catch (err) {
-                showToast("Gagal membuka dokumen (mungkin bukan format PDF): " + err.message, "error");
-            }
-        }
-
-        function renderHalamanTanda() {
-            if (!markPdfDoc) return;
-            document.getElementById('markHalamanSemasa').innerText = markHalamanSemasaNum;
-
-            markPdfDoc.getPage(markHalamanSemasaNum).then(page => {
-                const canvasEl = document.getElementById('markCanvas');
-                const ctx = canvasEl.getContext('2d');
-                const vp = page.getViewport({ scale: 1.5 });
-                canvasEl.width = 800;
-                const sf = 800 / vp.width;
-                canvasEl.height = vp.height * sf;
-
-                page.render({ canvasContext: ctx, viewport: page.getViewport({ scale: 1.5 * sf }) }).promise.then(() => {
-                    canvasEl.style.display = "block";
-                    if (!markDataAnotasiSemua[markDokumenAktif]) markDataAnotasiSemua[markDokumenAktif] = {};
-                    markPageStrokes = markDataAnotasiSemua[markDokumenAktif][markHalamanSemasaNum] || [];
-                    lukisSemulaTanda(ctx);
-                    setupCanvasTanda(canvasEl, ctx);
-                });
-            });
-        }
-
-        function lukisSemulaTanda(ctx) {
-            ctx.strokeStyle = WARNA_PEN_TANDA;
-            ctx.lineWidth = 2.5;
-            ctx.lineCap = "round";
-            ctx.lineJoin = "round";
-            markPageStrokes.forEach(pt => {
-                if (pt.type === 'start') { ctx.beginPath(); ctx.moveTo(pt.x, pt.y); }
-                else if (pt.type === 'move') { ctx.lineTo(pt.x, pt.y); ctx.stroke(); }
-            });
-        }
-
-        function setupCanvasTanda(canvasEl, ctx) {
-            ctx.strokeStyle = WARNA_PEN_TANDA;
-            ctx.lineWidth = 2.5;
-            ctx.lineCap = "round";
-            ctx.lineJoin = "round";
-
-            canvasEl.onmousedown = (e) => { markIsDrawing = true; mulaLukisTanda(e, canvasEl, ctx); };
-            canvasEl.onmousemove = (e) => { lukisTanda(e, canvasEl, ctx); };
-            canvasEl.onmouseup = () => { markIsDrawing = false; };
-            canvasEl.onmouseleave = () => { markIsDrawing = false; };
-            canvasEl.ontouchstart = (e) => { markIsDrawing = true; mulaLukisTanda(e.touches[0], canvasEl, ctx); e.preventDefault(); };
-            canvasEl.ontouchmove = (e) => { lukisTanda(e.touches[0], canvasEl, ctx); e.preventDefault(); };
-            canvasEl.ontouchend = () => { markIsDrawing = false; };
-        }
-
-        function dapatkanKoordinatCanvas(e, canvasEl) {
-            const r = canvasEl.getBoundingClientRect();
-            const scaleX = canvasEl.width / r.width;
-            const scaleY = canvasEl.height / r.height;
-            return {
-                x: (e.clientX - r.left) * scaleX,
-                y: (e.clientY - r.top) * scaleY
-            };
-        }
-
-        function mulaLukisTanda(e, canvasEl, ctx) {
-            const koord = dapatkanKoordinatCanvas(e, canvasEl);
-            ctx.beginPath();
-            ctx.moveTo(koord.x, koord.y);
-            markPageStrokes.push({ type: 'start', x: koord.x, y: koord.y });
-        }
-
-        function lukisTanda(e, canvasEl, ctx) {
-            if (!markIsDrawing) return;
-            const koord = dapatkanKoordinatCanvas(e, canvasEl);
-            ctx.lineTo(koord.x, koord.y);
-            ctx.stroke();
-            markPageStrokes.push({ type: 'move', x: koord.x, y: koord.y });
-        }
-
-        function padamLakaranHalamanTanda() {
-            if (!markPdfDoc) return;
-            if (!confirm("Padam lakaran pada muka surat ini?")) return;
-            markPageStrokes = [];
-            renderHalamanTanda();
-        }
-
-        function tukarHalamanTanda(arah) {
-            if (!markPdfDoc) return;
-            const sasaran = markHalamanSemasaNum + arah;
-            if (sasaran < 1 || sasaran > markJumlahHalamanNum) return;
-
-            if (!markDataAnotasiSemua[markDokumenAktif]) markDataAnotasiSemua[markDokumenAktif] = {};
-            markDataAnotasiSemua[markDokumenAktif][markHalamanSemasaNum] = markPageStrokes;
-
-            markHalamanSemasaNum = sasaran;
-            renderHalamanTanda();
-        }
-
-        async function simpanAnotasiTanda() {
-            if (!markDokumenAktif) return showToast("Sila pilih dokumen dahulu.", "error");
-
-            if (!markDataAnotasiSemua[markDokumenAktif]) markDataAnotasiSemua[markDokumenAktif] = {};
-            markDataAnotasiSemua[markDokumenAktif][markHalamanSemasaNum] = markPageStrokes;
-
-            const btn = document.getElementById('btnSimpanTanda');
-            btn.innerText = "Menyimpan...";
-            btn.disabled = true;
-
-            try {
-                const payload = {
-                    action: "simpanAnotasi",
-                    kodKursus: markKodKursus,
-                    kunciRahsia: markKunciSah,
-                    dataAnotasi: JSON.stringify(markDataAnotasiSemua)
-                };
-                const response = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
-                const result = await response.json();
-                if (result.status === "success") {
-                    showToast("Tanda berjaya disimpan.", "success");
-                } else {
-                    showToast(result.mesej, "error");
-                }
-            } catch (err) {
-                showToast("Ralat pelayan: " + err.message, "error");
-            } finally {
-                btn.innerText = "💾 Simpan Tanda";
-                btn.disabled = false;
-            }
         }
     </script>
 </body>
