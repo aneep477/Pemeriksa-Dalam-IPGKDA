@@ -67,13 +67,34 @@
         .nav-links li a { font-weight: 600; font-size: 0.95rem; }
         .theme-toggle { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--text-primary); }
 
-        .hero { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; min-height: 25vh; padding-top: 100px; padding-bottom: 1rem; }
-        .hero h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
-        .hero p { font-size: 1.1rem; color: var(--text-secondary); max-width: 650px; margin-bottom: 1.5rem; }
+        .hero { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; min-height: 22vh; padding-top: 90px; padding-bottom: 1rem; }
+        .hero h1 { font-size: 2.2rem; margin-bottom: 0.5rem; }
+        .hero p { font-size: 1rem; color: var(--text-secondary); max-width: 650px; margin-bottom: 1.2rem; }
+        
+        .tab-container { display: flex; justify-content: center; gap: 1rem; margin-bottom: 1.5rem; }
+        .tab-btn { padding: 0.8rem 1.8rem; border-radius: 8px; font-weight: 600; cursor: pointer; border: 1px solid var(--border-color); background: var(--surface-color); color: var(--text-secondary); transition: var(--transition); }
+        .tab-btn.active { background: var(--primary-color); color: white; border-color: var(--primary-color); box-shadow: var(--shadow); }
 
         .btn { padding: 0.8rem 1.8rem; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; font-size: 0.95rem; transition: var(--transition); }
         .btn-primary { background: var(--primary-color); color: white; }
         .btn-primary:hover { background: var(--primary-hover); }
+
+        .form-container { max-width: 1000px; margin: 0 auto; background: var(--surface-color); padding: 2rem; border-radius: 12px; box-shadow: var(--shadow); border: 1px solid var(--border-color); }
+        .form-grid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+        .column-title { font-size: 1.1rem; color: var(--primary-color); margin-bottom: 1.5rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; }
+
+        @media (max-width: 768px) {
+            .form-grid-layout { grid-template-columns: 1fr; gap: 1.5rem; }
+        }
+
+        .form-group { margin-bottom: 1.2rem; }
+        label { display: block; margin-bottom: 0.4rem; font-weight: 600; font-size: 0.95rem; }
+        input[type="text"], input[type="email"], input[type="date"], input[type="file"], input[type="password"], textarea, select { width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-color); color: var(--text-primary); transition: var(--transition); font-family: inherit;}
+        input:focus, textarea:focus, select:focus { outline: none; border-color: var(--primary-color); }
+
+        .controls { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+        .search-box { flex: 1; min-width: 250px; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--surface-color); color: var(--text-primary); }
+        .btn-refresh { background: var(--primary-color); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: var(--transition); }
 
         .table-container { background: var(--surface-color); border-radius: 12px; box-shadow: var(--shadow); overflow-x: auto; border: 1px solid var(--border-color); }
         table.main-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.92rem; }
@@ -88,35 +109,69 @@
         .btn-action { padding: 0.4rem 0.8rem; font-size: 0.8rem; border-radius: 6px; border: 1px solid var(--primary-color); background: rgba(37,99,235,0.1); color: var(--primary-color); cursor: pointer; font-weight: 600; margin-right: 5px; margin-bottom: 5px;}
         .btn-action:hover { background: var(--primary-color); color: white; }
 
-        .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8); z-index: 10000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); backdrop-filter: blur(4px); }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.85); z-index: 10000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); backdrop-filter: blur(4px); }
         .modal-overlay.active { opacity: 1; visibility: visible; }
         
-        /* SKRIN DIBESARKAN KE TAHAP MAKSIMUM (FULLSCREEN 98VW x 96VH) */
-        .modal-box.fullscreen { width: 98vw !important; height: 96vh !important; max-width: none !important; border-radius: 8px; display: flex; flex-direction: column; background: var(--bg-color); border: 1px solid var(--border-color); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
-        .modal-header { padding: 1.2rem 2rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background: var(--surface-color); border-radius: 8px 8px 0 0; }
-        .modal-header h2 { font-size: 1.2rem; color: var(--primary-color); }
+        /* TETINGKAP MAKSIMUM (FULLSCREEN OVERLAY) */
+        .modal-box.fullscreen { width: 100vw !important; height: 100vh !important; max-width: none !important; border-radius: 0 !important; display: flex; flex-direction: column; background: var(--bg-color); border: none; }
+        .modal-box.standard { width: 95%; max-width: 1050px; height: 90vh; border-radius: 12px; display: flex; flex-direction: column; background: var(--bg-color); border: 1px solid var(--border-color); }
+        
+        .modal-header { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background: var(--surface-color); }
+        .modal-header h2 { font-size: 1.15rem; color: var(--primary-color); }
         .close-btn { background: var(--error-bg); color: var(--error-text); border: none; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-weight: bold; font-size: 1.2rem; display: flex; justify-content: center; align-items: center; }
         .close-btn:hover { background: var(--error-text); color: white; }
         .modal-body { padding: 1.5rem; overflow-y: auto; background-color: var(--bg-color); flex-grow: 1; position: relative;}
 
-        /* TOOLBAR & BEKAS KANVAS ANOTASI BERSAMA BEKAS PUSAT ALL-PAGES */
+        /* ALATAN TANDA DOKUMEN & BEKAS KANVAS ALL-PAGES */
         .toolbar-anotasi { display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; background: var(--surface-color); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); align-items: center;}
         .tool-btn { padding: 8px 14px; border-radius: 6px; font-weight: 600; cursor: pointer; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-primary); transition: 0.2s; font-size: 0.85rem;}
         .tool-btn.active { background: var(--primary-color); color: white; border-color: var(--primary-color);}
         
-        .canvas-wrapper { position: relative; border: 1px solid var(--border-color); background: #323639; overflow-y: auto; text-align: center; padding: 25px; border-radius: 8px; height: 60vh;}
-        .page-container { position: relative; display: inline-block; box-shadow: 0 10px 25px rgba(0,0,0,0.4); background: white; margin-bottom: 25px; border-radius: 4px; overflow: hidden;}
+        .canvas-wrapper { position: relative; border: 1px solid var(--border-color); background: #323639; overflow-y: auto; text-align: center; padding: 25px; border-radius: 8px; flex-grow: 1; height: 62vh;}
+        .page-container { position: relative; display: inline-block; box-shadow: 0 10px 25px rgba(0,0,0,0.4); background: white; margin-bottom: 15px; border-radius: 4px; overflow: hidden;}
         .page-label { background: #1e293b; color: #f8fafc; padding: 6px 14px; font-size: 0.82rem; font-weight: 600; text-align: left; border-radius: 4px 4px 0 0;}
+        .page-note-box { margin-bottom: 25px; background: var(--surface-color); padding: 10px 15px; border-radius: 0 0 6px 6px; border: 1px solid var(--border-color); text-align: left; max-width: 800px; margin-left: auto; margin-right: auto; }
+
+        .checklist-table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; background: var(--surface-color); border-radius: 8px; overflow: hidden; }
+        .checklist-table th, .checklist-table td { border: 1px solid var(--border-color); padding: 10px 12px; font-size: 0.88rem; vertical-align: top; }
+        .checklist-table th { background: var(--primary-color); color: white; text-align: left; }
+        .checklist-table tr.item-unselected { background-color: #fef2f2 !important; border: 1px solid #fca5a5; }
 
         .pin-overlay { position: absolute; inset: 0; background: var(--bg-color); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; padding: 2rem; text-align: center;}
         .pin-box { background: var(--surface-color); padding: 2rem; border-radius: 12px; box-shadow: var(--shadow); border: 1px solid var(--border-color); max-width: 400px; width: 100%;}
         .pin-box input { margin: 1rem 0; font-size: 1.2rem; text-align: center; letter-spacing: 2px;}
+
+        .audit-report-content { font-size: 0.95rem; line-height: 1.7; color: var(--text-primary); display: none;}
+        .audit-report-content h1, .audit-report-content h2, .audit-report-content h3 { margin-top: 1.5rem; margin-bottom: 0.8rem; color: var(--primary-color); border-bottom: 1px solid var(--border-color); padding-bottom: 0.3rem; font-size: 1.15rem; }
+        .audit-report-content p { margin-bottom: 1rem; }
+        .audit-report-content table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; background-color: var(--surface-color); box-shadow: var(--shadow); }
+        .audit-report-content th, .audit-report-content td { border: 1px solid var(--border-color); padding: 12px 15px; text-align: left; vertical-align: top; }
+        .audit-report-content th { background-color: var(--primary-color); color: white; font-weight: 600; }
+
+        .faq-container { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; }
+        .faq-item { background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); transition: var(--transition); }
+        .faq-question { width: 100%; padding: 1.2rem 1.5rem; text-align: left; background: none; border: none; font-size: 1rem; font-weight: 600; color: var(--text-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: inherit; }
+        .faq-question:hover { background: rgba(0,0,0,0.015); }
+        .faq-icon { font-size: 1.3rem; font-weight: bold; color: var(--primary-color); transition: transform 0.3s ease; }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease; padding: 0 1.5rem; background: var(--bg-color); font-size: 0.93rem; color: var(--text-secondary); line-height: 1.7; }
+        .faq-item.active { border-color: var(--primary-color); }
+        .faq-item.active .faq-answer { max-height: 300px; padding: 1rem 1.5rem 1.2rem 1.5rem; border-top: 1px solid var(--border-color); }
+        .faq-item.active .faq-icon { transform: rotate(45deg); color: var(--error-text); }
 
         #toast-container { position: fixed; bottom: 20px; left: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
         .toast { padding: 0.9rem 1.3rem; border-radius: 8px; color: white; font-weight: 600; box-shadow: var(--shadow); transform: translateX(-120%); opacity: 0; transition: all 0.4s ease; }
         .toast.show { transform: translateX(0); opacity: 1; }
         .toast.success { background-color: var(--success-text); }
         .toast.error { background-color: var(--error-text); }
+
+        /* CETAK / PRINT STYLES */
+        @media print {
+            navbar, .hero, .tab-container, section, .toolbar-anotasi, .close-btn, .btn { display: none !important; }
+            .modal-overlay { position: static; background: none; opacity: 1; visibility: visible; }
+            .modal-box { width: 100% !important; height: auto !important; border: none; box-shadow: none; }
+            .canvas-wrapper { height: auto; overflow: visible; background: none; padding: 0; }
+            .audit-report-content { display: block !important; }
+        }
     </style>
 </head>
 <body>
@@ -127,20 +182,95 @@
         <div class="logo">Portal PD IPG</div>
         <ul class="nav-links">
             <li><a href="#home">Utama</a></li>
+            <li><a href="#muatnaik">Muat Naik</a></li>
             <li><a href="#papanpemuka">Papan Pemuka</a></li>
+            <li><a href="#faq">FAQ</a></li>
             <li><button class="theme-toggle" id="themeToggle">🌙</button></li>
         </ul>
     </navbar>
 
     <section class="hero" id="home">
         <h1>Sistem Verifikasi Pentaksiran Berterusan</h1>
-        <p>Portal Semakan Dokumen & Modul Tanda Dokumen PD IPG:</p>
+        <p>Borang Verifikasi Penjaminan Kualiti IPGM (Kemaskini Ogos 2026):</p>
+    </section>
+
+    <!-- PENGALIH TAB FASA 1 & FASA 2 -->
+    <div class="tab-container">
+        <button class="tab-btn active" id="btnTab1" onclick="tukarFasa(1)">Fasa 1: Perancangan</button>
+        <button class="tab-btn" id="btnTab2" onclick="tukarFasa(2)">Fasa 2: Selepas Moderasi</button>
+    </div>
+
+    <!-- BORANG FASA 1 (PERANCANGAN) -->
+    <section id="seksyenFasa1">
+        <div class="form-container">
+            <h2 style="text-align: center; margin-bottom: 1.5rem; color: var(--primary-color);">Penyerahan Bahan (Fasa Perancangan)</h2>
+            <form id="formFasa1" novalidate>
+                <div class="form-grid-layout">
+                    <div class="form-column">
+                        <h3 class="column-title">A. Maklumat Asas Kursus</h3>
+                        <div class="form-group"><label>Jabatan:</label><input type="text" id="jabatan1" required placeholder="Cth: Jabatan Pengajian Melayu"></div>
+                        <div class="form-group"><label>Nama Pensyarah:</label><input type="text" id="pensyarah1" required placeholder="Cth: Dr. Ahmad Hakimi"></div>
+                        <div class="form-group"><label>Kod Kursus:</label><input type="text" id="kod1" required placeholder="Cth: BMMB3013" style="text-transform: uppercase;"></div>
+                        <div class="form-group"><label>Nama Kursus:</label><input type="text" id="namaKursus1" required placeholder="Cth: Kesusasteraan Melayu"></div>
+                        <div class="form-group" style="background: var(--warning-bg); padding: 15px; border-radius: 8px; border: 1px solid var(--warning-text); margin-top: 1rem;">
+                            <label style="color: var(--warning-text);">🔐 Kunci Rahsia (PIN / ID Staf):</label>
+                            <input type="password" id="pin1" required placeholder="Cth: 123456" style="border-color: var(--warning-text);">
+                            <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 5px;">* PIN ini diperlukan untuk membaca Laporan PD SULIT.</p>
+                        </div>
+                    </div>
+                    <div class="form-column">
+                        <h3 class="column-title">B. Muat Naik Instrumen</h3>
+                        <div class="form-group"><label>1. Maklumat Kursus (MK):</label><input type="file" id="failMK" required accept=".pdf,.doc,.docx"></div>
+                        <div class="form-group"><label>2. Jadual Spesifikasi Tugasan (JST):</label><input type="file" id="failJST" required accept=".pdf,.doc,.docx,.xls,.xlsx"></div>
+                        <div class="form-group"><label>3. Soalan Tugasan:</label><input type="file" id="failTugasan" required accept=".pdf,.doc,.docx"></div>
+                        <div class="form-group"><label>4. Rubrik Pemarkahan:</label><input type="file" id="failRubrik" required accept=".pdf,.doc,.docx,.xls,.xlsx"></div>
+                        <div class="form-group"><label>5. Borang Semakan SME:</label><input type="file" id="failSME" required accept=".pdf,.doc,.docx"></div>
+                        <div class="form-group"><label>6. JSU (Pilihan):</label><input type="file" id="failJSU" accept=".pdf,.doc,.docx,.xls,.xlsx"></div>
+                    </div>
+                </div>
+                <button type="submit" id="btnHantar1" class="btn btn-primary" style="width: 100%; padding: 1rem;">Sahkan & Muat Naik Bahan Fasa 1</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- BORANG FASA 2 (SELEPAS MODERASI) -->
+    <section id="seksyenFasa2" style="display: none;">
+        <div class="form-container">
+            <h2 style="text-align: center; margin-bottom: 1.5rem; color: #059669;">Penyerahan Bahan (Fasa Selepas Moderasi)</h2>
+            <form id="formFasa2" novalidate>
+                <div class="form-grid-layout">
+                    <div class="form-column">
+                        <h3 class="column-title" style="color: #059669;">A. Maklumat Asas & Kawalan</h3>
+                        <div class="form-group"><label>Jabatan:</label><input type="text" id="jabatan2" required placeholder="Cth: Jabatan Pengajian Melayu"></div>
+                        <div class="form-group"><label>Nama Pensyarah:</label><input type="text" id="pensyarah2" required placeholder="Cth: Dr. Ahmad Hakimi"></div>
+                        <div class="form-group"><label>Emel Pensyarah:</label><input type="email" id="emel2" required placeholder="pensyarah@ipg.edu.my"></div>
+                        <div class="form-group"><label>Kod Kursus:</label><input type="text" id="kod2" required placeholder="Cth: BMMB3013" style="text-transform: uppercase;"></div>
+                        <div class="form-group"><label>Nama Kursus:</label><input type="text" id="namaKursus2" required placeholder="Cth: Kesusasteraan Melayu"></div>
+                        <div class="form-group"><label>Tarikh Taklimat PB Pelajar:</label><input type="date" id="taklimat2" required></div>
+                        <div class="form-group"><label>Tarikh Akhir Verifikasi PD:</label><input type="date" id="tarikhAkhir2" required></div>
+                        <div class="form-group" style="background: var(--warning-bg); padding: 15px; border-radius: 8px; border: 1px solid var(--warning-text);">
+                            <label style="color: var(--warning-text);">🔐 Kunci Rahsia (PIN / ID Staf):</label>
+                            <input type="password" id="pin2" required placeholder="Cth: 123456" style="border-color: var(--warning-text);">
+                        </div>
+                    </div>
+                    <div class="form-column">
+                        <h3 class="column-title" style="color: #059669;">B. Muat Naik Instrumen</h3>
+                        <div class="form-group"><label>1. Sampel Tugasan & Komen Pensyarah:</label><input type="file" id="failSampel" required accept=".pdf,.doc,.docx"></div>
+                        <div class="form-group"><label>2. Borang Markah PB (LAM PT04-01):</label><input type="file" id="failLAM1" required accept=".pdf,.doc,.docx,.xls,.xlsx"></div>
+                        <div class="form-group"><label>3. Borang Moderasi (LAM PT04-02):</label><input type="file" id="failLAM2" required accept=".pdf,.doc,.docx"></div>
+                        <div class="form-group"><label>4. Laporan Panel (LAM PT04-03):</label><input type="file" id="failLAM3" required accept=".pdf,.doc,.docx"></div>
+                        <div class="form-group"><label>5. Laporan Kes Gagal (LAM PT04-04) (Pilihan):</label><input type="file" id="failLAM4" accept=".pdf,.doc,.docx"></div>
+                    </div>
+                </div>
+                <button type="submit" id="btnHantar2" class="btn btn-primary" style="background: #059669; width: 100%; padding: 1rem;">Sahkan & Muat Naik Bahan Fasa 2</button>
+            </form>
+        </div>
     </section>
 
     <!-- PAPAN PEMUKA AUDIT -->
     <section id="papanpemuka">
         <h2 style="text-align: center; margin-bottom: 0.5rem;">Papan Pemuka Status Semakan PD</h2>
-        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">Laporan PD & Anotasi Dokumen diklasifikasikan sebagai <strong>SULIT</strong>.</p>
+        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">Laporan PD diklasifikasikan sebagai <strong>SULIT</strong>.</p>
 
         <div class="controls">
             <input type="text" id="searchInput" class="search-box" placeholder="Cari Kod Kursus, Nama Kursus atau Pensyarah..." onkeyup="tapisData()">
@@ -164,7 +294,61 @@
         </div>
     </section>
 
-    <!-- MODAL: TANDA DOKUMEN (ANOTASI FULLSCREEN ALL-PAGES BERSERTA NOTA PEMBETULAN) -->
+    <!-- SEKSYEN FAQ ACCORDION -->
+    <section id="faq" style="background-color: rgba(0,0,0,0.015); border-top: 1px solid var(--border-color);">
+        <h2 style="text-align: center; margin-bottom: 0.5rem;">Soalan Lazim (FAQ)</h2>
+        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">Panduan serta jawapan umum berkaitan penggunaan Portal Verifikasi PD IPG.</p>
+
+        <div class="faq-container">
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    <span>Daripada manakah Laporan PD dibaca?</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Laporan PD dibaca secara terus daripada <strong>Cell M (Lajur 13)</strong> untuk Fasa 1 atau <strong>Lajur O (Lajur 15)</strong> untuk Fasa 2 di dalam pangkalan data Google Sheets anda.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    <span>Bagaimanakah cara mencetak Laporan PD atau Dokumen Anotasi?</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Setiap tetingkap laporan dan anotasi kini dilengkapi butang <strong>🖨️ Cetak / Print</strong> untuk membolehkan cetakan fizikal atau simpanan ke PDF dibuat secara terus.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MODAL 1: BACA LAPORAN PD (TERMASUK BUTANG PRINT) -->
+    <div class="modal-overlay" id="reportModal">
+        <div class="modal-box standard">
+            <div class="modal-header">
+                <h2 id="modalTitle">Kunci Rahsia Diperlukan</h2>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <button class="tool-btn" id="btnPrintReport" style="display:none;" onclick="cetakLaporanPD()">🖨️ Cetak Laporan</button>
+                    <button class="close-btn" onclick="tutupModal('reportModal')">&times;</button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="pin-overlay" id="pinOverlay">
+                    <div class="pin-box">
+                        <h3 style="color: var(--primary-color); margin-bottom: 10px;">🔐 Akses Laporan PD SULIT</h3>
+                        <p style="font-size: 0.9rem; color: var(--text-secondary);">Sila masukkan Kunci Rahsia (PIN Kursus) yang anda tetapkan semasa memuat naik bahan ini.</p>
+                        <input type="password" id="inputSemakPIN" placeholder="Masukkan PIN Kursus" onkeypress="if(event.key === 'Enter') mintaAksesLaporan()">
+                        <input type="hidden" id="kodKursusSemasa">
+                        <button class="btn btn-primary" style="width:100%" onclick="mintaAksesLaporan()" id="btnSemakPIN">Sahkan Identiti</button>
+                    </div>
+                </div>
+
+                <div class="audit-report-content" id="modalReportBody"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: TANDA DOKUMEN (FULLSCREEN ALL-PAGES + NOTA SETIAP PAGE + BUTANG PRINT) -->
     <div class="modal-overlay" id="anotasiModal">
         <div class="modal-box fullscreen">
             <div class="modal-header">
@@ -200,6 +384,7 @@
                         <button class="tool-btn" style="background: var(--error-bg); color: var(--error-text);" onclick="padamSemuaTanda()">🗑️ Padam Semua Tanda</button>
 
                         <div style="margin-left: auto; display: flex; gap: 8px;">
+                            <button class="tool-btn" onclick="cetakDokumenAnotasi()">🖨️ Cetak Dokumen</button>
                             <button class="btn btn-primary" style="padding: 6px 16px; font-size: 0.88rem;" onclick="simpanAnotasiKePelayan()">💾 Simpan Anotasi & Nota</button>
                         </div>
                     </div>
@@ -209,15 +394,77 @@
                         <div id="pagesContainer"></div>
                     </div>
 
-                    <!-- SEKSYEN NOTA PEMBETULAN DI BAHAGIAN BAWAH DOKUMEN -->
-                    <div style="margin-top: 15px; background: var(--surface-color); padding: 15px; border-radius: 8px; border: 1px solid var(--border-color);">
+                    <!-- SEKSYEN NOTA PEMBETULAN KESELURAHAN -->
+                    <div style="margin-top: 15px; background: var(--surface-color); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);">
                         <label style="font-weight: bold; color: var(--primary-color); display: block; margin-bottom: 5px;">
-                            📝 Nota Pembetulan / Catatan Teguran PD (Bagi Dokumen Ini):
+                            📝 Nota Pembetulan / Catatan Teguran Keseluruhan PD:
                         </label>
-                        <textarea id="txtNotaPembetulanAnotasi" rows="3" placeholder="Masukkan ulasan pembetulan atau teguran spesifik bagi dokumen ini..." style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); font-family: inherit;"></textarea>
+                        <textarea id="txtNotaPembetulanAnotasi" rows="2" placeholder="Masukkan ulasan pembetulan atau teguran spesifik bagi dokumen ini..." style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); font-family: inherit;"></textarea>
                     </div>
                 </div>
 
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: BORANG VERIFIKASI ADMIN -->
+    <div class="modal-overlay" id="checklistModal">
+        <div class="modal-box standard">
+            <div class="modal-header">
+                <h2 id="checklistTitle">Borang Verifikasi Penjaminan Kualiti PD (Admin Only)</h2>
+                <button class="close-btn" onclick="tutupModal('checklistModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                
+                <div style="background: var(--warning-bg); padding: 1.2rem; border-radius: 8px; border: 1px solid var(--warning-text); margin-bottom: 1.5rem;">
+                    <label style="color: var(--warning-text); font-weight: bold;">🛡️ Kawalan Akses Pentadbiran: Sila Masukkan Kunci Pentadbiran (Admin Master PIN):</label>
+                    <input type="password" id="pinInputAdminPD" placeholder="Masukkan Admin Master PIN (Cth: ADMIN2026)..." style="margin-top: 5px; border-color: var(--warning-text);">
+                    <p style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 4px;">* Borang ini disekat daripada pensyarah dan disimpan di lajur berasingan.</p>
+                </div>
+
+                <form id="formChecklistPD" novalidate>
+                    <table class="checklist-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%;">Bil</th>
+                                <th style="width: 40%;">Perkara / Soalan Verifikasi</th>
+                                <th style="width: 35%;">Pilihan Jawapan (Wajib Pilih)</th>
+                                <th style="width: 20%;">Catatan Audit</th>
+                            </tr>
+                        </thead>
+                        <tbody id="checklistTableBody"></tbody>
+                    </table>
+
+                    <div style="background: var(--surface-color); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color); margin-top: 1.5rem;">
+                        <h3 style="color: var(--primary-color); margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">RUMUSAN PD PENTADBIRAN</h3>
+                        
+                        <div class="form-group">
+                            <label>1. Kekuatan:</label>
+                            <textarea id="kekuatanPDVal" rows="3" placeholder="Nyatakan kekuatan pelaksanaan PB kursus ini..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>2. Kelemahan:</label>
+                            <textarea id="kelemahanPDVal" rows="3" placeholder="Nyatakan kelemahan yang ditemui (jika ada)..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>3. Cadangan Penambahbaikan:</label>
+                            <textarea id="cadanganPDVal" rows="3" placeholder="Nyatakan cadangan penambahbaikan..."></textarea>
+                        </div>
+
+                        <div class="form-group" style="background: var(--warning-bg); padding: 15px; border-radius: 8px; border: 1px solid var(--warning-text); margin-top: 1rem;">
+                            <label style="color: var(--warning-text);">Perakuan Final Panel Audit:</label>
+                            <select id="perakuanPDVal" style="width: 100%; padding: 10px; margin-top: 5px; border-color: var(--warning-text);" required>
+                                <option value="[ / ] PATUH - Diluluskan tanpa syarat.">[ / ] PATUH - Diluluskan tanpa syarat.</option>
+                                <option value="[ / ] PATUH BERSYARAT - Diluluskan tertakluk pembetulan." selected>[ / ] PATUH BERSYARAT - Diluluskan tertakluk pembetulan.</option>
+                                <option value="[ / ] TIDAK PATUH - Perlu digubal semula dan diaudit semula.">[ / ] TIDAK PATUH - Perlu digubal semula dan diaudit semula.</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="margin-top: 1.5rem; padding: 1rem;" id="btnSimpanChecklist">Sahkan & Simpan Verifikasi Pentadbiran</button>
+                </form>
             </div>
         </div>
     </div>
@@ -228,11 +475,13 @@
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyjvVuuxBEdEN-6AwxbNj5wnq8xpuA4qQs7aSa7ntnh607vd3ixim6GPa9oZT9mUMCA/exec";
-        let senaraiRekod = [];
+        let fasaAktif = 1;
+        let senaraiFasa1 = [], senaraiFasa2 = [];
         let kodSemasa = "", pinSemasa = "";
         let dataDokumenUrl = {}, dataAnotasiFull = {};
-        let modSemasa = "pen"; // 'pen' atau 'eraser'
-        let pageStrokesMap = {}; // { 1: [strokes], 2: [strokes] }
+        let modSemasa = "pen"; 
+        let pageStrokesMap = {}; 
+        let pageNotesMap = {};
         let pdfDocCurrent = null;
 
         function padamLoader() {
@@ -241,6 +490,12 @@
         }
 
         window.addEventListener('load', () => { muatTarikData(); });
+
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            themeToggle.innerText = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+        });
 
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
@@ -252,6 +507,23 @@
             setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 4000);
         }
 
+        function toggleFAQ(button) {
+            const faqItem = button.parentElement;
+            const isActive = faqItem.classList.contains('active');
+            document.querySelectorAll('.faq-item').forEach(item => item.classList.remove('active'));
+            if (!isActive) faqItem.classList.add('active');
+        }
+
+        function tukarFasa(fasa) {
+            fasaAktif = fasa;
+            document.getElementById('btnTab1').classList.toggle('active', fasa === 1);
+            document.getElementById('btnTab2').classList.toggle('active', fasa === 2);
+            document.getElementById('seksyenFasa1').style.display = (fasa === 1) ? 'block' : 'none';
+            document.getElementById('seksyenFasa2').style.display = (fasa === 2) ? 'block' : 'none';
+            paparkanJadual(fasa === 1 ? senaraiFasa1 : senaraiFasa2);
+        }
+
+        /* LOGIK ANOTASI & MULTI-PAGE PDF RENDERING */
         function bukaPromptAnotasi(kod) {
             kodSemasa = kod;
             document.getElementById('anotasiModalTitle').innerText = `🖋️ Tanda Dokumen PD : ${kod}`;
@@ -272,7 +544,7 @@
             btn.disabled = true;
 
             try {
-                const payload = { action: "bacaAnotasi", fasa: 1, kodKursus: kodSemasa, kunciRahsia: pinSemasa };
+                const payload = { action: "bacaAnotasi", fasa: fasaAktif, kodKursus: kodSemasa, kunciRahsia: pinSemasa };
                 const response = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
                 const result = await response.json();
 
@@ -300,11 +572,11 @@
             const urlPdf = dataDokumenUrl[jenis];
             if (!urlPdf) return showToast("Dokumen " + jenis + " tidak ditemui.", "error");
 
-            showToast("Membuka semua muka surat PDF " + jenis + "...", "success");
+            showToast("Membuka kesemua muka surat PDF " + jenis + "...", "success");
 
-            // MUAT STRUKTUR ANOTASI BERSERTA NOTA PEMBETULAN
-            const savedDataDoc = dataAnotasiFull[jenis] || { strokes: {}, nota: "" };
+            const savedDataDoc = dataAnotasiFull[jenis] || { strokes: {}, pageNotes: {}, nota: "" };
             pageStrokesMap = savedDataDoc.strokes || {};
+            pageNotesMap = savedDataDoc.pageNotes || {};
             document.getElementById('txtNotaPembetulanAnotasi').value = savedDataDoc.nota || "";
 
             try {
@@ -320,12 +592,11 @@
                 const container = document.getElementById('pagesContainer');
                 container.innerHTML = "";
 
-                // MELESATKAN SEMUA MUKA SURAT KE DALAM BEKAS
                 for (let pageNum = 1; pageNum <= pdfDocCurrent.numPages; pageNum++) {
                     await renderPageCanvas(pdfDocCurrent, pageNum, container);
                 }
 
-                showToast("Kesemua " + pdfDocCurrent.numPages + " muka surat berjaya dimuatkan!", "success");
+                showToast("Kesemua " + pdfDocCurrent.numPages + " muka surat dimuatkan!", "success");
 
             } catch (e) {
                 showToast("Gagal memuatkan PDF: " + e.message, "error");
@@ -337,7 +608,7 @@
             const viewport = page.getViewport({ scale: 1.35 });
 
             const outerWrapper = document.createElement('div');
-            outerWrapper.style.marginBottom = '25px';
+            outerWrapper.style.marginBottom = '20px';
 
             const pageBadge = document.createElement('div');
             pageBadge.className = 'page-label';
@@ -364,8 +635,18 @@
 
             pageBox.appendChild(pdfCanvas);
             pageBox.appendChild(drawCanvas);
+            
+            // PETAK CATATAN/NOTA PERPAGE
+            const pageNoteBox = document.createElement('div');
+            pageNoteBox.className = 'page-note-box';
+            pageNoteBox.innerHTML = `
+                <label style="font-size:0.8rem; font-weight:bold; color:var(--primary-color);">✍️ Catatan / Teguran PD (Muka Surat ${pageNum}):</label>
+                <input type="text" id="input_page_note_${pageNum}" value="${pageNotesMap[pageNum] || ''}" placeholder="Taip nota pembetulan bagi muka surat ini..." style="margin-top:4px; padding:6px; font-size:0.85rem;" onchange="simpanNotaPerPage(${pageNum}, this.value)">
+            `;
+
             outerWrapper.appendChild(pageBadge);
             outerWrapper.appendChild(pageBox);
+            outerWrapper.appendChild(pageNoteBox);
             container.appendChild(outerWrapper);
 
             await page.render({ canvasContext: ctxPdf, viewport: viewport }).promise;
@@ -374,6 +655,10 @@
 
             redrawPageStrokes(pageNum);
             initPageCanvasEvents(drawCanvas, pageNum);
+        }
+
+        function simpanNotaPerPage(pageNum, textVal) {
+            pageNotesMap[pageNum] = textVal.trim();
         }
 
         function initPageCanvasEvents(drawCanvas, pageNum) {
@@ -426,7 +711,7 @@
 
             if (mode === 'pen') {
                 ctx.globalCompositeOperation = 'source-over';
-                ctx.strokeStyle = '#dc2626'; // Warna merah pen audit
+                ctx.strokeStyle = '#dc2626'; 
                 ctx.lineWidth = 2.5;
                 ctx.lineCap = 'round';
             } else if (mode === 'eraser') {
@@ -467,7 +752,7 @@
             if (lastModifiedPage && pageStrokesMap[lastModifiedPage].length > 0) {
                 pageStrokesMap[lastModifiedPage].pop();
                 redrawPageStrokes(lastModifiedPage);
-                showToast("Batal tanda terakhir pada Muka Surat " + lastModifiedPage, "success");
+                showToast("Batal tanda terakhir Muka Surat " + lastModifiedPage, "success");
             } else {
                 showToast("Tiada tanda untuk dibatalkan.", "error");
             }
@@ -478,8 +763,10 @@
                 pageStrokesMap[pageNum] = [];
                 redrawPageStrokes(pageNum);
             }
+            pageNotesMap = {};
+            document.querySelectorAll('.page-note-box input').forEach(inp => inp.value = "");
             document.getElementById('txtNotaPembetulanAnotasi').value = "";
-            showToast("Semua tanda dan nota pembetulan pada kesemua muka surat telah dipadamkan.", "success");
+            showToast("Semua tanda dan nota telah dipadamkan.", "success");
         }
 
         async function simpanAnotasiKePelayan() {
@@ -488,6 +775,7 @@
 
             dataAnotasiFull[jenis] = {
                 strokes: pageStrokesMap,
+                pageNotes: pageNotesMap,
                 nota: nota
             };
 
@@ -513,10 +801,172 @@
             }
         }
 
-        function tutupModal(id) {
-            document.getElementById(id).classList.remove('active');
-            document.body.style.overflow = 'auto';
+        function cetakDokumenAnotasi() {
+            window.print();
         }
+
+        function cetakLaporanPD() {
+            window.print();
+        }
+
+        /* LOGIK BACA LAPORAN & VERIFIKASI ADMIN */
+        function bukaPromptKeselamatan(kodKursus) {
+            document.getElementById('kodKursusSemasa').value = kodKursus;
+            document.getElementById('inputSemakPIN').value = "";
+            document.getElementById('modalTitle').innerText = "Akses Keselamatan Laporan PD (Cell M): " + kodKursus;
+            document.getElementById('btnPrintReport').style.display = "none";
+            
+            document.getElementById('pinOverlay').style.display = "flex";
+            document.getElementById('modalReportBody').style.display = "none";
+            document.getElementById('reportModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            setTimeout(() => document.getElementById('inputSemakPIN').focus(), 100);
+        }
+
+        async function mintaAksesLaporan() {
+            const kod = document.getElementById('kodKursusSemasa').value;
+            const pin = document.getElementById('inputSemakPIN').value;
+            const btn = document.getElementById('btnSemakPIN');
+
+            if (!pin) return showToast("Sila masukkan Kunci Rahsia.", "error");
+
+            btn.innerText = "Mengesahkan...";
+            btn.disabled = true;
+
+            try {
+                const payload = { action: "bacaLaporan", fasa: fasaAktif, kodKursus: kod, kunciRahsia: pin };
+                const response = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
+                const result = await response.json();
+
+                if (result.status === "success") {
+                    showToast("Akses Dibenarkan. Memaparkan Laporan PD SULIT.", "success");
+                    
+                    let htmlOutput = marked.parse(result.laporanPenuh);
+                    htmlOutput = htmlOutput.replace(/\bPATUH BERSYARAT\b/g, "##WARN##").replace(/\bTIDAK PATUH\b/g, "##ERR1##").replace(/\bTIDAK DINYATAKAN\b/g, "##ERR2##").replace(/\bPATUH\b/g, "##SUCC##");
+                    htmlOutput = htmlOutput.replace(/##WARN##/g, "<span class='audit-status-warning'>PATUH BERSYARAT</span>").replace(/##ERR1##/g, "<span class='audit-status-tdkpatuh'>TIDAK PATUH</span>").replace(/##ERR2##/g, "<span class='audit-status-tdkpatuh'>TIDAK DINYATAKAN</span>").replace(/##SUCC##/g, "<span class='audit-status-patuh'>PATUH</span>");
+
+                    document.getElementById('modalTitle').innerText = "Laporan PD (SULIT): " + kod;
+                    document.getElementById('modalReportBody').innerHTML = htmlOutput;
+                    
+                    document.getElementById('pinOverlay').style.display = "none";
+                    document.getElementById('modalReportBody').style.display = "block";
+                    document.getElementById('btnPrintReport').style.display = "inline-block";
+                } else {
+                    showToast(result.mesej, "error");
+                }
+            } catch (error) {
+                showToast("Ralat pelayan: " + error.message, "error");
+            } finally {
+                btn.innerText = "Sahkan Identiti";
+                btn.disabled = false;
+            }
+        }
+
+        /* FORM SUBMISSION & DATA FETCHING */
+        const bacaFailSebagaiBase64 = (file, jenis) => {
+            return new Promise((resolve, reject) => {
+                if (!file) { resolve(null); return; }
+                const reader = new FileReader();
+                reader.onload = () => resolve({ jenis: jenis, namaFail: file.name, mimeType: file.type, failBase64: reader.result });
+                reader.onerror = error => reject(error);
+                reader.readAsDataURL(file);
+            });
+        };
+
+        document.getElementById('formFasa1').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btnHantar = document.getElementById('btnHantar1');
+            btnHantar.innerText = "Memproses...";
+            btnHantar.disabled = true;
+
+            try {
+                const prosesFail = [
+                    bacaFailSebagaiBase64(document.getElementById('failMK').files[0], "MK"),
+                    bacaFailSebagaiBase64(document.getElementById('failJST').files[0], "JST"),
+                    bacaFailSebagaiBase64(document.getElementById('failTugasan').files[0], "Tugasan"),
+                    bacaFailSebagaiBase64(document.getElementById('failRubrik').files[0], "Rubrik"),
+                    bacaFailSebagaiBase64(document.getElementById('failSME').files[0], "SME"),
+                    bacaFailSebagaiBase64(document.getElementById('failJSU').files[0], "JSU")
+                ];
+
+                const failArray = (await Promise.all(prosesFail)).filter(f => f !== null);
+
+                const payload = {
+                    action: "upload",
+                    jabatan: document.getElementById('jabatan1').value.trim(),
+                    namaPensyarah: document.getElementById('pensyarah1').value.trim(),
+                    kodKursus: document.getElementById('kod1').value.trim().toUpperCase(),
+                    namaKursus: document.getElementById('namaKursus1').value.trim(),
+                    kunciRahsia: document.getElementById('pin1').value.trim(),
+                    failArray: failArray
+                };
+
+                const response = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
+                const result = await response.json();
+
+                if (result.status === "success") {
+                    showToast(result.mesej, "success");
+                    document.getElementById('formFasa1').reset();
+                    muatTarikData();
+                } else {
+                    showToast(result.mesej, "error");
+                }
+            } catch (error) {
+                showToast(`Ralat: ${error.message}`, "error");
+            } finally {
+                btnHantar.innerText = "Sahkan & Muat Naik Bahan Fasa 1";
+                btnHantar.disabled = false;
+            }
+        });
+
+        document.getElementById('formFasa2').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btnHantar = document.getElementById('btnHantar2');
+            btnHantar.innerText = "Memproses...";
+            btnHantar.disabled = true;
+
+            try {
+                const prosesFail = [
+                    bacaFailSebagaiBase64(document.getElementById('failSampel').files[0], "Sampel"),
+                    bacaFailSebagaiBase64(document.getElementById('failLAM1').files[0], "LAM1"),
+                    bacaFailSebagaiBase64(document.getElementById('failLAM2').files[0], "LAM2"),
+                    bacaFailSebagaiBase64(document.getElementById('failLAM3').files[0], "LAM3"),
+                    bacaFailSebagaiBase64(document.getElementById('failLAM4').files[0], "LAM4")
+                ];
+
+                const failArray = (await Promise.all(prosesFail)).filter(f => f !== null);
+
+                const payload = {
+                    action: "uploadFasa2",
+                    jabatan: document.getElementById('jabatan2').value.trim(),
+                    namaPensyarah: document.getElementById('pensyarah2').value.trim(),
+                    emelPensyarah: document.getElementById('emel2').value.trim(),
+                    kodKursus: document.getElementById('kod2').value.trim().toUpperCase(),
+                    namaKursus: document.getElementById('namaKursus2').value.trim(),
+                    tarikhTaklimat: document.getElementById('taklimat2').value,
+                    tarikhAkhir: document.getElementById('tarikhAkhir2').value,
+                    kunciRahsia: document.getElementById('pin2').value.trim(),
+                    failArray: failArray
+                };
+
+                const response = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
+                const result = await response.json();
+
+                if (result.status === "success") {
+                    showToast(result.mesej, "success");
+                    document.getElementById('formFasa2').reset();
+                    muatTarikData();
+                } else {
+                    showToast(result.mesej, "error");
+                }
+            } catch (error) {
+                showToast(`Ralat: ${error.message}`, "error");
+            } finally {
+                btnHantar.innerText = "Sahkan & Muat Naik Bahan Fasa 2";
+                btnHantar.disabled = false;
+            }
+        });
 
         async function muatTarikData() {
             const tbody = document.getElementById('jadualData');
@@ -527,8 +977,9 @@
                 const data = await response.json();
 
                 if (data.status === "success") {
-                    senaraiRekod = data.fasa1 ? data.fasa1.reverse() : [];
-                    paparkanJadual(senaraiRekod);
+                    senaraiFasa1 = data.fasa1 ? data.fasa1.reverse() : [];
+                    senaraiFasa2 = data.fasa2 ? data.fasa2.reverse() : [];
+                    paparkanJadual(fasaAktif === 1 ? senaraiFasa1 : senaraiFasa2);
                 } else {
                     tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Tiada rekod penyerahan ditemui.</td></tr>';
                 }
@@ -544,18 +995,18 @@
             tbody.innerHTML = '';
 
             if (!dataArray || dataArray.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Tiada rekod penyerahan.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Tiada rekod penyerahan bagi fasa ini.</td></tr>';
                 return;
             }
 
             dataArray.forEach(row => {
                 const isDisahkan = row.status === "Disahkan PD" || row.status === "Selesai Disemak";
-                let badgeClass = isDisahkan ? "badge-success" : "badge-info";
+                let badgeClass = isDisahkan ? "badge-success" : "badge-warning";
                 let statusTextText = isDisahkan ? "Disahkan PD" : "🔵 Menunggu Pengesahan PD";
-                
+
                 let butangLaporanHTML = isDisahkan 
                     ? `<button class="btn-action" style="background: rgba(16, 185, 129, 0.1); color: #059669; border-color: #059669;" onclick="bukaPromptKeselamatan('${row.kodKursus}')">📄 Laporan PD</button>`
-                    : `<span style="font-size:0.82rem; margin-right:8px; color:var(--text-secondary); font-style:italic;">(Laporan Belum Boleh Dibuka)</span>`;
+                    : `<span style="font-size:0.82rem; margin-right:8px; color:var(--text-secondary); font-style:italic;">(Laporan Belum Boleh Dibuka - Menunggu Pengesahan PD)</span>`;
 
                 tbody.innerHTML += `
                     <tr>
@@ -579,6 +1030,23 @@
                     </tr>
                 `;
             });
+        }
+
+        function tutupModal(id) {
+            document.getElementById(id).classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function tapisData() {
+            const kataKunci = document.getElementById('searchInput').value.toLowerCase();
+            const sumber = fasaAktif === 1 ? senaraiFasa1 : senaraiFasa2;
+            const hasilTapis = sumber.filter(r => 
+                r.kodKursus.toLowerCase().includes(kataKunci) ||
+                r.namaKursus.toLowerCase().includes(kataKunci) ||
+                r.namaPensyarah.toLowerCase().includes(kataKunci) ||
+                r.jabatan.toLowerCase().includes(kataKunci)
+            );
+            paparkanJadual(hasilTapis);
         }
     </script>
 </body>
