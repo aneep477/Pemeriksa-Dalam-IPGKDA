@@ -205,7 +205,7 @@
         .faq-item.active .faq-answer { max-height: 300px; padding: 1rem 1.5rem 1.2rem 1.5rem; border-top: 1px solid var(--border-color); }
         .faq-item.active .faq-icon { transform: rotate(45deg); color: var(--error-text); }
 
-        #toast-container { position: fixed; bottom: 20px; left: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+        #toast-container { position: fixed; bottom: 20px; left: 20px; z-index: 10500; display: flex; flex-direction: column; gap: 10px; }
         .toast { padding: 0.9rem 1.3rem; border-radius: 8px; color: white; font-weight: 600; box-shadow: var(--shadow); transform: translateX(-120%); opacity: 0; transition: all 0.4s ease; }
         .toast.show { transform: translateX(0); opacity: 1; }
         .toast.success { background-color: var(--success-text); }
@@ -1358,17 +1358,34 @@
 
         function mulaLukisTanda(e, canvasEl, ctx) {
             const koord = dapatkanKoordinatCanvas(e, canvasEl);
+            const x = Math.round(koord.x);
+            const y = Math.round(koord.y);
             ctx.beginPath();
-            ctx.moveTo(koord.x, koord.y);
-            markPageStrokes.push({ type: 'start', x: koord.x, y: koord.y });
+            ctx.moveTo(x, y);
+            markPageStrokes.push({ type: 'start', x, y });
+            markTitikTerakhirTanda = { x, y };
         }
+
+        // Jarak minimum (piksel) antara titik yang disimpan - mengurangkan saiz data
+        // contengan dengan ketara (mousemove boleh jana ratusan titik sesaat).
+        const JARAK_MIN_TITIK_TANDA = 3;
+        let markTitikTerakhirTanda = null;
 
         function lukisTanda(e, canvasEl, ctx) {
             if (!markIsDrawing) return;
             const koord = dapatkanKoordinatCanvas(e, canvasEl);
-            ctx.lineTo(koord.x, koord.y);
+            const x = Math.round(koord.x);
+            const y = Math.round(koord.y);
+
+            if (markTitikTerakhirTanda) {
+                const jarak = Math.hypot(x - markTitikTerakhirTanda.x, y - markTitikTerakhirTanda.y);
+                if (jarak < JARAK_MIN_TITIK_TANDA) return;
+            }
+
+            ctx.lineTo(x, y);
             ctx.stroke();
-            markPageStrokes.push({ type: 'move', x: koord.x, y: koord.y });
+            markPageStrokes.push({ type: 'move', x, y });
+            markTitikTerakhirTanda = { x, y };
         }
 
         // Simpan lukisan + catatan halaman semasa ke dalam struktur memori (belum ke pelayan)
@@ -1419,6 +1436,7 @@
             btn.disabled = true;
 
             const dataAnotasiJSON = JSON.stringify(markDataAnotasiSemua);
+            const saizKB = (new Blob([dataAnotasiJSON]).size / 1024).toFixed(1);
             const payload = {
                 action: "simpanAnotasi",
                 kodKursus: markKodKursus,
@@ -1429,7 +1447,7 @@
             try {
                 const result = await fetchJSONSelamat(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) }, 25000, 2);
                 if (result.status === "success") {
-                    showToast("Tanda berjaya disimpan.", "success");
+                    showToast("Tanda berjaya disimpan. (" + saizKB + " KB)", "success");
                 } else {
                     showToast(result.mesej, "error");
                 }
@@ -1444,10 +1462,10 @@
                     if (semakJSON.status === "success" && semakJSON.anotasi === dataAnotasiJSON) {
                         showToast("⚠️ Sambungan tidak stabil, tetapi tanda DIDAPATI telah berjaya disimpan selepas disemak semula.", "success");
                     } else {
-                        showToast("❌ Ralat sambungan: " + err.message + " — Tanda mungkin TIDAK tersimpan. Sila cuba simpan semula.", "error");
+                        showToast("❌ Ralat sambungan (" + saizKB + " KB): " + err.message + " — Tanda mungkin TIDAK tersimpan. Sila cuba simpan semula.", "error");
                     }
                 } catch (e2) {
-                    showToast("❌ Ralat sambungan: " + err.message, "error");
+                    showToast("❌ Ralat sambungan (" + saizKB + " KB): " + err.message, "error");
                 }
             } finally {
                 btn.innerText = "💾 Simpan Tanda";
