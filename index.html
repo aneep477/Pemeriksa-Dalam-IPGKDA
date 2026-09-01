@@ -135,8 +135,26 @@
             width: 96vw;
             height: 96vh;
         }
-        #markCanvas {
+        #markCanvasBg {
+            background: white;
+            box-shadow: var(--shadow);
             max-width: 100%;
+            display: block;
+        }
+        .mark-canvas-wrapper {
+            position: relative;
+            display: inline-block;
+            max-width: 100%;
+        }
+        #markCanvasInk {
+            position: absolute;
+            top: 0;
+            left: 0;
+            max-width: 100%;
+            cursor: crosshair;
+        }
+        .mark-canvas-wrapper.mode-padam #markCanvasInk {
+            cursor: cell;
         }
         .mark-comment-box {
             margin-top: 1rem;
@@ -553,14 +571,18 @@
         <div class="modal-box">
             <div class="modal-header">
                 <h2 id="checklistTitle">Borang Verifikasi Penjaminan Kualiti PD (Admin Only)</h2>
-                <button class="close-btn" onclick="tutupModal('checklistModal')">&times;</button>
+                <button class="close-btn" onclick="mintaTutupChecklistModal()">&times;</button>
             </div>
             <div class="modal-body">
 
                 <div style="background: var(--warning-bg); padding: 1.2rem; border-radius: 8px; border: 1px solid var(--warning-text); margin-bottom: 1.5rem;">
                     <label style="color: var(--warning-text); font-weight: bold;">🛡️ Kawalan Akses Pentadbiran: Sila Masukkan Kunci Pentadbiran (Admin Master PIN):</label>
-                    <input type="password" id="pinInputAdminPD" placeholder="Masukkan Admin Master PIN (Cth: ADMIN2026)..." style="margin-top: 5px; border-color: var(--warning-text);">
-                    <p style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 4px;">* Borang ini disekat daripada pensyarah dan disimpan di lajur berasingan.</p>
+                    <div style="display:flex; gap:0.5rem; margin-top:5px; flex-wrap:wrap; align-items:center;">
+                        <input type="password" id="pinInputAdminPD" placeholder="Masukkan Admin Master PIN (Cth: ADMIN2026)..." style="border-color: var(--warning-text); flex:1; min-width:200px;">
+                        <button type="button" class="btn-action" onclick="muatDataTersimpanVerifikasi()" id="btnMuatDataTersimpan" style="background: rgba(37,99,235,0.15); white-space:nowrap;">📥 Muat Data Tersimpan</button>
+                    </div>
+                    <p style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 4px;">* Borang ini disekat daripada pensyarah dan disimpan di lajur berasingan. Jika borang ini pernah diisi & disimpan sebelum ini, tekan "📥 Muat Data Tersimpan" (selepas masukkan PIN) untuk isi semula jawapan lama sebelum menyunting.</p>
+                    <p id="statusDataTersimpan" style="font-size: 0.78rem; margin-top: 4px; display:none;"></p>
                 </div>
 
                 <form id="formChecklistPD" novalidate>
@@ -646,12 +668,17 @@
                             <button class="btn-action" onclick="tukarHalamanTanda(1)">Seterusnya →</button>
                         </div>
                         <div style="display:flex; gap:0.6rem; margin-bottom:0.8rem; flex-wrap:wrap; align-items:center;">
-                            <button class="btn-action" onclick="padamLakaranHalamanTanda()">🧹 Padam Lakaran Halaman Ini</button>
+                            <button class="btn-action" id="btnTogglePadamTanda" onclick="togolModePadamTanda()">🩹 Mod: Lukis</button>
+                            <button class="btn-action" onclick="padamLakaranHalamanTanda()">🧹 Padam Semua Lakaran Halaman Ini</button>
                             <button class="btn btn-primary" style="padding:0.5rem 1.2rem;" onclick="simpanAnotasiTanda()" id="btnSimpanTanda">💾 Simpan Tanda</button>
                             <span style="font-size:0.75rem; color:var(--text-secondary); display:flex; align-items:center; gap:4px;">Pen: <span style="display:inline-block;width:12px;height:12px;background:#dc2626;border-radius:50%;"></span> Merah (tetap)</span>
                         </div>
+                        <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.6rem;">💡 Guna <strong>"🩹 Mod: Padam"</strong> untuk memadam sebahagian contengan sahaja (seperti pemadam), atau <strong>"🧹 Padam Semua"</strong> untuk kosongkan keseluruhan halaman.</p>
                         <div style="width:100%; overflow:auto; text-align:center; background:#e5e7eb; border-radius:8px; padding:1rem;">
-                            <canvas id="markCanvas" style="background:white; box-shadow:var(--shadow); cursor:crosshair; max-width:100%;"></canvas>
+                            <div class="mark-canvas-wrapper" id="markCanvasWrapper">
+                                <canvas id="markCanvasBg"></canvas>
+                                <canvas id="markCanvasInk"></canvas>
+                            </div>
                         </div>
 
                         <div class="mark-comment-box">
@@ -774,13 +801,17 @@
             paparkanJadual(fasa === 1 ? senaraiFasa1 : senaraiFasa2);
         }
 
+        let checklistAdaPerubahanBelumSimpan = false;
+
         function bukaBorangChecklistPD(kod) {
             kodSemasa = kod;
+            checklistAdaPerubahanBelumSimpan = false;
             document.getElementById('checklistTitle').innerText = `Borang Verifikasi Penjaminan Kualiti PD (Admin) : ${kod} (Fasa ${fasaAktif})`;
             document.getElementById('pinInputAdminPD').value = "";
             document.getElementById('kekuatanPDVal').value = "";
             document.getElementById('kelemahanPDVal').value = "";
             document.getElementById('cadanganPDVal').value = "";
+            document.getElementById('statusDataTersimpan').style.display = "none";
 
             const tbody = document.getElementById('checklistTableBody');
             tbody.innerHTML = "";
@@ -806,8 +837,96 @@
                 `;
             });
 
+            // Kesan sebarang perubahan pada borang supaya boleh beri amaran jika ditutup tanpa disimpan
+            document.querySelectorAll('#checklistTableBody select, #checklistTableBody input, #kekuatanPDVal, #kelemahanPDVal, #cadanganPDVal, #perakuanPDVal')
+                .forEach(el => el.addEventListener('input', () => { checklistAdaPerubahanBelumSimpan = true; }));
+            document.querySelectorAll('#checklistTableBody select, #perakuanPDVal')
+                .forEach(el => el.addEventListener('change', () => { checklistAdaPerubahanBelumSimpan = true; }));
+
             document.getElementById('checklistModal').classList.add('active');
             document.body.style.overflow = 'hidden';
+        }
+
+        // Muat semula jawapan yang pernah disimpan sebelum ini (jika ada), supaya borang
+        // TIDAK sentiasa kosong setiap kali dibuka semula selepas pernah diisi & disimpan.
+        async function muatDataTersimpanVerifikasi() {
+            const adminPin = document.getElementById('pinInputAdminPD').value.trim();
+            const statusEl = document.getElementById('statusDataTersimpan');
+            const btn = document.getElementById('btnMuatDataTersimpan');
+
+            if (!adminPin) {
+                showToast("Sila masukkan Kunci Pentadbiran (Admin Master PIN) dahulu.", "error");
+                return;
+            }
+
+            btn.innerText = "Memuatkan...";
+            btn.disabled = true;
+            statusEl.style.display = "none";
+
+            try {
+                const payload = { action: "bacaDataMentahVerifikasi", fasa: fasaAktif, kodKursus: kodSemasa, adminPin: adminPin };
+                const response = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
+                const result = await response.json();
+
+                if (result.status !== "success") {
+                    showToast(result.mesej, "error");
+                    return;
+                }
+
+                if (!result.dataMentah || result.dataMentah.trim() === "") {
+                    statusEl.innerText = "ℹ️ Belum ada jawapan tersimpan sebelum ini untuk kursus ini — borang kekal kosong.";
+                    statusEl.style.color = "var(--text-secondary)";
+                    statusEl.style.display = "block";
+                    showToast("Tiada data tersimpan sebelum ini untuk kursus ini.", "success");
+                    return;
+                }
+
+                let dataLama;
+                try {
+                    dataLama = JSON.parse(result.dataMentah);
+                } catch (eParse) {
+                    showToast("Data tersimpan tidak dapat dibaca (format tidak sah).", "error");
+                    return;
+                }
+
+                const listSoalan = (fasaAktif === 1) ? soalanFasa1 : soalanFasa2;
+                (dataLama.senaraiSemak || []).forEach((item, idx) => {
+                    if (idx >= listSoalan.length) return;
+                    const selectEl = document.getElementById(`select_status_${idx}`);
+                    const catatanEl = document.getElementById(`catatan_${idx}`);
+                    if (selectEl && item.status) selectEl.value = item.status;
+                    if (catatanEl && item.catatan) catatanEl.value = item.catatan;
+                });
+
+                document.getElementById('kekuatanPDVal').value = dataLama.kekuatan || "";
+                document.getElementById('kelemahanPDVal').value = dataLama.kelemahan || "";
+                document.getElementById('cadanganPDVal').value = dataLama.cadangan || "";
+                if (dataLama.perakuanFinal) {
+                    document.getElementById('perakuanPDVal').value = dataLama.perakuanFinal;
+                }
+
+                checklistAdaPerubahanBelumSimpan = false;
+
+                const tarikhSimpan = dataLama.tarikhSimpan ? new Date(dataLama.tarikhSimpan).toLocaleString('ms-MY') : "-";
+                statusEl.innerText = "✅ Jawapan tersimpan sebelum ini (" + tarikhSimpan + ") berjaya dimuat semula. Anda boleh sunting dan simpan semula.";
+                statusEl.style.color = "var(--success-text)";
+                statusEl.style.display = "block";
+                showToast("Data tersimpan berjaya dimuat semula ke borang.", "success");
+            } catch (err) {
+                showToast("Ralat pelayan: " + err.message, "error");
+            } finally {
+                btn.innerText = "📥 Muat Data Tersimpan";
+                btn.disabled = false;
+            }
+        }
+
+        // Amaran sebelum menutup borang jika ada perubahan yang belum disimpan ke pelayan
+        function mintaTutupChecklistModal() {
+            if (checklistAdaPerubahanBelumSimpan) {
+                const teruskan = confirm("Anda ada jawapan/perubahan yang BELUM disimpan pada borang ini.\n\nJika anda tutup sekarang, semua jawapan tersebut akan HILANG (tidak tersimpan ke pelayan).\n\nTekan 'OK' untuk tetap tutup tanpa simpan, atau 'Cancel' untuk kembali dan simpan dahulu.");
+                if (!teruskan) return;
+            }
+            tutupModal('checklistModal');
         }
 
         document.getElementById('formChecklistPD').addEventListener('submit', async (e) => {
@@ -864,6 +983,7 @@
 
                 if (result.status === "success") {
                     showToast(result.mesej, "success");
+                    checklistAdaPerubahanBelumSimpan = false;
                     tutupModal('checklistModal');
                     muatTarikData();
                 } else {
@@ -954,11 +1074,26 @@
             });
         };
 
+        // Anggaran had masa muat naik berdasarkan saiz gabungan fail (base64).
+        // Fail besar (contoh: beberapa PDF berjilid) perlu had masa lebih panjang.
+        function anggarkanTimeoutMuatNaik(saizKB) {
+            if (saizKB > 8000) return 120000;   // >8MB base64 -> 2 minit
+            if (saizKB > 4000) return 90000;    // >4MB base64 -> 1.5 minit
+            return 60000;                       // asas -> 1 minit
+        }
+
+        function kiraSaizFailArray(failArray) {
+            let jumlahAksara = 0;
+            failArray.forEach(f => { if (f && f.failBase64) jumlahAksara += f.failBase64.length; });
+            return (jumlahAksara / 1024).toFixed(0); // anggaran KB (base64)
+        }
+
         // MUAT NAIK FORM FASA 1
         document.getElementById('formFasa1').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btnHantar = document.getElementById('btnHantar1');
-            btnHantar.innerText = "Memproses...";
+            const teksAsalBtn1 = "Sahkan & Muat Naik Bahan Fasa 1";
+            btnHantar.innerText = "Membaca fail...";
             btnHantar.disabled = true;
 
             try {
@@ -972,6 +1107,8 @@
                 ];
 
                 const failArray = (await Promise.all(prosesFail)).filter(f => f !== null);
+                const saizKB = kiraSaizFailArray(failArray);
+                const timeoutMs = anggarkanTimeoutMuatNaik(parseInt(saizKB, 10));
 
                 const payload = {
                     action: "upload",
@@ -983,8 +1120,9 @@
                     failArray: failArray
                 };
 
-                const response = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
-                const result = await response.json();
+                btnHantar.innerText = "Memuat naik (~" + Math.round(saizKB / 1024 * 10) / 10 + " MB)... jangan tutup tetingkap";
+
+                const result = await fetchJSONSelamat(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) }, timeoutMs, 1);
 
                 if (result.status === "success") {
                     showToast(result.mesej, "success");
@@ -994,9 +1132,9 @@
                     showToast(result.mesej, "error");
                 }
             } catch (error) {
-                showToast(`Ralat: ${error.message}`, "error");
+                showToast("Ralat: " + error.message + " — Muat naik gagal/tamat masa. Sila semak sambungan internet dan cuba lagi. Jika fail sangat besar, cuba mampatkan PDF terlebih dahulu.", "error");
             } finally {
-                btnHantar.innerText = "Sahkan & Muat Naik Bahan Fasa 1";
+                btnHantar.innerText = teksAsalBtn1;
                 btnHantar.disabled = false;
             }
         });
@@ -1005,7 +1143,8 @@
         document.getElementById('formFasa2').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btnHantar = document.getElementById('btnHantar2');
-            btnHantar.innerText = "Memproses...";
+            const teksAsalBtn2 = "Sahkan & Muat Naik Bahan Fasa 2";
+            btnHantar.innerText = "Membaca fail...";
             btnHantar.disabled = true;
 
             try {
@@ -1018,6 +1157,8 @@
                 ];
 
                 const failArray = (await Promise.all(prosesFail)).filter(f => f !== null);
+                const saizKB = kiraSaizFailArray(failArray);
+                const timeoutMs = anggarkanTimeoutMuatNaik(parseInt(saizKB, 10));
 
                 const payload = {
                     action: "uploadFasa2",
@@ -1032,8 +1173,9 @@
                     failArray: failArray
                 };
 
-                const response = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
-                const result = await response.json();
+                btnHantar.innerText = "Memuat naik (~" + Math.round(saizKB / 1024 * 10) / 10 + " MB)... jangan tutup tetingkap";
+
+                const result = await fetchJSONSelamat(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) }, timeoutMs, 1);
 
                 if (result.status === "success") {
                     showToast(result.mesej, "success");
@@ -1043,9 +1185,9 @@
                     showToast(result.mesej, "error");
                 }
             } catch (error) {
-                showToast(`Ralat: ${error.message}`, "error");
+                showToast("Ralat: " + error.message + " — Muat naik gagal/tamat masa. Sila semak sambungan internet dan cuba lagi. Jika fail sangat besar, cuba mampatkan PDF terlebih dahulu.", "error");
             } finally {
-                btnHantar.innerText = "Sahkan & Muat Naik Bahan Fasa 2";
+                btnHantar.innerText = teksAsalBtn2;
                 btnHantar.disabled = false;
             }
         });
@@ -1152,8 +1294,11 @@
         let markJumlahHalamanNum = 0;
         let markIsDrawing = false;
         let markPageStrokes = [];
+        let markModePadam = false;
         const WARNA_PEN_TANDA = "#dc2626";
         const LEBAR_CANVAS_TANDA = 1400;
+        const LEBAR_GARIS_LUKIS = 3;
+        const LEBAR_GARIS_PADAM = 26;
 
         // ---- Rangkaian tahan ralat (timeout + cuba semula) untuk elak "Failed to fetch" ----
         function fetchDenganTimeout(url, options, timeoutMs) {
@@ -1187,6 +1332,7 @@
             markDokumenAktif = "";
             markPdfDoc = null;
             markPageStrokes = [];
+            markModePadam = false;
 
             document.getElementById('markKodKursusSemasa').value = kodKursus;
             document.getElementById('markInputPIN').value = "";
@@ -1195,6 +1341,14 @@
             document.getElementById('markPinOverlay').style.display = "flex";
             document.getElementById('markContentArea').style.display = "none";
             document.getElementById('markViewerArea').style.display = "none";
+            document.getElementById('markCanvasWrapper').classList.remove('mode-padam');
+            const btnPadam = document.getElementById('btnTogglePadamTanda');
+            if (btnPadam) {
+                btnPadam.innerText = "🩹 Mod: Lukis";
+                btnPadam.style.background = "";
+                btnPadam.style.color = "";
+                btnPadam.style.borderColor = "";
+            }
             document.getElementById('markModal').classList.add('active');
             document.body.style.overflow = 'hidden';
             setTimeout(() => document.getElementById('markInputPIN').focus(), 100);
@@ -1269,7 +1423,7 @@
             if (btnAktif) btnAktif.classList.add('doc-aktif');
 
             document.getElementById('markViewerArea').style.display = "block";
-            document.getElementById('markCanvas').style.display = "none";
+            document.getElementById('markCanvasWrapper').style.display = "none";
             document.getElementById('btnCetakTanda').style.display = "none";
             showToast("Membuka dokumen, sila tunggu...", "success");
 
@@ -1295,48 +1449,75 @@
             }
         }
 
+        // ====== RENDER DUA-LAPISAN: markCanvasBg (PDF, tidak disentuh) + markCanvasInk (dakwat lutsinar) ======
+        // Ini memastikan ciri "padam sebahagian" hanya memadam dakwat, TIDAK memadam imej PDF di bawahnya.
         function renderHalamanTanda() {
             if (!markPdfDoc) return;
             document.getElementById('markHalamanSemasa').innerText = markHalamanSemasaNum;
             document.getElementById('markKomenHalamanLabel').innerText = markHalamanSemasaNum;
 
             markPdfDoc.getPage(markHalamanSemasaNum).then(page => {
-                const canvasEl = document.getElementById('markCanvas');
-                const ctx = canvasEl.getContext('2d');
-                const vp = page.getViewport({ scale: 1.5 });
-                canvasEl.width = LEBAR_CANVAS_TANDA;
-                const sf = LEBAR_CANVAS_TANDA / vp.width;
-                canvasEl.height = vp.height * sf;
+                const canvasBg = document.getElementById('markCanvasBg');
+                const canvasInk = document.getElementById('markCanvasInk');
+                const ctxBg = canvasBg.getContext('2d');
+                const ctxInk = canvasInk.getContext('2d');
 
-                page.render({ canvasContext: ctx, viewport: page.getViewport({ scale: 1.5 * sf }) }).promise.then(() => {
-                    canvasEl.style.display = "block";
+                const vp = page.getViewport({ scale: 1.5 });
+                canvasBg.width = LEBAR_CANVAS_TANDA;
+                const sf = LEBAR_CANVAS_TANDA / vp.width;
+                canvasBg.height = vp.height * sf;
+                canvasInk.width = canvasBg.width;
+                canvasInk.height = canvasBg.height;
+
+                page.render({ canvasContext: ctxBg, viewport: page.getViewport({ scale: 1.5 * sf }) }).promise.then(() => {
+                    document.getElementById('markCanvasWrapper').style.display = "inline-block";
                     if (!markDataAnotasiSemua[markDokumenAktif]) markDataAnotasiSemua[markDokumenAktif] = {};
                     const dataHalaman = markDataAnotasiSemua[markDokumenAktif][markHalamanSemasaNum] || { strokes: [], komen: "" };
                     markPageStrokes = dataHalaman.strokes || [];
                     document.getElementById('markKomenInput').value = dataHalaman.komen || "";
-                    lukisSemulaTanda(ctx);
-                    setupCanvasTanda(canvasEl, ctx);
+                    lukisSemulaTanda(ctxInk);
+                    setupCanvasTanda(canvasInk, ctxInk);
                 });
             });
         }
 
+        // Lukis semula strok tersimpan ke atas konteks LAPISAN DAKWAT sahaja (transparent).
+        // 'erase-start'/'erase-move' guna destination-out - hanya padam dakwat sedia ada
+        // pada lapisan yang sama, tidak pernah menyentuh lapisan PDF (canvas berasingan).
         function lukisSemulaTanda(ctx) {
-            ctx.strokeStyle = WARNA_PEN_TANDA;
-            ctx.lineWidth = 3;
             ctx.lineCap = "round";
             ctx.lineJoin = "round";
             markPageStrokes.forEach(pt => {
-                if (pt.type === 'start') { ctx.beginPath(); ctx.moveTo(pt.x, pt.y); }
-                else if (pt.type === 'move') { ctx.lineTo(pt.x, pt.y); ctx.stroke(); }
+                const adalahPadam = (pt.type === 'erase-start' || pt.type === 'erase-move');
+                ctx.globalCompositeOperation = adalahPadam ? 'destination-out' : 'source-over';
+                ctx.strokeStyle = WARNA_PEN_TANDA;
+                ctx.lineWidth = adalahPadam ? LEBAR_GARIS_PADAM : LEBAR_GARIS_LUKIS;
+                if (pt.type === 'start' || pt.type === 'erase-start') { ctx.beginPath(); ctx.moveTo(pt.x, pt.y); }
+                else if (pt.type === 'move' || pt.type === 'erase-move') { ctx.lineTo(pt.x, pt.y); ctx.stroke(); }
             });
+            ctx.globalCompositeOperation = 'source-over';
+        }
+
+        function togolModePadamTanda() {
+            markModePadam = !markModePadam;
+            const btn = document.getElementById('btnTogglePadamTanda');
+            const wrapper = document.getElementById('markCanvasWrapper');
+            if (markModePadam) {
+                btn.innerText = "🩹 Mod: Padam (Aktif)";
+                btn.style.background = "#dc2626";
+                btn.style.color = "white";
+                btn.style.borderColor = "#dc2626";
+                wrapper.classList.add('mode-padam');
+            } else {
+                btn.innerText = "🩹 Mod: Lukis";
+                btn.style.background = "";
+                btn.style.color = "";
+                btn.style.borderColor = "";
+                wrapper.classList.remove('mode-padam');
+            }
         }
 
         function setupCanvasTanda(canvasEl, ctx) {
-            ctx.strokeStyle = WARNA_PEN_TANDA;
-            ctx.lineWidth = 3;
-            ctx.lineCap = "round";
-            ctx.lineJoin = "round";
-
             canvasEl.onmousedown = (e) => { markIsDrawing = true; mulaLukisTanda(e, canvasEl, ctx); };
             canvasEl.onmousemove = (e) => { lukisTanda(e, canvasEl, ctx); };
             canvasEl.onmouseup = () => { markIsDrawing = false; };
@@ -1356,20 +1537,25 @@
             };
         }
 
-        function mulaLukisTanda(e, canvasEl, ctx) {
-            const koord = dapatkanKoordinatCanvas(e, canvasEl);
-            const x = Math.round(koord.x);
-            const y = Math.round(koord.y);
-            ctx.beginPath();
-            ctx.moveTo(x, y);
-            markPageStrokes.push({ type: 'start', x, y });
-            markTitikTerakhirTanda = { x, y };
-        }
-
         // Jarak minimum (piksel) antara titik yang disimpan - mengurangkan saiz data
         // contengan dengan ketara (mousemove boleh jana ratusan titik sesaat).
         const JARAK_MIN_TITIK_TANDA = 3;
         let markTitikTerakhirTanda = null;
+
+        function mulaLukisTanda(e, canvasEl, ctx) {
+            const koord = dapatkanKoordinatCanvas(e, canvasEl);
+            const x = Math.round(koord.x);
+            const y = Math.round(koord.y);
+            ctx.globalCompositeOperation = markModePadam ? 'destination-out' : 'source-over';
+            ctx.strokeStyle = WARNA_PEN_TANDA;
+            ctx.lineWidth = markModePadam ? LEBAR_GARIS_PADAM : LEBAR_GARIS_LUKIS;
+            ctx.lineCap = "round";
+            ctx.lineJoin = "round";
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            markPageStrokes.push({ type: markModePadam ? 'erase-start' : 'start', x, y });
+            markTitikTerakhirTanda = { x, y };
+        }
 
         function lukisTanda(e, canvasEl, ctx) {
             if (!markIsDrawing) return;
@@ -1384,7 +1570,7 @@
 
             ctx.lineTo(x, y);
             ctx.stroke();
-            markPageStrokes.push({ type: 'move', x, y });
+            markPageStrokes.push({ type: markModePadam ? 'erase-move' : 'move', x, y });
             markTitikTerakhirTanda = { x, y };
         }
 
@@ -1517,19 +1703,31 @@
                     const pCtx = tempCanvas.getContext('2d');
                     await page.render({ canvasContext: pCtx, viewport: page.getViewport({ scale: 1.5 * sf }) }).promise;
 
-                    pCtx.strokeStyle = WARNA_PEN_TANDA;
-                    pCtx.lineWidth = (3 * (LEBAR_CETAK / LEBAR_CANVAS_TANDA));
-                    pCtx.lineCap = 'round';
-                    pCtx.lineJoin = 'round';
+                    // Lukis dakwat pada canvas berasingan (lutsinar) dahulu, supaya operasi
+                    // padam (destination-out) tidak sekali-kali menyentuh imej PDF di tempCanvas.
+                    const inkCanvasCetak = document.createElement('canvas');
+                    inkCanvasCetak.width = tempCanvas.width;
+                    inkCanvasCetak.height = tempCanvas.height;
+                    const inkCtxCetak = inkCanvasCetak.getContext('2d');
+                    inkCtxCetak.lineCap = 'round';
+                    inkCtxCetak.lineJoin = 'round';
 
                     const dataHalaman = (markDataAnotasiSemua[markDokumenAktif] && markDataAnotasiSemua[markDokumenAktif][p]) || { strokes: [], komen: "" };
                     const skala = LEBAR_CETAK / LEBAR_CANVAS_TANDA;
                     (dataHalaman.strokes || []).forEach(pt => {
+                        const adalahPadam = (pt.type === 'erase-start' || pt.type === 'erase-move');
+                        inkCtxCetak.globalCompositeOperation = adalahPadam ? 'destination-out' : 'source-over';
+                        inkCtxCetak.strokeStyle = WARNA_PEN_TANDA;
+                        inkCtxCetak.lineWidth = (adalahPadam ? LEBAR_GARIS_PADAM : LEBAR_GARIS_LUKIS) * skala;
                         const px = pt.x * skala;
                         const py = pt.y * skala;
-                        if (pt.type === 'start') { pCtx.beginPath(); pCtx.moveTo(px, py); }
-                        else if (pt.type === 'move') { pCtx.lineTo(px, py); pCtx.stroke(); }
+                        if (pt.type === 'start' || pt.type === 'erase-start') { inkCtxCetak.beginPath(); inkCtxCetak.moveTo(px, py); }
+                        else if (pt.type === 'move' || pt.type === 'erase-move') { inkCtxCetak.lineTo(px, py); inkCtxCetak.stroke(); }
                     });
+
+                    // Gabungkan lapisan dakwat (selepas padam) ke atas imej PDF - dakwat yang
+                    // telah dipadam sudah lutsinar semula, jadi PDF asal terdedah semula di situ.
+                    pCtx.drawImage(inkCanvasCetak, 0, 0);
 
                     const komenBox = document.createElement('div');
                     komenBox.className = 'mark-print-comment';
