@@ -461,7 +461,8 @@
         <div class="controls">
             <input type="text" id="searchInput" class="search-box" placeholder="Cari Kod Kursus, Nama Kursus atau Pensyarah..." onkeyup="tapisData()">
             <button class="btn-refresh" onclick="muatTarikData()">Kemaskini Data</button>
-            <button class="btn-action" style="background: rgba(139, 92, 246, 0.15); color: #7c3aed; border-color: #7c3aed;" onclick="bukaModalKunciAI()" title="Masukkan / tukar Kunci API AI (DeepSeek)">🔑 Kunci AI</button>
+            <button class="btn-action" id="btnKunciAI" style="display:none; background: rgba(139, 92, 246, 0.15); color: #7c3aed; border-color: #7c3aed;" onclick="bukaModalKunciAI()" title="Masukkan / tukar Kunci API AI (DeepSeek)">🔑 Kunci AI</button>
+            <button class="btn-action" id="btnLogMasukAdmin" style="background: rgba(100,116,139,0.15); color:#475569; border-color:#475569;" onclick="bukaModalLogAdmin()" title="Log masuk pentadbir PD">🛡️ Admin</button>
         </div>
 
         <div class="table-container">
@@ -865,7 +866,7 @@
             statusEl.style.display = "none";
 
             try {
-                const payload = { action: "bacaDataMentahVerifikasi", fasa: fasaAktif, kodKursus: kodSemasa, adminPin: adminPin };
+                const payload = { action: "bacaDataMentahVerifikasi", fasa: fasaAktif, kodKursus: kodSemasa, tokenSesi: localStorage.getItem("pd_admin_token") || "" };
                 const response = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
                 const result = await response.json();
 
@@ -970,7 +971,7 @@
                 action: "simpanVerifikasiPD",
                 fasa: fasaAktif,
                 kodKursus: kodSemasa,
-                adminPin: adminPin,
+                tokenSesi: localStorage.getItem("pd_admin_token") || "",
                 senaraiSemak: senaraiSemakData,
                 kekuatan: document.getElementById('kekuatanPDVal').value.trim(),
                 kelemahan: document.getElementById('kelemahanPDVal').value.trim(),
@@ -1199,6 +1200,59 @@
 
 
 
+
+        // ====== LOG MASUK ADMIN (EMEL + KUNCI PENTADBIRAN) ======
+        let sesiAdminAktif = (localStorage.getItem("pd_admin_aktif") === "1");
+        function kemaskiniPaparanAdmin() {
+            sesiAdminAktif = (localStorage.getItem("pd_admin_aktif") === "1");
+            document.getElementById('btnKunciAI').style.display = sesiAdminAktif ? "inline-block" : "none";
+            document.querySelectorAll('.admin-only-btn').forEach(el => el.style.display = sesiAdminAktif ? "inline" : "none");
+            const btnAdmin = document.getElementById('btnLogMasukAdmin');
+            if (btnAdmin) {
+                btnAdmin.innerText = sesiAdminAktif ? "🛡️ Admin (Log Keluar)" : "🛡️ Admin";
+                btnAdmin.title = sesiAdminAktif ? "Log keluar pentadbir PD" : "Log masuk pentadbir PD";
+            }
+        }
+        function bukaModalLogAdmin() {
+            if (sesiAdminAktif) {
+                localStorage.removeItem("pd_admin_aktif");
+                localStorage.removeItem("pd_admin_token");
+                kemaskiniPaparanAdmin();
+                showToast("Anda telah log keluar dari mod pentadbir.", "success");
+                muatTarikData();
+                return;
+            }
+            document.getElementById('adminLogModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        async function sahkanLogAdmin() {
+            const emel = document.getElementById('adminLogEmel').value.trim();
+            const pin = document.getElementById('adminLogPin').value.trim();
+            if (!emel || !pin) { showToast("Sila isi emel dan kunci pentadbiran.", "error"); return; }
+            const btn = document.getElementById('btnSahkanLogAdmin');
+            btn.innerText = "Mengesahkan..."; btn.disabled = true;
+            try {
+                const response = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "logMasukAdmin", emel: emel, adminPin: pin }) });
+                const result = await response.json();
+                if (result.status === "success") {
+                    localStorage.setItem("pd_admin_aktif", "1");
+                    localStorage.setItem("pd_admin_token", result.tokenSesi || "");
+                    tutupModal('adminLogModal');
+                    document.getElementById('adminLogEmel').value = "";
+                    document.getElementById('adminLogPin').value = "";
+                    kemaskiniPaparanAdmin();
+                    muatTarikData();
+                    showToast("Log masuk admin berjaya. Butang Audit AI dan Kunci AI kini aktif.", "success");
+                } else {
+                    showToast(result.mesej, "error");
+                }
+            } catch (err) {
+                showToast("Ralat pelayan: " + err.message, "error");
+            } finally {
+                btn.innerText = "Sahkan & Log Masuk"; btn.disabled = false;
+            }
+        }
+
         // ====== MODAL KUNCI API AI ======
         function bukaModalKunciAI() {
             document.getElementById('kunciAIModal').classList.add('active'); document.body.style.overflow = 'hidden';
@@ -1215,14 +1269,15 @@
                 }).catch(() => {});
         }
         async function simpanKunciAIDariWeb() {
-            const adminPin = document.getElementById('kunciAIAdminPin').value.trim();
+            const adminPin = '';
             const kunciAPI = document.getElementById('kunciAIValue').value.trim();
             const st = document.getElementById('kunciAIStatus');
-            if (!adminPin || !kunciAPI) { showToast("Sila isi Admin Master PIN dan Kunci API.", "error"); return; }
+            if (!kunciAPI) { showToast("Sila isi Kunci API.", "error"); return; }
+            if (localStorage.getItem("pd_admin_aktif") !== "1") { showToast("Sila log masuk 🛡️ Admin dahulu.", "error"); return; }
             const btn = document.getElementById('btnSimpanKunciAI');
             btn.innerText = "Menyimpan..."; btn.disabled = true;
             try {
-                const response = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "simpanKunciAI", adminPin: adminPin, kunciAPI: kunciAPI }) });
+                const response = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "simpanKunciAI", tokenSesi: localStorage.getItem("pd_admin_token") || "", kunciAPI: kunciAPI }) });
                 const result = await response.json();
                 if (result.status === "success") {
                     showToast(result.mesej, "success");
@@ -1243,13 +1298,12 @@
 
         // ====== AUDIT AI MANUAL (DEEPSEEK + BUKU PANDUAN) ======
         async function jalankanAuditAIDariPapan(kod) {
-            const adminPin = prompt("🔐 AUDIT AI (ADMIN SAHAJA)\n\nMasukkan Kunci Pentadbiran (Admin Master PIN):");
-            if (adminPin === null) return;
-            if (!adminPin.trim()) { showToast("Kunci Pentadbiran diperlukan.", "error"); return; }
+            if (localStorage.getItem("pd_admin_aktif") !== "1") { showToast("Fungsi ini hanya untuk pentadbir. Sila log masuk 🛡️ Admin dahulu.", "error"); return; }
+            const tokenSesi = localStorage.getItem("pd_admin_token") || "";
             if (!confirm("Jalankan Audit AI untuk " + kod + "?\n\nAI akan menyemak MK, JST, Tugasan, Rubrik, SME dan JSU berdasarkan Buku Panduan Pentaksiran IPG edisi terkini. Ini mengambil masa 1-3 minit.")) return;
             showToast("🤖 Audit AI bermula untuk " + kod + "... sila tunggu.", "success");
             try {
-                const payload = { action: "auditAI", fasa: fasaAktif, kodKursus: kod, adminPin: adminPin.trim() };
+                const payload = { action: "auditAI", fasa: fasaAktif, kodKursus: kod, tokenSesi: tokenSesi };
                 const response = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
                 const result = await response.json();
                 if (result.status === "success") {
@@ -1262,6 +1316,9 @@
                 showToast("Ralat audit AI: " + error.message, "error");
             }
         }
+
+        // Papar butang admin mengikut sesi log masuk
+        document.addEventListener('DOMContentLoaded', kemaskiniPaparanAdmin);
 
         async function muatTarikData() {
             const tbody = document.getElementById('jadualData');
@@ -1331,7 +1388,7 @@
                             <span style="font-size: 0.8rem; color: var(--text-secondary);">${row.jabatan}</span>
                         </td>
                         <td>
-                            <button class="btn-action" style="background: rgba(139, 92, 246, 0.12); color: #7c3aed; border-color: #7c3aed;" onclick="jalankanAuditAIDariPapan('${row.kodKursus}')" title="Semak semua dokumen dengan Buku Panduan IPG edisi terkini">🤖 Audit AI</button>
+                            <span class="admin-only-btn" style="display:none;"><button class="btn-action" style="background: rgba(139, 92, 246, 0.12); color: #7c3aed; border-color: #7c3aed;" onclick="jalankanAuditAIDariPapan('${row.kodKursus}')" title="Semak semua dokumen dengan Buku Panduan IPG edisi terkini">🤖 Audit AI</button></span>
                             ${butangLaporanHTML}
                             <button class="btn-action" style="background: rgba(239, 68, 68, 0.1); color: var(--error-text); border-color: var(--error-text);" onclick="bukaBorangChecklistPD('${row.kodKursus}')">🛡️ Borang Verifikasi (Admin)</button>
                             ${butangTandaHTML}
@@ -1339,6 +1396,7 @@
                     </tr>
                 `;
             });
+            kemaskiniPaparanAdmin();
         }
 
         function tapisData() {
@@ -1840,15 +1898,34 @@
         </div>
         <div style="padding: 1rem;">
             <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.8rem;">
-                Masukkan Kunci Pentadbiran (Admin Master PIN) dan Kunci API AI anda.
+                Anda telah log masuk sebagai pentadbir. Masukkan Kunci API AI anda — disimpan selamat dan boleh ditukar bila-bila masa.
                 Kunci API disimpan secara selamat dalam pelayan dan boleh ditukar pada bila-bila masa.
             </p>
-            <label style="font-size:0.8rem; font-weight:600;">🔐 Admin Master PIN</label>
-            <input type="password" id="kunciAIAdminPin" class="form-input" placeholder="Kunci Pentadbiran" style="width:100%; margin-bottom:0.8rem; padding:0.5rem; border:1px solid var(--border); border-radius:6px;">
             <label style="font-size:0.8rem; font-weight:600;">🤖 Kunci API (contoh: sk-...)</label>
             <input type="password" id="kunciAIValue" class="form-input" placeholder="sk-..." style="width:100%; margin-bottom:1rem; padding:0.5rem; border:1px solid var(--border); border-radius:6px;">
             <div id="kunciAIStatus" style="display:none; font-size:0.82rem; margin-bottom:0.8rem;"></div>
             <button class="btn-action" id="btnSimpanKunciAI" type="button" onclick="simpanKunciAIDariWeb()" style="width:100%; background: rgba(139,92,246,0.15); color:#7c3aed; border-color:#7c3aed; padding:0.6rem;">💾 Simpan Kunci API</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- ====== MODAL LOG MASUK ADMIN ====== -->
+<div class="modal-overlay" id="adminLogModal">
+    <div class="modal-content" style="max-width: 420px;">
+        <div class="modal-header" style="display:flex; justify-content:space-between; align-items:center;">
+            <h3>🛡️ Log Masuk Pentadbir PD</h3>
+            <button class="btn-action" onclick="tutupModal('adminLogModal')">✕</button>
+        </div>
+        <div style="padding: 1rem;">
+            <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.8rem;">
+                Butang Audit AI dan Kunci AI hanya tersedia untuk pentadbir. Masukkan emel pentadbir dan kunci pentadbiran.
+            </p>
+            <label style="font-size:0.8rem; font-weight:600;">📧 Emel Pentadbir</label>
+            <input type="email" id="adminLogEmel" placeholder="emel@ipgm.edu.my" style="width:100%; margin-bottom:0.8rem; padding:0.5rem; border:1px solid var(--border); border-radius:6px;">
+            <label style="font-size:0.8rem; font-weight:600;">🔐 Kunci Pentadbiran</label>
+            <input type="password" id="adminLogPin" placeholder="Admin Master PIN" style="width:100%; margin-bottom:1rem; padding:0.5rem; border:1px solid var(--border); border-radius:6px;">
+            <button class="btn-action" id="btnSahkanLogAdmin" type="button" onclick="sahkanLogAdmin()" style="width:100%; background: rgba(100,116,139,0.15); color:#475569; border-color:#475569; padding:0.6rem;">Sahkan & Log Masuk</button>
         </div>
     </div>
 </div>
