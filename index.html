@@ -1027,6 +1027,11 @@
         }
 
         async function mintaAksesLaporan() {
+            // KEKALAN SULIT: Laporan audit AI hanya untuk ADMIN — minta Kunci Pentadbiran dahulu.
+            const adminPinLaporan = prompt("🔐 LAPORAN PD (SULIT - ADMIN SAHAJA)\n\nMasukkan Kunci Pentadbiran (Admin Master PIN):");
+            if (adminPinLaporan === null) return;
+            if (!adminPinLaporan.trim()) { showToast("Kunci Pentadbiran diperlukan.", "error"); return; }
+            window._adminPinLaporan = adminPinLaporan.trim();
             const kod = document.getElementById('kodKursusSemasa').value;
             const pin = document.getElementById('inputSemakPIN').value;
             const btn = document.getElementById('btnSemakPIN');
@@ -1037,7 +1042,7 @@
             btn.disabled = true;
 
             try {
-                const payload = { action: "bacaLaporan", fasa: fasaAktif, kodKursus: kod, kunciRahsia: pin };
+                const payload = { action: "bacaLaporan", fasa: fasaAktif, kodKursus: kod, kunciRahsia: pin, adminPin: window._adminPinLaporan || "" };
                 const response = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
                 const result = await response.json();
 
@@ -1239,10 +1244,13 @@
 
         // ====== AUDIT AI MANUAL (DEEPSEEK + BUKU PANDUAN) ======
         async function jalankanAuditAIDariPapan(kod) {
+            const adminPin = prompt("🔐 AUDIT AI (ADMIN SAHAJA)\n\nMasukkan Kunci Pentadbiran (Admin Master PIN):");
+            if (adminPin === null) return;
+            if (!adminPin.trim()) { showToast("Kunci Pentadbiran diperlukan.", "error"); return; }
             if (!confirm("Jalankan Audit AI untuk " + kod + "?\n\nAI akan menyemak MK, JST, Tugasan, Rubrik, SME dan JSU berdasarkan Buku Panduan Pentaksiran IPG edisi terkini. Ini mengambil masa 1-3 minit.")) return;
             showToast("🤖 Audit AI bermula untuk " + kod + "... sila tunggu.", "success");
             try {
-                const payload = { action: "auditAI", fasa: fasaAktif, kodKursus: kod };
+                const payload = { action: "auditAI", fasa: fasaAktif, kodKursus: kod, adminPin: adminPin.trim() };
                 const response = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
                 const result = await response.json();
                 if (result.status === "success") {
