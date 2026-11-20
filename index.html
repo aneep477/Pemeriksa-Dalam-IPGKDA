@@ -1027,11 +1027,10 @@
         }
 
         async function mintaAksesLaporan() {
-            // KEKALAN SULIT: Laporan audit AI hanya untuk ADMIN — minta Kunci Pentadbiran dahulu.
-            const adminPinLaporan = prompt("🔐 LAPORAN PD (SULIT - ADMIN SAHAJA)\n\nMasukkan Kunci Pentadbiran (Admin Master PIN):");
-            if (adminPinLaporan === null) return;
-            if (!adminPinLaporan.trim()) { showToast("Kunci Pentadbiran diperlukan.", "error"); return; }
-            window._adminPinLaporan = adminPinLaporan.trim();
+            // Akses dua lapis: pensyarah guna PIN Kursus; pentadbir boleh (pilihan) masukkan
+            // Kunci Pentadbiran untuk akses terus tanpa PIN kursus.
+            const adminPinLaporan = prompt("🔐 Akses Laporan PD SULIT\n\nPensyarah: tekan OK dan masukkan PIN Kursus anda.\nPentadbir PD: masukkan Kunci Pentadbiran di sini untuk akses terus.");
+            window._adminPinLaporan = (adminPinLaporan || "").trim();
             const kod = document.getElementById('kodKursusSemasa').value;
             const pin = document.getElementById('inputSemakPIN').value;
             const btn = document.getElementById('btnSemakPIN');
